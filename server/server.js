@@ -310,14 +310,19 @@ function connectDatabase() {
   .catch((err) => {
     isDbConnected = false;
     console.warn(`⚠️ MongoDB connection warning: ${err.message}`);
-    console.warn('👉 Tip: Ensure your local MongoDB is running, or verify your MONGO_URI in server/.env with your MongoDB Atlas connection string.');
+    console.warn('👉 Tip: Ensure your MONGO_URI is set in Render Environment Variables and Atlas Network Access allows 0.0.0.0/0.');
+    setTimeout(connectDatabase, 5000);
   });
 }
 
 connectDatabase();
 
 mongoose.connection.on('connected', () => { isDbConnected = true; });
-mongoose.connection.on('disconnected', () => { isDbConnected = false; });
+mongoose.connection.on('disconnected', () => {
+  isDbConnected = false;
+  console.warn('⚠️ MongoDB connection lost. Reconnecting in 5s...');
+  setTimeout(connectDatabase, 5000);
+});
 mongoose.connection.on('error', () => { isDbConnected = false; });
 
 // Database readiness check middleware
