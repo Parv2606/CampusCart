@@ -1441,7 +1441,22 @@ app.patch('/api/admin/reports/:id', checkDb, requireAuth, requireAdmin, async (r
   }
 });
 
-// 404 Handler for unknown endpoints
+// Serve static production build of client if available
+const clientDist = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDist));
+
+// SPA Client Routing: redirect all non-API GET requests to client/dist/index.html
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  const indexHtml = path.join(clientDist, 'index.html');
+  res.sendFile(indexHtml, (err) => {
+    if (err) next();
+  });
+});
+
+// 404 Handler for unknown API endpoints
 app.use((req, res) => {
   res.status(404).json({ error: `Endpoint ${req.originalUrl} not found on CampusCart API.` });
 });
