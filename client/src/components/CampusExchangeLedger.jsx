@@ -50,7 +50,7 @@ export default function CampusExchangeLedger() {
     <section className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-md bg-[#e0f2fe] text-[#0369a1] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center">
             <ShieldCheck className="w-4 h-4" />
           </div>
           <div>
@@ -58,8 +58,8 @@ export default function CampusExchangeLedger() {
             <p className="text-[11px] text-slate-500">Live authenticated hand-offs between enrolled students</p>
           </div>
         </div>
-        <span className="text-[11px] font-semibold text-sky-800 bg-[#e0f2fe] px-2.5 py-1 rounded-md self-start sm:self-auto flex items-center gap-1">
-          <CheckCircle2 className="w-3.5 h-3.5 text-sky-600" /> 100% In-Person Verified Hand-Offs
+        <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md self-start sm:self-auto flex items-center gap-1">
+          <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> 100% In-Person Verified Hand-Offs
         </span>
       </div>
 
@@ -67,12 +67,12 @@ export default function CampusExchangeLedger() {
         {verifiedTrades.map((t) => (
           <div
             key={t.id}
-            className="p-3.5 rounded-lg border border-slate-100 bg-[#f8fafc] flex items-start justify-between gap-3 text-xs"
+            className="p-3.5 rounded-lg border border-slate-200/80 bg-white hover:border-blue-300 transition-colors flex items-start justify-between gap-3 text-xs"
           >
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="font-bold text-slate-900 line-clamp-1">{t.item}</span>
-                <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-medium">
+                <span className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded font-medium">
                   {t.category}
                 </span>
               </div>
@@ -80,7 +80,7 @@ export default function CampusExchangeLedger() {
                 {t.sellerDept} to {t.buyerDept}
               </p>
               <div className="flex items-center gap-1 text-[11px] text-slate-500 pt-0.5">
-                <MapPin className="w-3 h-3 text-sky-600 shrink-0" />
+                <MapPin className="w-3 h-3 text-blue-600 shrink-0" />
                 <span className="line-clamp-1">{t.location}</span>
                 <span className="text-slate-300">•</span>
                 <span className="text-slate-400 shrink-0">{t.timeAgo}</span>
@@ -88,8 +88,8 @@ export default function CampusExchangeLedger() {
             </div>
 
             <div className="text-right shrink-0">
-              <span className="font-black text-[#0284c7] text-sm block">{t.amount}</span>
-              <span className="text-[10px] text-sky-700 font-semibold">Settled</span>
+              <span className="font-black text-slate-900 text-sm block">{t.amount}</span>
+              <span className="text-[10px] text-blue-700 font-bold">Settled</span>
             </div>
           </div>
         ))}

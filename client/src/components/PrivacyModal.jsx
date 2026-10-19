@@ -8,9 +8,9 @@ export default function PrivacyModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
       <div className="bg-white rounded-xl border border-slate-200 max-w-2xl w-full max-h-[88vh] flex flex-col shadow-lg overflow-hidden animate-scale-up my-auto">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-[#f8f9fa]">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md bg-[#0284c7] text-white flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-md bg-slate-900 text-white flex items-center justify-center shadow-xs">
               <Shield className="w-4 h-4" />
             </div>
             <div>
@@ -21,7 +21,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
           <button
             onClick={onClose}
             aria-label="Close Privacy Policy"
-            className="w-8 h-8 rounded-md hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-md hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -84,11 +84,11 @@ export default function PrivacyModal({ isOpen, onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3.5 border-t border-slate-200 bg-[#f8f9fa] flex items-center justify-between">
+        <div className="px-6 py-3.5 border-t border-slate-200 bg-white flex items-center justify-between">
           <span className="text-[11px] text-slate-400">Strict Student Protection Standard</span>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
+            className="px-4 py-2 rounded-md bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
           >
             Acknowledge Privacy Terms
           </button>

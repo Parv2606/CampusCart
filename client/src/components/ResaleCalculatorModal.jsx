@@ -41,9 +41,9 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
       <div className="bg-white rounded-xl border border-slate-200 max-w-lg w-full flex flex-col shadow-lg overflow-hidden animate-scale-up max-h-[92vh] my-auto">
         {/* Header */}
-        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-[#f8fafc]">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md bg-[#0284c7] text-white flex items-center justify-center shadow-xs shrink-0">
+            <div className="w-8 h-8 rounded-md bg-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
               <Calculator className="w-4 h-4" />
             </div>
             <div>
@@ -54,7 +54,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           <button
             onClick={onClose}
             aria-label="Close Calculator"
-            className="w-8 h-8 rounded-md hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
+            className="w-8 h-8 rounded-md hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
@@ -67,7 +67,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-[#f8fafc] border border-slate-300 rounded-md p-2.5 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+              className="w-full bg-white border border-slate-300 rounded-md p-2.5 text-xs text-slate-800 font-medium focus:outline-none focus:border-blue-600"
             >
               <option value="Calculators">Calculators (TI-84, Casio FX)</option>
               <option value="Books & Notes">Textbooks & Academic Notes</option>
@@ -81,7 +81,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="font-bold text-slate-900">Original Purchase Price</label>
-              <span className="font-bold text-[#0284c7]">₹{Number(originalPrice).toLocaleString('en-IN')}</span>
+              <span className="font-bold text-slate-900">₹{Number(originalPrice).toLocaleString('en-IN')}</span>
             </div>
             <input
               type="range"
@@ -90,7 +90,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
               step="100"
               value={originalPrice}
               onChange={(e) => setOriginalPrice(Number(e.target.value))}
-              className="w-full accent-[#0284c7] cursor-pointer"
+              className="w-full accent-blue-600 cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
               <span>₹200</span>
@@ -105,7 +105,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
               <select
                 value={semestersUsed}
                 onChange={(e) => setSemestersUsed(Number(e.target.value))}
-                className="w-full bg-[#f8fafc] border border-slate-300 rounded-md p-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                className="w-full bg-white border border-slate-300 rounded-md p-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-blue-600"
               >
                 <option value={1}>1 Semester (Recent)</option>
                 <option value={2}>2 Semesters (1 Year)</option>
@@ -120,7 +120,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
               <select
                 value={condition}
                 onChange={(e) => setCondition(e.target.value)}
-                className="w-full bg-[#f8fafc] border border-slate-300 rounded-md p-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                className="w-full bg-white border border-slate-300 rounded-md p-2 text-xs text-slate-800 font-medium focus:outline-none focus:border-blue-600"
               >
                 <option value="Brand New">Brand New (Unopened)</option>
                 <option value="Like New">Like New (Flawless)</option>
@@ -131,30 +131,30 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           </div>
 
           {/* Result Card */}
-          <div className="bg-[#e0f2fe]/60 border border-[#bae6fd] rounded-lg p-4 space-y-2 mt-2">
+          <div className="bg-blue-50/70 border border-blue-200 rounded-lg p-4 space-y-2 mt-2">
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-[11px] font-bold text-sky-800 uppercase tracking-wide">Fair Campus Resale Value</span>
-                <div className="text-2xl font-black text-[#0284c7] mt-0.5">
+                <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wide">Fair Campus Resale Value</span>
+                <div className="text-2xl font-black text-slate-900 mt-0.5">
                   ₹{estimatedPrice.toLocaleString('en-IN')}
                 </div>
               </div>
               <div className="text-right">
-                <span className="bg-[#0284c7] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
+                <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
                   {studentSavingsPercent}% Buyer Savings
                 </span>
                 <p className="text-[10px] text-slate-500 mt-1">High probability of same-day campus trade</p>
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-600 border-t border-[#bae6fd] pt-2">
+            <p className="text-[11px] text-slate-600 border-t border-blue-200 pt-2">
               Recommended Hand-Off: <span className="font-semibold text-slate-800">Central Library Quad</span> • Typical student hand-off takes ~15 minutes.
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3.5 border-t border-slate-200 bg-[#f8fafc] flex items-center justify-between">
+        <div className="px-6 py-3.5 border-t border-slate-200 bg-white flex items-center justify-between">
           <button
             onClick={onClose}
             className="px-3.5 py-2 rounded-md border border-slate-300 text-slate-700 font-semibold text-xs hover:bg-slate-100 transition-colors cursor-pointer"
@@ -163,7 +163,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           </button>
           <button
             onClick={handleApply}
-            className="px-4 py-2 rounded-md bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
+            className="px-4 py-2 rounded-md bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
           >
             <Check className="w-4 h-4" />
             <span>Apply to Listing</span>

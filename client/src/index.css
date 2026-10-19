@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --brand-blue: #0284c7;        /* Sky 600 - crisp vibrant light blue */
-  --brand-blue-hover: #0369a1;  /* Sky 700 - deep sky blue */
-  --brand-blue-light: #e0f2fe;  /* Sky 100 - soft airy light blue background */
-  --brand-blue-ultralight: #f0f9ff; /* Sky 50 */
-  --card-bg-neutral: #f4f5f7;
-  --star-blue: #0284c7;
+  --brand-navy: #090d16;        /* Deep obsidian midnight */
+  --brand-slate: #0f172a;       /* Slate 900 */
+  --brand-blue: #2563eb;        /* Vibrant Royal Blue */
+  --brand-blue-hover: #1d4ed8;  /* Deep Royal Blue */
+  --brand-blue-accent: #0284c7; /* Sky 600 */
+  --brand-blue-light: #eff6ff;  /* Blue 50 - soft clean blue tint */
+  --brand-blue-ice: #f0f9ff;    /* Sky 50 - airy ice blue */
+  --brand-blue-border: #dbeafe; /* Subtle light blue border */
+  --card-bg-neutral: #f8fafc;
+  --star-blue: #2563eb;
 
-  /* Backward compatibility alias so existing green utility classes map directly to light blue */
+  /* Compatibility alias */
   --brand-green: var(--brand-blue);
   --brand-green-hover: var(--brand-blue-hover);
   --brand-green-light: var(--brand-blue-light);
@@ -88,9 +92,9 @@
 
 .coordinate-badge {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  background-color: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #dbeafe;
 }
 
 /* Custom Scrollbars */
@@ -109,36 +113,48 @@
   background: #94a3b8;
 }
 
-/* Light Blue Interactive Button Utilities */
+/* Minimalist Button Utilities (Black, White, and Blue) */
 .btn-primary-blue,
 .btn-primary-green {
-  background-color: var(--brand-blue);
+  background-color: #0f172a;
   color: #ffffff;
-  border: 1px solid #0369a1;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  border: 1px solid #0f172a;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-primary-blue:hover,
 .btn-primary-green:hover {
-  background-color: var(--brand-blue-hover);
-  border-color: #075985;
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.btn-brand-blue {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 1px solid #1d4ed8;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-brand-blue:hover {
+  background-color: #1d4ed8;
+  border-color: #1e40af;
 }
 
 .btn-outline-blue,
 .btn-outline-green {
-  border: 1.5px solid var(--brand-blue);
-  color: var(--brand-blue);
+  border: 1.5px solid #0f172a;
+  color: #0f172a;
   background-color: transparent;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: all 0.15s ease;
 }
 .btn-outline-blue:hover,
 .btn-outline-green:hover {
-  background-color: var(--brand-blue);
+  background-color: #0f172a;
   color: #ffffff;
 }
 
 .product-image-container {
   background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #f1f5f9;
   transition: border-color 0.2s ease;
 }
 
@@ -151,7 +167,7 @@
   scrollbar-width: none;
 }
 
-/* Accessible, High-Contrast Select and Option Menus (Light Blue Highlight) */
+/* Accessible, High-Contrast Select and Option Menus (Minimalist Blue Highlight) */
 select {
   color: #0f172a !important;
   background-color: #ffffff;
@@ -162,7 +178,7 @@ select option {
   padding: 8px 12px;
 }
 select option:checked {
-  background-color: #e0f2fe !important;
-  color: #0369a1 !important;
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
   font-weight: 700;
 }

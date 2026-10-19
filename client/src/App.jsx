@@ -1574,41 +1574,41 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
-      {/* 1. TOP ANNOUNCEMENT BAR (Light Sky Blue #0369a1) */}
-      <header className="bg-[#0369a1] text-white text-xs sm:text-sm py-2 px-3 sm:px-8 border-b border-[#0284c7] w-full">
+      {/* 1. TOP ANNOUNCEMENT BAR (Minimalist Deep Navy #090d16) */}
+      <header className="bg-[#090d16] text-slate-300 text-xs sm:text-sm py-2 px-3 sm:px-8 border-b border-slate-800 w-full">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-center sm:text-left">
           {/* Left: Promo & Calculator */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-sky-50 flex-wrap text-center">
-            <span className="font-semibold text-amber-300">Campus Deal:</span>
-            <span className="hidden xs:inline">Verified Student Peer Exchange</span>
-            <span className="hidden sm:inline text-sky-200">|</span>
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap text-center text-slate-300">
+            <span className="bg-blue-950/80 text-blue-300 border border-blue-800/60 px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase">Campus Deal</span>
+            <span className="hidden xs:inline text-slate-300">Verified Student Peer Exchange</span>
+            <span className="hidden sm:inline text-slate-600">|</span>
             <button
               onClick={() => setIsCalculatorModalOpen(true)}
-              className="font-semibold underline hover:text-sky-200 transition-colors cursor-pointer"
+              className="font-medium text-blue-400 hover:text-white underline transition-colors cursor-pointer"
             >
               Estimate Resale Value
             </button>
           </div>
 
           {/* Right: Campus Hand-Off Hub Location */}
-          <div className="flex items-center justify-center gap-2 text-sky-100 shrink-0">
+          <div className="flex items-center justify-center gap-2 text-slate-300 shrink-0">
             <div
               onClick={() => setIsDeliveryModalOpen(true)}
-              className="cursor-pointer flex items-center gap-1.5 hover:text-white py-1 bg-[#0284c7] px-2.5 rounded-md text-xs transition-colors shrink-0 border border-sky-400"
+              className="cursor-pointer flex items-center gap-1.5 hover:text-white py-1 bg-slate-900 hover:bg-slate-800 px-2.5 rounded-md text-xs transition-colors shrink-0 border border-slate-700/80 text-slate-200"
               title="Campus Hand-Off Location"
             >
-              <MapPin className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+              <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
               <span className="truncate max-w-[140px] sm:max-w-[160px] font-medium">
                 {currentLocation.building || 'Central Library Desk'}
               </span>
-              <ChevronDown className="w-3 h-3 text-sky-200 shrink-0" />
+              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
             </div>
           </div>
         </div>
       </header>
 
-      {/* 2. MAIN NAVBAR - SOLID OPAQUE (Light Blue Brand Identity) */}
-      <nav className="sticky top-0 z-40 bg-[#f7f8fa] border-b border-slate-200 w-full">
+      {/* 2. MAIN NAVBAR - SOLID OPAQUE (Minimalist Clean White & Blue) */}
+      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 w-full">
         <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
           <button
             onClick={() => {
@@ -1617,14 +1617,14 @@ export default function App() {
             }}
             className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-none shrink-0"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[#0284c7] flex items-center justify-center text-white shrink-0 shadow-sm">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-sm group-hover:bg-blue-600 transition-colors">
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div className="text-left">
-              <span className="text-lg sm:text-2xl font-black tracking-tight text-[#0369a1] whitespace-nowrap">
-                Campus<span className="text-[#0284c7]">Cart</span>
+              <span className="text-lg sm:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
+                Campus<span className="text-blue-600">Cart</span>
               </span>
-              <span className="hidden sm:block text-[9px] font-bold text-sky-600 tracking-wider uppercase -mt-1 whitespace-nowrap">
+              <span className="hidden sm:block text-[9px] font-bold text-slate-400 tracking-wider uppercase -mt-1 whitespace-nowrap">
                 Student Exchange
               </span>
             </div>
@@ -1633,9 +1633,9 @@ export default function App() {
           {/* Navigation Links */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-5 font-medium text-xs xl:text-sm text-slate-700 shrink-0 flex-nowrap">
             <div className="relative group py-2 shrink-0">
-              <button className="flex items-center gap-1 hover:text-[#0284c7] transition-colors cursor-pointer font-semibold whitespace-nowrap shrink-0">
+              <button className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer font-semibold whitespace-nowrap shrink-0">
                 <span className="whitespace-nowrap">Categories</span>
-                <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-[#0284c7] transition-transform shrink-0" />
+                <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-transform shrink-0" />
               </button>
               <div className="absolute left-0 top-full w-64 bg-white rounded-lg border border-slate-200 py-3 px-2 hidden group-hover:block z-50 animate-fade-in shadow-md">
                 <div className="text-[11px] font-bold text-slate-400 px-3 py-1 uppercase tracking-wider">
@@ -1645,9 +1645,9 @@ export default function App() {
                   <button
                     key={cat.name}
                     onClick={() => handleSelectCategory(cat.name)}
-                    className="w-full text-left px-3 py-2 rounded-md text-xs hover:bg-[#e0f2fe] hover:text-[#0369a1] flex items-center justify-between group/item transition-colors cursor-pointer"
+                    className="w-full text-left px-3 py-2 rounded-md text-xs hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between group/item transition-colors cursor-pointer"
                   >
-                    <span className="font-medium text-slate-800 group-hover/item:text-[#0369a1]">{cat.name}</span>
+                    <span className="font-medium text-slate-800 group-hover/item:text-blue-700">{cat.name}</span>
                     <span className="text-[10px] text-slate-400 font-semibold">{getCategoryCount(cat.name)} Items</span>
                   </button>
                 ))}
@@ -1661,33 +1661,33 @@ export default function App() {
                 const el = document.getElementById('campus-items-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="hover:text-[#0284c7] transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
               Deals
             </button>
 
             <button
               onClick={() => setIsCalculatorModalOpen(true)}
-              className="hover:text-[#0284c7] transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
+              className="hover:text-blue-600 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
             >
-              <Calculator className="w-3.5 h-3.5 text-[#0284c7] shrink-0" />
+              <Calculator className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span className="whitespace-nowrap">Resale Calculator</span>
             </button>
 
             <button
               onClick={() => setIsDeliveryModalOpen(true)}
-              className="hover:text-[#0284c7] transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
+              className="hover:text-blue-600 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
             >
-              <MapPin className="w-3.5 h-3.5 text-[#0284c7] shrink-0" />
+              <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span className="whitespace-nowrap">Campus Hubs</span>
             </button>
 
             {currentUser?.role === 'admin' ? (
               <button
                 onClick={() => setCurrentView('admin')}
-                className="text-amber-700 hover:text-amber-800 font-bold transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
+                className="text-slate-800 hover:text-blue-600 font-bold transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
               >
-                <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                 <span className="whitespace-nowrap">Admin Panel</span>
               </button>
             ) : (
@@ -1699,8 +1699,8 @@ export default function App() {
                   }}
                   className={`transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                     currentView === 'my-listings' && accountTab === 'listings'
-                      ? 'text-[#0284c7] font-bold border-b-2 border-[#0284c7]'
-                      : 'hover:text-[#0284c7]'
+                      ? 'text-blue-600 font-bold border-b-2 border-blue-600'
+                      : 'hover:text-blue-600'
                   }`}
                 >
                   <span className="whitespace-nowrap">My Listings</span>
@@ -1712,14 +1712,14 @@ export default function App() {
                   }}
                   className={`transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     currentView === 'my-listings' && accountTab === 'transactions'
-                      ? 'text-[#0284c7] font-bold border-b-2 border-[#0284c7]'
-                      : 'hover:text-[#0284c7]'
+                      ? 'text-blue-600 font-bold border-b-2 border-blue-600'
+                      : 'hover:text-blue-600'
                   }`}
                 >
-                  <Receipt className="w-3.5 h-3.5 text-[#0284c7] shrink-0" />
+                  <Receipt className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                   <span className="whitespace-nowrap">Orders</span>
                   {transactions.length > 0 && (
-                    <span className="bg-[#e0f2fe] text-[#0369a1] text-[10px] font-extrabold px-1.5 py-0.2 rounded-md shrink-0">
+                    <span className="bg-blue-50 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded-md shrink-0">
                       {transactions.length}
                     </span>
                   )}
@@ -1739,7 +1739,7 @@ export default function App() {
                   setSearchQuery(e.target.value);
                   if (currentView !== 'home') setCurrentView('home');
                 }}
-                className="w-full bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-md pl-2.5 sm:pl-3 pr-7 sm:pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-[#0284c7] border border-slate-300 transition-colors truncate"
+                className="w-full bg-[#f8fafc] hover:bg-white focus:bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-lg pl-2.5 sm:pl-3 pr-7 sm:pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-blue-600 border border-slate-200 transition-colors truncate"
               />
               <button
                 aria-label="Search"
@@ -1747,7 +1747,7 @@ export default function App() {
                   const el = document.getElementById('campus-catalog');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="absolute right-2 sm:right-2.5 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="absolute right-2 sm:right-2.5 text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 <Search className="w-3.5 h-3.5" />
               </button>
@@ -1758,7 +1758,7 @@ export default function App() {
           <div className="flex items-center gap-2 sm:gap-3.5 xl:gap-4 shrink-0 flex-nowrap">
             <button
               onClick={handleOpenSellModal}
-              className="hidden sm:inline-flex items-center gap-1.5 btn-primary-blue px-3.5 py-2 rounded-md text-xs font-bold cursor-pointer whitespace-nowrap shrink-0"
+              className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-blue-600 text-white px-3.5 py-2 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors shadow-xs"
             >
               <Plus className="w-3.5 h-3.5 shrink-0" />
               <span className="whitespace-nowrap">Sell An Item</span>
@@ -1769,9 +1769,9 @@ export default function App() {
                 if (!currentUser) setAuthTab('login');
                 setIsAuthModalOpen(true);
               }}
-              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-[#0284c7] transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
-              <div className="w-7 h-7 rounded-md bg-[#e0f2fe] text-[#0284c7] flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-200">
                 {currentUser ? (currentUser.fullName || currentUser.name || 'P')[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
               </div>
               <span className="hidden sm:inline whitespace-nowrap">
@@ -1781,12 +1781,12 @@ export default function App() {
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-[#0284c7] transition-colors relative cursor-pointer whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors relative cursor-pointer whitespace-nowrap shrink-0"
             >
               <div className="relative shrink-0">
-                <ShoppingCart className="w-5 h-5" />
+                <ShoppingCart className="w-5 h-5 text-slate-800" />
                 {cartTotalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#0284c7] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                     {cartTotalItems}
                   </span>
                 )}
@@ -1802,55 +1802,55 @@ export default function App() {
         {/* VIEW 1: HOME MARKETPLACE */}
         {currentView === 'home' && (
           <div className="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 w-full">
-            {/* HERO PROMO BANNER (Light Sky Blue Architectural Theme) */}
-            <section className="bg-gradient-to-br from-[#0284c7] via-[#0369a1] to-[#075985] text-white rounded-xl p-4 sm:p-10 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 border border-sky-400/30 w-full">
+            {/* HERO PROMO BANNER (Minimalist Obsidian / Slate / Royal Blue) */}
+            <section className="bg-gradient-to-br from-[#090d16] via-[#0f172a] to-[#1e293b] text-white rounded-2xl p-5 sm:p-10 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 border border-slate-800 shadow-sm w-full">
               <div className="w-full md:max-w-xl z-10 space-y-3 sm:space-y-4 text-center md:text-left">
-                <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-md text-[11px] sm:text-xs font-bold tracking-wide uppercase bg-sky-800/60 text-sky-200 border border-sky-400/40 max-w-full truncate">
-                  <ShieldCheck className="w-3.5 h-3.5 text-sky-200 shrink-0" /> <span className="truncate">Verified Student Network • Campus Marketplace</span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide uppercase bg-blue-500/10 text-blue-300 border border-blue-400/20 max-w-full truncate">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" /> <span className="truncate">Verified Student Network • Campus Marketplace</span>
                 </span>
                 <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15]">
                   Direct Campus Exchange For College Essentials
                 </h1>
-                <p className="text-sky-100/90 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
                   Buy, sell, and hand off used textbooks, calculators, bicycles, lab coats, and electronics directly with fellow students across dorms and academic departments.
                 </p>
-                <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-3">
+                <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3">
                   <button
                     onClick={() => {
                       const el = document.getElementById('campus-catalog');
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-md bg-white text-[#0369a1] font-bold text-xs hover:bg-slate-100 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-white"
+                    className="px-5 sm:px-6 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-sm"
                   >
                     <span>Browse Campus Items</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={handleOpenSellModal}
-                    className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-md text-xs font-bold border border-white/50 text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    className="px-4 sm:px-5 py-2.5 rounded-xl text-xs font-semibold border border-slate-700 bg-slate-800/60 text-slate-200 hover:bg-slate-700/80 hover:text-white transition-colors cursor-pointer"
                   >
                     Sell On Campus
                   </button>
                   <button
                     onClick={() => setIsCalculatorModalOpen(true)}
-                    className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-md text-xs font-bold bg-sky-800/70 text-sky-100 hover:bg-sky-800 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-sky-400/40"
+                    className="px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-semibold bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 transition-colors cursor-pointer inline-flex items-center gap-1.5"
                   >
-                    <Calculator className="w-3.5 h-3.5 text-amber-300" />
+                    <Calculator className="w-3.5 h-3.5 text-blue-400" />
                     <span>Fair-Price Tool</span>
                   </button>
                 </div>
               </div>
 
               <div className="relative w-full md:w-5/12 flex items-center justify-center">
-                <div className="w-full bg-[#0369a1]/80 border border-sky-400/40 rounded-lg p-3.5 sm:p-5 space-y-3 sm:space-y-4">
-                  <div className="flex items-center justify-between text-xs border-b border-sky-400/30 pb-2.5 sm:pb-3">
-                    <span className="font-bold text-sky-200">Featured Campus Listing</span>
-                    <span className="bg-amber-400/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-400/30">
+                <div className="w-full bg-[#111827]/90 backdrop-blur-sm border border-slate-700/70 rounded-xl p-4 sm:p-5 space-y-3 sm:space-y-4 shadow-xl">
+                  <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-2.5 sm:pb-3">
+                    <span className="font-semibold text-slate-300">Featured Campus Listing</span>
+                    <span className="bg-blue-500/20 text-blue-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-400/30">
                       50% Student Discount
                     </span>
                   </div>
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-md bg-slate-100 p-2 shrink-0 flex items-center justify-center">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-white p-2 shrink-0 flex items-center justify-center shadow-xs">
                       <img
                         src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=300&q=80"
                         alt="Campus Headphones"
@@ -1859,22 +1859,22 @@ export default function App() {
                     </div>
                     <div className="space-y-1 min-w-0 flex-1">
                       <h3 className="font-bold text-white text-sm truncate">Apple AirPods Max</h3>
-                      <p className="text-[11px] text-sky-100/80 truncate">Like New • Science Quad Study Desk</p>
+                      <p className="text-[11px] text-slate-400 truncate">Like New • Science Quad Study Desk</p>
                       <div className="text-white font-black text-base pt-0.5">
-                        ₹2,490 <span className="text-xs font-normal text-sky-200/70 line-through">₹4,990</span>
+                        ₹2,490 <span className="text-xs font-normal text-slate-400 line-through">₹4,990</span>
                       </div>
                     </div>
                   </div>
-                  <div className="pt-2 border-t border-sky-400/30 flex items-center justify-between text-[11px] text-sky-100/80">
+                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
                     <span className="flex items-center gap-1 truncate max-w-[170px] sm:max-w-none">
-                      <MapPin className="w-3 h-3 text-amber-300 shrink-0" /> <span className="truncate">Central Library 2nd Fl</span>
+                      <MapPin className="w-3 h-3 text-blue-400 shrink-0" /> <span className="truncate">Central Library 2nd Fl</span>
                     </span>
                     <button
                       onClick={() => {
                         const airpods = products.find(h => h.id === 'cc-2') || products[0];
                         handleOpenProduct(airpods);
                       }}
-                      className="font-bold text-white underline hover:text-sky-200 cursor-pointer shrink-0"
+                      className="font-semibold text-blue-300 hover:text-white underline cursor-pointer shrink-0 transition-colors"
                     >
                       View Details
                     </button>
@@ -1893,8 +1893,8 @@ export default function App() {
                       aria-label="Filter by Category"
                       value={selectedCategory}
                       onChange={(e) => handleSelectCategory(e.target.value)}
-                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border focus:outline-none focus:border-[#0284c7] transition-colors ${
-                        selectedCategory !== 'All' ? 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7] font-bold hover:bg-[#bae6fd]' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border focus:outline-none focus:border-blue-600 transition-colors ${
+                        selectedCategory !== 'All' ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold hover:bg-blue-100' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                       }`}
                     >
                       <option value="All" className="bg-white text-slate-900 py-1">All Categories</option>
@@ -1906,7 +1906,7 @@ export default function App() {
                       <option value="Furniture" className="bg-white text-slate-900 py-1">Furniture</option>
                       <option value="Other Essentials" className="bg-white text-slate-900 py-1">Other Essentials</option>
                     </select>
-                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                   </div>
 
                   {/* Price Filter */}
@@ -1915,8 +1915,8 @@ export default function App() {
                       aria-label="Filter by Price"
                       value={filterPrice}
                       onChange={(e) => setFilterPrice(e.target.value)}
-                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border focus:outline-none focus:border-[#0284c7] transition-colors ${
-                        filterPrice !== 'All' ? 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7] font-bold hover:bg-[#bae6fd]' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border focus:outline-none focus:border-blue-600 transition-colors ${
+                        filterPrice !== 'All' ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold hover:bg-blue-100' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                       }`}
                     >
                       <option value="All" className="bg-white text-slate-900 py-1">Price Range</option>
@@ -1925,7 +1925,7 @@ export default function App() {
                       <option value="₹3,000 - ₹10,000" className="bg-white text-slate-900 py-1">₹3,000 - ₹10,000</option>
                       <option value="Over ₹10,000" className="bg-white text-slate-900 py-1">Over ₹10,000</option>
                     </select>
-                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                   </div>
 
                   {/* Condition Filter */}
@@ -1934,8 +1934,8 @@ export default function App() {
                       aria-label="Filter by Item Condition"
                       value={filterCondition}
                       onChange={(e) => setFilterCondition(e.target.value)}
-                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border focus:outline-none focus:border-[#0284c7] transition-colors ${
-                        filterCondition !== 'All' ? 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7] font-bold hover:bg-[#bae6fd]' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border focus:outline-none focus:border-blue-600 transition-colors ${
+                        filterCondition !== 'All' ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold hover:bg-blue-100' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                       }`}
                     >
                       <option value="All" className="bg-white text-slate-900 py-1">Item Condition</option>
@@ -1944,7 +1944,7 @@ export default function App() {
                       <option value="Good" className="bg-white text-slate-900 py-1">Good Condition</option>
                       <option value="Fair" className="bg-white text-slate-900 py-1">Fair / Usable</option>
                     </select>
-                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                   </div>
 
                   {/* Campus Location Filter */}
@@ -1953,8 +1953,8 @@ export default function App() {
                       aria-label="Filter by Campus Location"
                       value={filterCollege}
                       onChange={(e) => setFilterCollege(e.target.value)}
-                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border focus:outline-none focus:border-[#0284c7] transition-colors ${
-                        filterCollege !== 'All' ? 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7] font-bold hover:bg-[#bae6fd]' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border focus:outline-none focus:border-blue-600 transition-colors ${
+                        filterCollege !== 'All' ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold hover:bg-blue-100' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                       }`}
                     >
                       <option value="All" className="bg-white text-slate-900 py-1">Campus Hub</option>
@@ -1963,7 +1963,7 @@ export default function App() {
                       <option value="Business School" className="bg-white text-slate-900 py-1">Business School</option>
                       <option value="North Campus" className="bg-white text-slate-900 py-1">North Campus</option>
                     </select>
-                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                   </div>
 
                   {/* Status Filter */}
@@ -1972,8 +1972,8 @@ export default function App() {
                       aria-label="Filter by Listing Status"
                       value={filterStatus}
                       onChange={(e) => setFilterStatus(e.target.value)}
-                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border focus:outline-none focus:border-[#0284c7] transition-colors ${
-                        filterStatus !== 'All' ? 'bg-[#e0f2fe] text-[#0369a1] border-[#0284c7] font-bold hover:bg-[#bae6fd]' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                      className={`appearance-none font-medium px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border focus:outline-none focus:border-blue-600 transition-colors ${
+                        filterStatus !== 'All' ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold hover:bg-blue-100' : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                       }`}
                     >
                       <option value="All" className="bg-white text-slate-900 py-1">Listing Status</option>
@@ -1981,16 +1981,16 @@ export default function App() {
                       <option value="Reserved" className="bg-white text-slate-900 py-1">Reserved</option>
                       <option value="Sold" className="bg-white text-slate-900 py-1">Sold Out</option>
                     </select>
-                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                    <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                   </div>
 
                   {/* Reset Filters */}
                   <button
                     onClick={resetAllFilters}
-                    className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 font-medium px-3.5 py-1.5 rounded-md cursor-pointer border border-slate-300 transition-colors"
+                    className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 text-slate-700 font-medium px-3.5 py-1.5 rounded-lg cursor-pointer border border-slate-200 transition-colors shadow-2xs"
                   >
                     <span>Reset</span>
-                    <SlidersHorizontal className="w-3 h-3 text-slate-500" />
+                    <SlidersHorizontal className="w-3 h-3 text-slate-400" />
                   </button>
                 </div>
 
@@ -2000,7 +2000,7 @@ export default function App() {
                     aria-label="Sort products"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs px-3.5 py-1.5 pr-8 rounded-md cursor-pointer border border-slate-300 focus:outline-none focus:border-[#0284c7] transition-colors"
+                    className="appearance-none bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs px-3.5 py-1.5 pr-8 rounded-lg cursor-pointer border border-slate-200 focus:outline-none focus:border-blue-600 transition-colors shadow-2xs"
                   >
                     <option value="Featured">Sort: Featured</option>
                     <option value="Price: Low to High">Price: Low to High</option>
@@ -2008,7 +2008,7 @@ export default function App() {
                     <option value="Rating">Top Student Rating</option>
                     <option value="Newest">Recently Listed</option>
                   </select>
-                  <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60" />
+                  <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
                 </div>
               </div>
             </section>
@@ -2026,7 +2026,7 @@ export default function App() {
                     Verified student listings across campus dorms
                   </p>
                 </div>
-                <span className="text-xs text-slate-600 font-semibold bg-slate-200/70 px-2.5 py-1 rounded-md whitespace-nowrap">
+                <span className="text-xs text-slate-600 font-semibold bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md whitespace-nowrap">
                   {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'}
                 </span>
               </div>
@@ -2034,7 +2034,7 @@ export default function App() {
               {isCatalogLoading ? (
                 <CatalogGridSkeleton count={8} />
               ) : filteredProducts.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-lg border border-slate-200 p-8 space-y-3">
+                <div className="text-center py-16 bg-white rounded-xl border border-slate-200 p-8 space-y-3">
                   <Package className="w-10 h-10 text-slate-400 mx-auto" />
                   <h3 className="text-base font-bold text-slate-800">No campus items match your filters</h3>
                   <p className="text-xs text-slate-500 max-w-sm mx-auto">
@@ -2043,13 +2043,13 @@ export default function App() {
                   <div className="flex items-center justify-center gap-3 pt-2">
                     <button
                       onClick={resetAllFilters}
-                      className="btn-primary-blue px-4 py-2 rounded-md text-xs font-semibold cursor-pointer"
+                      className="bg-slate-900 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
                     >
                       Reset All Filters
                     </button>
                     <button
                       onClick={handleOpenSellModal}
-                      className="px-4 py-2 rounded-md text-xs font-semibold border border-[#0284c7] text-[#0284c7] hover:bg-sky-50 cursor-pointer"
+                      className="px-4 py-2 rounded-lg text-xs font-semibold border border-slate-300 text-slate-700 hover:border-slate-900 hover:bg-slate-50 cursor-pointer transition-colors"
                     >
                       Post a Listing
                     </button>
@@ -2063,17 +2063,17 @@ export default function App() {
                     return (
                       <div
                         key={product.id}
-                        className="product-card group bg-white rounded-lg border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-[#0284c7] transition-colors"
+                        className="product-card group bg-white rounded-xl border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-blue-400 hover:shadow-md transition-all duration-200"
                       >
                         {/* Image Container */}
-                        <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer">
+                        <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer bg-[#f8fafc]">
                           <button
                             aria-label={`Toggle wishlist for ${product.title}`}
                             onClick={(e) => {
                               e.stopPropagation();
                               toggleWishlist(product.id, product.title);
                             }}
-                            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-slate-50 transition-colors"
+                            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-xs border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-white transition-colors"
                           >
                             <Heart
                               className={`w-4 h-4 transition-colors ${
@@ -2084,12 +2084,12 @@ export default function App() {
 
                           <div className="absolute top-3 left-3 z-20 flex flex-col gap-1">
                             {product.offer && (
-                              <span className="bg-[#0284c7] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">
+                              <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-2xs">
                                 {product.offer}
                               </span>
                             )}
                             {product.condition && (
-                              <span className="bg-[#e0f2fe] text-[#0369a1] text-[10px] font-semibold px-2 py-0.5 rounded-sm">
+                              <span className="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-semibold px-2 py-0.5 rounded">
                                 {product.condition}
                               </span>
                             )}
@@ -2099,7 +2099,7 @@ export default function App() {
                             src={product.image}
                             alt={product.title}
                             onClick={() => handleOpenProduct(product)}
-                            className="w-full h-full object-contain select-none"
+                            className="w-full h-full object-contain select-none group-hover:scale-102 transition-transform duration-200"
                             loading="lazy"
                           />
                         </div>
@@ -2110,11 +2110,11 @@ export default function App() {
                             <div className="flex items-baseline justify-between gap-2">
                               <h3
                                 onClick={() => handleOpenProduct(product)}
-                                className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-[#0284c7] cursor-pointer transition-colors"
+                                className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
                               >
                                 {product.title}
                               </h3>
-                              <span className="font-extrabold text-[#0284c7] text-sm whitespace-nowrap">
+                              <span className="font-black text-slate-900 text-sm whitespace-nowrap">
                                 {formatINR(product.price)}
                               </span>
                             </div>
@@ -2122,7 +2122,7 @@ export default function App() {
                             {/* Admin Quick Price Adjuster Trigger */}
                             {currentUser?.role === 'admin' && (
                               <div className="flex items-center justify-between pt-1">
-                                <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
+                                <span className="text-[10px] font-bold text-blue-800 bg-blue-50 border border-blue-200 px-1.5 py-0.2 rounded">
                                   Admin
                                 </span>
                                 <button
@@ -2131,10 +2131,10 @@ export default function App() {
                                     e.stopPropagation();
                                     handleOpenPriceModal(product);
                                   }}
-                                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0284c7] hover:underline cursor-pointer"
+                                  className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline cursor-pointer"
                                   title="Adjust price directly in MongoDB"
                                 >
-                                  <Edit3 className="w-3 h-3 text-amber-600" />
+                                  <Edit3 className="w-3 h-3 text-blue-600" />
                                   <span>Adjust Price</span>
                                 </button>
                               </div>
@@ -2146,7 +2146,7 @@ export default function App() {
 
                             {/* Rating Stars */}
                             <div className="flex items-center gap-1.5 mt-2">
-                              <div className="flex items-center text-sky-500">
+                              <div className="flex items-center text-blue-500">
                                 {[...Array(5)].map((_, i) => (
                                   <Star key={i} className="w-3 h-3 fill-current" />
                                 ))}
@@ -2161,7 +2161,7 @@ export default function App() {
                           <div>
                             <button
                               onClick={() => addToCart(product, 1)}
-                              className="w-full py-2 rounded-md font-bold text-xs bg-[#0284c7] hover:bg-[#0369a1] text-white cursor-pointer transition-colors"
+                              className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white cursor-pointer transition-colors shadow-2xs"
                             >
                               Add to Cart
                             </button>
@@ -2192,21 +2192,21 @@ export default function App() {
                     <div
                       key={cat.name}
                       onClick={() => handleSelectCategory(cat.name)}
-                      className="group bg-white rounded-lg border border-slate-200 p-3.5 flex flex-col items-center text-center justify-between cursor-pointer hover:border-[#0284c7] transition-colors"
+                      className="group bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col items-center text-center justify-between cursor-pointer hover:border-blue-400 hover:shadow-xs transition-all"
                     >
-                      <div className="w-14 h-14 rounded-md overflow-hidden bg-slate-50 p-2 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-lg overflow-hidden bg-slate-50 p-2 flex items-center justify-center">
                         <img
                           src={cat.img}
                           alt={cat.name}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                           loading="lazy"
                         />
                       </div>
                       <div className="mt-2.5">
-                        <h4 className="font-bold text-slate-900 text-xs group-hover:text-[#0284c7] transition-colors line-clamp-1">
+                        <h4 className="font-bold text-slate-900 text-xs group-hover:text-blue-600 transition-colors line-clamp-1">
                           {cat.displayName || cat.name}
                         </h4>
-                        <p className="text-[10px] text-sky-600 font-semibold mt-0.5">
+                        <p className="text-[10px] text-blue-600 font-semibold mt-0.5">
                           {actualCount} {actualCount === 1 ? 'Item' : 'Items'}
                         </p>
                       </div>
@@ -2227,15 +2227,15 @@ export default function App() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
                 {SIMILAR_ITEMS.map((item) => (
-                  <div key={item.id} className="product-card group bg-white rounded-lg border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-[#0284c7] transition-colors">
-                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer">
+                  <div key={item.id} className="product-card group bg-white rounded-xl border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-blue-400 hover:shadow-md transition-all duration-200">
+                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer bg-[#f8fafc]">
                       <button
                         aria-label={`Toggle wishlist for ${item.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleWishlist(item.id, item.title);
                         }}
-                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-slate-50"
+                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-xs border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-white"
                       >
                         <Heart className={`w-4 h-4 ${wishlist.includes(item.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} />
                       </button>
@@ -2243,7 +2243,7 @@ export default function App() {
                         src={item.image}
                         alt={item.title}
                         onClick={() => handleOpenProduct(item)}
-                        className="w-full h-full object-contain select-none"
+                        className="w-full h-full object-contain select-none group-hover:scale-102 transition-transform duration-200"
                         loading="lazy"
                       />
                     </div>
@@ -2253,11 +2253,11 @@ export default function App() {
                         <div className="flex items-baseline justify-between gap-2">
                           <h3
                             onClick={() => handleOpenProduct(item)}
-                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-[#0284c7] cursor-pointer"
+                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
                           >
                             {item.title}
                           </h3>
-                          <span className="font-extrabold text-[#0284c7] text-sm whitespace-nowrap">
+                          <span className="font-black text-slate-900 text-sm whitespace-nowrap">
                             {formatINR(item.price)}
                           </span>
                         </div>
@@ -2265,7 +2265,7 @@ export default function App() {
                           {item.description}
                         </p>
                         <div className="flex items-center gap-1.5 mt-2">
-                          <div className="flex items-center text-sky-500">
+                          <div className="flex items-center text-blue-500">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} className="w-3 h-3 fill-current" />
                             ))}
@@ -2279,7 +2279,7 @@ export default function App() {
                       <div>
                         <button
                           onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 rounded-md font-bold text-xs border border-slate-300 hover:border-[#0284c7] hover:bg-[#0284c7] hover:text-white text-slate-800 transition-colors cursor-pointer"
+                          className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white transition-colors cursor-pointer shadow-2xs"
                         >
                           Add to Cart
                         </button>
@@ -2298,15 +2298,15 @@ export default function App() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
                 {RECENTLY_VIEWED.map((item) => (
-                  <div key={item.id} className="product-card group bg-white rounded-lg border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-[#0284c7] transition-colors">
-                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer">
+                  <div key={item.id} className="product-card group bg-white rounded-xl border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-blue-400 hover:shadow-md transition-all duration-200">
+                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer bg-[#f8fafc]">
                       <button
                         aria-label={`Toggle wishlist for ${item.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleWishlist(item.id, item.title);
                         }}
-                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-slate-50"
+                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-xs border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-white"
                       >
                         <Heart className={`w-4 h-4 ${wishlist.includes(item.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} />
                       </button>
@@ -2314,7 +2314,7 @@ export default function App() {
                         src={item.image}
                         alt={item.title}
                         onClick={() => handleOpenProduct(item)}
-                        className="w-full h-full object-contain select-none"
+                        className="w-full h-full object-contain select-none group-hover:scale-102 transition-transform duration-200"
                         loading="lazy"
                       />
                     </div>
@@ -2324,11 +2324,11 @@ export default function App() {
                         <div className="flex items-baseline justify-between gap-2">
                           <h3
                             onClick={() => handleOpenProduct(item)}
-                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-[#0284c7] cursor-pointer"
+                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
                           >
                             {item.title}
                           </h3>
-                          <span className="font-extrabold text-[#0284c7] text-sm whitespace-nowrap">
+                          <span className="font-black text-slate-900 text-sm whitespace-nowrap">
                             {formatINR(item.price)}
                           </span>
                         </div>
@@ -2336,7 +2336,7 @@ export default function App() {
                           {item.description}
                         </p>
                         <div className="flex items-center gap-1.5 mt-2">
-                          <div className="flex items-center text-sky-500">
+                          <div className="flex items-center text-blue-500">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} className="w-3 h-3 fill-current" />
                             ))}
@@ -2350,7 +2350,7 @@ export default function App() {
                       <div>
                         <button
                           onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 rounded-md font-bold text-xs border border-slate-300 hover:border-[#0284c7] hover:bg-[#0284c7] hover:text-white text-slate-800 transition-colors cursor-pointer"
+                          className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white transition-colors cursor-pointer shadow-2xs"
                         >
                           Add to Cart
                         </button>
@@ -2369,7 +2369,7 @@ export default function App() {
             <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium flex-wrap">
               <button
                 onClick={() => setCurrentView('home')}
-                className="hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="hover:text-blue-600 transition-colors cursor-pointer"
               >
                 Campus Marketplace
               </button>
@@ -2379,7 +2379,7 @@ export default function App() {
                   setSelectedCategory(selectedProduct.category);
                   setCurrentView('home');
                 }}
-                className="hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="hover:text-blue-600 transition-colors cursor-pointer"
               >
                 {selectedProduct.category}
               </button>
@@ -2392,7 +2392,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setCurrentView('home')}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Marketplace</span>
@@ -2433,7 +2433,7 @@ export default function App() {
                       key={idx}
                       onClick={() => setSelectedColorIndex(idx)}
                       className={`bg-white rounded-lg p-2 aspect-square flex items-center justify-center cursor-pointer border transition-all ${
-                        selectedColorIndex === idx ? 'border-[#0284c7] ring-1 ring-[#0284c7]' : 'border-slate-200 hover:border-slate-400'
+                        selectedColorIndex === idx ? 'border-blue-600 ring-1 ring-blue-600' : 'border-slate-200 hover:border-slate-400'
                       }`}
                     >
                       <img src={variant.img} alt={variant.name} className="w-full h-full object-contain" />
@@ -2446,7 +2446,7 @@ export default function App() {
               <div className="lg:col-span-6 space-y-5 bg-white rounded-xl border border-slate-200 p-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="bg-[#e0f2fe] text-[#0369a1] text-xs font-bold px-2 py-0.5 rounded-sm">
+                    <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-sm border border-blue-200">
                       {selectedProduct.condition || 'Like New'} Condition
                     </span>
                     <span className="bg-slate-100 text-slate-700 text-xs font-medium px-2 py-0.5 rounded-sm">
@@ -2454,7 +2454,7 @@ export default function App() {
                     </span>
                     {selectedProduct.coordinates && (
                       <span className="coordinate-badge text-[11px] px-2 py-0.5 rounded-sm font-mono flex items-center gap-1">
-                        <Crosshair className="w-3 h-3 text-[#0284c7]" />
+                        <Crosshair className="w-3 h-3 text-blue-600" />
                         <span>Lat {selectedProduct.coordinates.lat.toFixed(4)}°, Lng {selectedProduct.coordinates.lng.toFixed(4)}°</span>
                       </span>
                     )}
@@ -2468,7 +2468,7 @@ export default function App() {
                   </p>
 
                   <div className="flex items-center gap-2 mt-3">
-                    <div className="flex items-center text-sky-500">
+                    <div className="flex items-center text-blue-600">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3.5 h-3.5 fill-current" />
                       ))}
@@ -2483,13 +2483,13 @@ export default function App() {
                 {selectedProduct.seller && (
                   <div className="bg-[#f8f9fa] border border-slate-200 rounded-lg p-3.5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-md bg-[#0284c7] text-white flex items-center justify-center font-bold text-xs">
+                      <div className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
                         {selectedProduct.seller.name[0]}
                       </div>
                       <div>
                         <div className="flex items-center gap-1.5">
                           <h4 className="font-bold text-xs text-slate-900">{selectedProduct.seller.name}</h4>
-                          <span className="text-[10px] bg-[#e0f2fe] text-[#0369a1] font-bold px-1.5 py-0.2 rounded-sm">
+                          <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.2 rounded-sm">
                             Verified Student
                           </span>
                         </div>
@@ -2503,7 +2503,7 @@ export default function App() {
                       onClick={() => setIsContactModalOpen(true)}
                       className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-colors"
                     >
-                      <MessageSquare className="w-3.5 h-3.5 text-[#0284c7]" />
+                      <MessageSquare className="w-3.5 h-3.5 text-blue-600" />
                       <span>Contact Seller</span>
                     </button>
                   </div>
@@ -2514,7 +2514,7 @@ export default function App() {
                 {/* Pricing Display */}
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-[#0284c7]">
+                    <span className="text-3xl font-black text-slate-900">
                       {formatINR(selectedProduct.price)}
                     </span>
                     <span className="text-slate-600 text-sm font-medium">
@@ -2531,9 +2531,9 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => handleOpenPriceModal(selectedProduct)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 transition-colors cursor-pointer"
                       >
-                        <Edit3 className="w-3.5 h-3.5 text-amber-700" />
+                        <Edit3 className="w-3.5 h-3.5 text-blue-700" />
                         <span>Admin: Adjust Price in Database</span>
                       </button>
                     </div>
@@ -2564,7 +2564,7 @@ export default function App() {
                         aria-label={`Select color ${c.name}`}
                         onClick={() => setSelectedColorIndex(i)}
                         className={`w-7 h-7 rounded-md border transition-all p-0.5 relative flex items-center justify-center cursor-pointer ${
-                          selectedColorIndex === i ? 'ring-2 ring-[#0284c7] border-white' : 'border-slate-300'
+                          selectedColorIndex === i ? 'ring-2 ring-blue-600 border-white' : 'border-slate-300'
                         }`}
                         style={{ backgroundColor: c.hex }}
                       >
@@ -2599,7 +2599,7 @@ export default function App() {
                   </div>
 
                   <div className="text-[11px]">
-                    <p className="font-bold text-amber-700">
+                    <p className="font-semibold text-slate-700">
                       Only {selectedProduct.stock || 1} available
                     </p>
                     <p className="text-slate-400">Available for direct campus pickup</p>
@@ -2624,7 +2624,7 @@ export default function App() {
                       const chosenColor = selectedProduct.colorVariants?.[selectedColorIndex]?.name || selectedProduct.color;
                       addToCart(selectedProduct, detailQuantity, chosenColor);
                     }}
-                    className="w-full sm:flex-1 py-2.5 rounded-md font-bold text-xs text-center border border-[#0284c7] text-[#0284c7] hover:bg-sky-50 transition-colors cursor-pointer"
+                    className="w-full sm:flex-1 py-2.5 rounded-md font-bold text-xs text-center border border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                   >
                     Add to Cart
                   </button>
@@ -2633,7 +2633,7 @@ export default function App() {
                 {/* Free Delivery & Exact Geocoded Hand-Off Card */}
                 <div className="space-y-2.5 pt-3 border-t border-slate-100">
                   <div className="p-3.5 rounded-lg border border-slate-200 bg-[#f8f9fa] flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
                       <Truck className="w-4 h-4" />
                     </div>
                     <div className="space-y-0.5 flex-1">
@@ -2644,7 +2644,7 @@ export default function App() {
                             href={`https://www.openstreetmap.org/?mlat=${selectedProduct.coordinates.lat}&mlon=${selectedProduct.coordinates.lng}#map=17/${selectedProduct.coordinates.lat}/${selectedProduct.coordinates.lng}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0284c7] hover:underline"
+                            className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline"
                           >
                             <span>Open Map</span>
                             <ExternalLink className="w-3 h-3" />
@@ -2658,7 +2658,7 @@ export default function App() {
                         </span>
                       </p>
                       {selectedProduct.coordinates && (
-                        <p className="text-[10px] font-mono text-sky-800">
+                        <p className="text-[10px] font-mono text-slate-600">
                           Coordinates: {selectedProduct.coordinates.lat.toFixed(4)}° N, {selectedProduct.coordinates.lng.toFixed(4)}° W
                         </p>
                       )}
@@ -2666,7 +2666,7 @@ export default function App() {
                   </div>
 
                   <div className="p-3.5 rounded-lg border border-slate-200 bg-[#f8f9fa] flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-md bg-sky-100 text-sky-800 flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
                       <RotateCcw className="w-4 h-4" />
                     </div>
                     <div className="space-y-0.5">
@@ -2675,7 +2675,7 @@ export default function App() {
                         Inspect during meetup! Honor code protection on all campus trades.{' '}
                         <button
                           onClick={() => setIsTermsModalOpen(true)}
-                          className="font-bold text-slate-800 underline hover:text-[#0284c7] cursor-pointer"
+                          className="font-bold text-slate-800 underline hover:text-blue-600 cursor-pointer"
                         >
                           View Policy
                         </button>
@@ -2694,7 +2694,7 @@ export default function App() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <button
                 onClick={() => setCurrentView('home')}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Return to Shopping</span>
@@ -2705,32 +2705,32 @@ export default function App() {
             </div>
 
             {orderPlaced ? (
-              <div className="text-center py-16 bg-[#e0f2fe] rounded-xl p-8 space-y-4 max-w-lg mx-auto border border-sky-200 animate-scale-up">
-                <div className="w-16 h-16 bg-[#0284c7] text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
+              <div className="text-center py-16 bg-blue-50/70 rounded-xl p-8 space-y-4 max-w-lg mx-auto border border-blue-200 animate-scale-up">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <Check className="w-8 h-8" />
                 </div>
-                <h2 className="text-2xl font-black text-[#0369a1]">Campus Order Confirmed!</h2>
+                <h2 className="text-2xl font-black text-slate-900">Campus Order Confirmed!</h2>
                 <p className="text-sm text-slate-600">
                   Thank you, <span className="font-bold">{checkoutData.name}</span>! Your exchange request has been dispatched to the student seller.
                 </p>
-                <div className="bg-white rounded-2xl p-4 text-xs text-left space-y-2 border border-sky-100 shadow-xs">
+                <div className="bg-white rounded-2xl p-4 text-xs text-left space-y-2 border border-blue-100 shadow-xs">
                   <div className="flex justify-between text-slate-500">
                     <span>Campus Hand-Off Point:</span>
                     <span className="font-bold text-slate-800">{checkoutData.pickupLocation}</span>
                   </div>
                   <div className="flex justify-between text-slate-500">
                     <span>Geocoded GPS Fix:</span>
-                    <span className="font-mono text-sky-800">
+                    <span className="font-mono text-slate-700">
                       {checkoutData.lat?.toFixed(4)}° N, {checkoutData.lng?.toFixed(4)}° W
                     </span>
                   </div>
                   <div className="flex justify-between text-slate-500">
                     <span>Student ID:</span>
-                    <span className="font-mono font-bold text-[#0284c7]">{checkoutData.studentId}</span>
+                    <span className="font-mono font-bold text-blue-600">{checkoutData.studentId}</span>
                   </div>
                   <div className="flex justify-between text-slate-500">
                     <span>Total Amount:</span>
-                    <span className="font-extrabold text-[#0284c7] text-sm">{formatINR(finalTotal)}</span>
+                    <span className="font-extrabold text-slate-900 text-sm">{formatINR(finalTotal)}</span>
                   </div>
                 </div>
                 <button
@@ -2778,7 +2778,7 @@ export default function App() {
                         {isDetectingLocation ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         ) : (
-                          <Crosshair className="w-3.5 h-3.5 text-amber-300" />
+                          <Crosshair className="w-3.5 h-3.5 text-blue-400" />
                         )}
                         <span>Use Exact GPS Location</span>
                       </button>
@@ -2791,7 +2791,7 @@ export default function App() {
                           type="text"
                           value={checkoutData.name}
                           onChange={(e) => setCheckoutData({ ...checkoutData, name: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                       </div>
 
@@ -2801,7 +2801,7 @@ export default function App() {
                           type="text"
                           value={checkoutData.studentId}
                           onChange={(e) => setCheckoutData({ ...checkoutData, studentId: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                       </div>
 
@@ -2813,18 +2813,18 @@ export default function App() {
                           type="text"
                           value={checkoutData.pickupLocation}
                           onChange={(e) => setCheckoutData({ ...checkoutData, pickupLocation: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                         <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
                           <span>
                             Coordinates:{' '}
-                            <strong className="text-sky-800 font-mono">
+                            <strong className="text-slate-700 font-mono">
                               {checkoutData.lat?.toFixed(4)}° N, {checkoutData.lng?.toFixed(4)}° W
                             </strong>
                           </span>
                           <button
                             onClick={() => setIsDeliveryModalOpen(true)}
-                            className="text-[#0284c7] font-bold underline cursor-pointer"
+                            className="text-blue-600 font-bold underline cursor-pointer"
                           >
                             Browse Geocoded Hubs
                           </button>
@@ -2837,7 +2837,7 @@ export default function App() {
                           type="text"
                           value={checkoutData.college}
                           onChange={(e) => setCheckoutData({ ...checkoutData, college: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                       </div>
 
@@ -2847,7 +2847,7 @@ export default function App() {
                           type="text"
                           value={checkoutData.mobile}
                           onChange={(e) => setCheckoutData({ ...checkoutData, mobile: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                       </div>
 
@@ -2857,7 +2857,7 @@ export default function App() {
                           type="email"
                           value={checkoutData.email}
                           onChange={(e) => setCheckoutData({ ...checkoutData, email: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
                         />
                       </div>
                     </div>
@@ -2880,7 +2880,7 @@ export default function App() {
                           key={option.id}
                           className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                             checkoutData.paymentMethod === option.id
-                              ? 'border-[#0284c7] bg-[#e0f2fe]/40'
+                              ? 'border-blue-600 bg-blue-50/50'
                               : 'border-slate-200 hover:border-slate-300'
                           }`}
                         >
@@ -2891,14 +2891,14 @@ export default function App() {
                               value={option.id}
                               checked={checkoutData.paymentMethod === option.id}
                               onChange={(e) => setCheckoutData({ ...checkoutData, paymentMethod: e.target.value })}
-                              className="accent-[#0284c7] w-4 h-4 cursor-pointer"
+                              className="accent-blue-600 w-4 h-4 cursor-pointer"
                             />
                             <span className="text-xs font-semibold text-slate-800">{option.label}</span>
                           </div>
                           {option.icons && (
                             <div className="flex items-center gap-1.5">
                               <span className="text-[10px] font-black bg-slate-700 text-white px-1.5 py-0.5 rounded">CARD</span>
-                              <span className="text-[10px] font-black bg-rose-600 text-white px-1.5 py-0.5 rounded">MC</span>
+                              <span className="text-[10px] font-black bg-slate-800 text-white px-1.5 py-0.5 rounded">MC</span>
                               <span className="text-[10px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded">VISA</span>
                             </div>
                           )}
@@ -2923,7 +2923,7 @@ export default function App() {
                           <p className="text-slate-500">Condition: {item.condition || 'Good'}</p>
                           <p className="text-slate-600 font-semibold mt-0.5">Qty: {item.quantity}</p>
                         </div>
-                        <span className="font-extrabold text-[#0284c7] text-xs sm:text-sm">
+                        <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
                           {formatINR(item.price * item.quantity)}
                         </span>
                       </div>
@@ -2937,9 +2937,9 @@ export default function App() {
                     </div>
                     <div className="flex justify-between">
                       <span>Campus Delivery</span>
-                      <span className="font-bold text-sky-700">FREE HAND-OFF</span>
+                      <span className="font-bold text-blue-700">FREE HAND-OFF</span>
                     </div>
-                    <div className="flex justify-between text-sm sm:text-base font-extrabold text-[#0284c7] pt-2 border-t border-slate-200">
+                    <div className="flex justify-between text-sm sm:text-base font-extrabold text-slate-900 pt-2 border-t border-slate-200">
                       <span>Total Amount</span>
                       <span>{formatINR(finalTotal)}</span>
                     </div>
@@ -2961,9 +2961,9 @@ export default function App() {
 
                   <p className="text-[11px] text-slate-500 text-center leading-relaxed">
                     By placing this order, you agree to the{' '}
-                    <button type="button" onClick={() => setIsTermsModalOpen(true)} className="underline text-[#0284c7] font-medium cursor-pointer">Terms of Service</button>
+                    <button type="button" onClick={() => setIsTermsModalOpen(true)} className="underline text-blue-600 font-medium cursor-pointer">Terms of Service</button>
                     {' '}and{' '}
-                    <button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="underline text-[#0284c7] font-medium cursor-pointer">Privacy Policy</button>.
+                    <button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="underline text-blue-600 font-medium cursor-pointer">Privacy Policy</button>.
                   </p>
                 </div>
               </div>
@@ -2994,13 +2994,13 @@ export default function App() {
                     onClick={() => setAccountTab('listings')}
                     className={`px-4 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
                       accountTab === 'listings'
-                        ? 'bg-[#0284c7] text-white shadow-xs'
+                        ? 'bg-slate-900 text-white shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     <Tag className="w-3.5 h-3.5" />
                     <span>My Listings</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${accountTab === 'listings' ? 'bg-sky-800 text-sky-100' : 'bg-slate-200 text-slate-700'}`}>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${accountTab === 'listings' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                       {currentUser ? products.filter(p => p.seller?.email && p.seller.email.toLowerCase() === currentUser.email.toLowerCase()).length : 0}
                     </span>
                   </button>
@@ -3009,13 +3009,13 @@ export default function App() {
                     onClick={() => setAccountTab('transactions')}
                     className={`px-4 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
                       accountTab === 'transactions'
-                        ? 'bg-[#0284c7] text-white shadow-xs'
+                        ? 'bg-slate-900 text-white shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     <Receipt className="w-3.5 h-3.5" />
                     <span>Track Orders</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${accountTab === 'transactions' ? 'bg-sky-800 text-sky-100' : 'bg-slate-200 text-slate-700'}`}>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${accountTab === 'transactions' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
                       {transactions.filter(t => !t.buyerEmail || (currentUser && t.buyerEmail.toLowerCase() === currentUser.email.toLowerCase())).length}
                     </span>
                   </button>
@@ -3038,7 +3038,7 @@ export default function App() {
               <div className="space-y-4">
                 {!currentUser ? (
                   <div className="bg-white border border-slate-200 rounded-xl p-10 text-center space-y-4 max-w-lg mx-auto shadow-xs">
-                    <div className="w-14 h-14 mx-auto rounded-full bg-[#e0f2fe] text-[#0284c7] flex items-center justify-center">
+                    <div className="w-14 h-14 mx-auto rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center">
                       <Lock className="w-6 h-6" />
                     </div>
                     <h3 className="text-lg font-bold text-slate-800">Student Sign In Required</h3>
@@ -3081,7 +3081,7 @@ export default function App() {
                             <img src={product.image} alt={product.title} className="w-16 h-16 rounded-2xl object-contain bg-[#f5f6f8] p-2" />
                             <div className="flex-1 min-w-0">
                               <h4 className="font-bold text-slate-900 truncate text-sm">{product.title}</h4>
-                              <p className="text-xs text-[#0284c7] font-extrabold mt-0.5">{formatINR(product.price)}</p>
+                              <p className="text-xs text-slate-900 font-extrabold mt-0.5">{formatINR(product.price)}</p>
                               <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
                                 {product.category}
                               </span>
@@ -3134,13 +3134,13 @@ export default function App() {
                   </div>
                   <div className="bg-[#f8f9fa] border border-slate-200 rounded-xl p-5">
                     <span className="text-xs text-slate-500 font-medium">Total Value</span>
-                    <p className="text-2xl font-black text-[#0284c7] mt-1">
+                    <p className="text-2xl font-black text-slate-900 mt-1">
                       {formatPrice(transactions.reduce((sum, t) => sum + (Number(t.price) || 0), 0))}
                     </p>
                   </div>
                   <div className="bg-[#f8f9fa] border border-slate-200 rounded-xl p-5">
                     <span className="text-xs text-slate-500 font-medium">Confirmed Campus Hand-Offs</span>
-                    <p className="text-2xl font-black text-sky-700 mt-1">
+                    <p className="text-2xl font-black text-blue-700 mt-1">
                       {transactions.filter(t => t.status === 'Accepted' || t.status === 'Completed').length} Orders
                     </p>
                   </div>
@@ -3186,11 +3186,11 @@ export default function App() {
                               <span
                                 className={`text-xs font-extrabold px-3 py-1 rounded-full border ${
                                   isAccepted
-                                    ? 'bg-sky-50 text-sky-700 border-sky-200'
+                                    ? 'bg-blue-50 text-blue-700 border-blue-200'
                                     : isCompleted
                                     ? 'bg-blue-50 text-blue-700 border-blue-200'
                                     : isPending
-                                    ? 'bg-amber-50 text-amber-700 border-amber-200'
+                                    ? 'bg-slate-100 text-slate-700 border-slate-200'
                                     : 'bg-slate-100 text-slate-700 border-slate-200'
                                 }`}
                               >
@@ -3222,8 +3222,8 @@ export default function App() {
                                   <span>{txn.pickupSpot || 'Campus Library / Student Center'}</span>
                                 </span>
                                 {txn.coordinates && (
-                                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-sky-800 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
-                                    <Crosshair className="w-3 h-3 text-sky-600" />
+                                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                                    <Crosshair className="w-3 h-3 text-blue-600" />
                                     <span>
                                       {txn.coordinates.lat?.toFixed(4)}° N, {txn.coordinates.lng?.toFixed(4)}° W
                                     </span>
@@ -3234,7 +3234,7 @@ export default function App() {
 
                             <div className="text-left md:text-right shrink-0">
                               <span className="text-[11px] text-slate-400 block font-medium">Exchange Amount</span>
-                              <span className="text-2xl font-black text-[#0284c7]">
+                              <span className="text-2xl font-black text-slate-900">
                                 {formatPrice(txn.price)}
                               </span>
                             </div>
@@ -3247,7 +3247,7 @@ export default function App() {
                                   href={`https://www.openstreetmap.org/?mlat=${txn.coordinates.lat}&mlon=${txn.coordinates.lng}#map=17/${txn.coordinates.lat}/${txn.coordinates.lng}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-[#0284c7] bg-sky-50 hover:bg-sky-100 transition-colors"
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
                                 >
                                   <ExternalLink className="w-3.5 h-3.5" />
                                   <span>View Meetup Pin on Map</span>
@@ -3301,7 +3301,7 @@ export default function App() {
         {currentView === 'admin' && (
           currentUser?.role !== 'admin' ? (
             <div className="max-w-xl mx-auto my-16 p-8 bg-white rounded-3xl border border-slate-200 shadow-sm text-center space-y-4 animate-fade-in">
-              <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto text-amber-600">
+              <div className="w-14 h-14 bg-blue-50 text-blue-700 border border-blue-200 rounded-2xl flex items-center justify-center mx-auto">
                 <ShieldAlert className="w-8 h-8" />
               </div>
               <h2 className="text-xl font-bold text-slate-900">Administrator Access Required</h2>
@@ -3311,7 +3311,7 @@ export default function App() {
               <div className="pt-2 flex justify-center gap-3">
                 <button
                   onClick={() => setCurrentView('home')}
-                  className="px-5 py-2.5 rounded-full bg-[#0284c7] text-white font-bold text-xs hover:bg-[#0369a1] transition-colors cursor-pointer"
+                  className="btn-primary-blue px-5 py-2.5 rounded-full text-xs font-bold cursor-pointer"
                 >
                   Return to Marketplace
                 </button>
@@ -3330,7 +3330,7 @@ export default function App() {
             <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-8 animate-fade-in">
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div>
-                  <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Campus Moderator</span>
+                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Campus Moderator</span>
                   <h1 className="text-2xl font-black text-slate-900">Administrator Dashboard</h1>
                 </div>
                 <button
@@ -3349,15 +3349,15 @@ export default function App() {
                 </div>
                 <div className="bg-[#f8f9fa] p-5 rounded-xl border border-slate-200">
                   <span className="text-xs text-slate-500 font-medium">Active Listings</span>
-                  <p className="text-2xl font-black text-[#0284c7] mt-1">{products.length} Items</p>
+                  <p className="text-2xl font-black text-slate-900 mt-1">{products.length} Items</p>
                 </div>
                 <div className="bg-[#f8f9fa] p-5 rounded-xl border border-slate-200">
                   <span className="text-xs text-slate-500 font-medium">Exchanges</span>
-                  <p className="text-2xl font-black text-sky-700 mt-1">218 Orders</p>
+                  <p className="text-2xl font-black text-blue-700 mt-1">218 Orders</p>
                 </div>
                 <div className="bg-[#f8f9fa] p-5 rounded-xl border border-slate-200">
                   <span className="text-xs text-slate-500 font-medium">Trade Volume</span>
-                  <p className="text-2xl font-black text-[#0284c7] mt-1">
+                  <p className="text-2xl font-black text-slate-900 mt-1">
                     {formatINR(transactions.reduce((acc, t) => acc + (Number(t.price) || 0), 0) + 18450)}
                   </p>
                 </div>
@@ -3413,7 +3413,7 @@ export default function App() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-lg font-bold text-slate-900">Direct Product Price Adjustment (MongoDB)</h3>
-                      <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-sky-100 text-[#0369a1]">
+                      <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                         Admin Live DB Write
                       </span>
                     </div>
@@ -3477,7 +3477,7 @@ export default function App() {
                                     const val = e.target.value;
                                     setAdminPriceDrafts(prev => ({ ...prev, [prod.id]: val }));
                                   }}
-                                  className="w-24 bg-[#f8f9fa] border border-slate-300 focus:border-[#0284c7] rounded-xl px-2.5 py-1.5 font-bold text-slate-800 focus:outline-none"
+                                  className="w-24 bg-[#f8f9fa] border border-slate-300 focus:border-blue-600 rounded-xl px-2.5 py-1.5 font-bold text-slate-800 focus:outline-none"
                                 />
                               </div>
                             </td>
@@ -3487,8 +3487,8 @@ export default function App() {
                                 disabled={isSaving}
                                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                   hasChanged
-                                    ? 'bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs'
-                                    : 'bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200'
+                                    ? 'bg-slate-900 hover:bg-blue-600 text-white shadow-xs'
+                                    : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200'
                                 }`}
                               >
                                 {isSaving ? (
@@ -3519,7 +3519,7 @@ export default function App() {
                     <h3 className="text-lg font-bold text-slate-900">Campus Transaction Ledger</h3>
                     <p className="text-xs text-slate-500">Live record of student exchanges, hand-off coordinates, and amounts transacted</p>
                   </div>
-                  <span className="text-xs font-extrabold px-3 py-1 bg-sky-50 text-sky-800 rounded-full border border-sky-200 self-start">
+                  <span className="text-xs font-extrabold px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200 self-start">
                     Active Campus Ledger
                   </span>
                 </div>
@@ -3539,25 +3539,25 @@ export default function App() {
                     <tbody className="divide-y divide-slate-100">
                       {transactions.map(txn => (
                         <tr key={txn.id} className="hover:bg-slate-50/60 transition-colors">
-                          <td className="py-3.5 px-4 font-mono font-bold text-[#0284c7]">#{txn.id}</td>
+                          <td className="py-3.5 px-4 font-mono font-bold text-blue-600">#{txn.id}</td>
                           <td className="py-3.5 px-4">
                             <p className="font-bold text-slate-900">{txn.itemTitle}</p>
                             <p className="text-[11px] text-slate-400">Seller: {txn.sellerName}</p>
                           </td>
-                          <td className="py-3.5 px-4 font-extrabold text-[#0284c7] text-sm">
+                          <td className="py-3.5 px-4 font-extrabold text-slate-900 text-sm">
                             {formatINR(txn.price)}
                           </td>
                           <td className="py-3.5 px-4 text-slate-600 font-medium">
                             {txn.pickupSpot || 'Central Library Quad'}
                           </td>
-                          <td className="py-3.5 px-4 font-mono text-[11px] text-sky-700">
+                          <td className="py-3.5 px-4 font-mono text-[11px] text-slate-600">
                             {txn.coordinates ? `${txn.coordinates.lat?.toFixed(4)}° N, ${txn.coordinates.lng?.toFixed(4)}° W` : 'Default Quad'}
                           </td>
                           <td className="py-3.5 px-4">
                             <span className={`inline-block font-extrabold px-2.5 py-0.5 rounded-full text-[10px] ${
-                              txn.status === 'Completed' ? 'bg-blue-50 text-blue-700' :
-                              txn.status === 'Accepted' ? 'bg-sky-50 text-sky-700' :
-                              'bg-amber-50 text-amber-700'
+                              txn.status === 'Completed' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                              txn.status === 'Accepted' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                              'bg-slate-100 text-slate-700 border border-slate-200'
                             }`}>
                               ● {txn.status || 'Pending'}
                             </span>
@@ -3585,9 +3585,9 @@ export default function App() {
             <div className="w-full max-w-md bg-white shadow-lg border border-slate-200 flex flex-col justify-between animate-slide-in-right">
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="w-5 h-5 text-[#0284c7]" />
+                  <ShoppingCart className="w-5 h-5 text-blue-600" />
                   <h3 className="font-extrabold text-lg text-slate-900">Your Cart</h3>
-                  <span className="bg-[#e0f2fe] text-[#0369a1] text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold px-2 py-0.5 rounded-full">
                     {cartTotalItems} items
                   </span>
                 </div>
@@ -3630,7 +3630,7 @@ export default function App() {
                       <div className="flex-1 min-w-0 text-xs">
                         <h4 className="font-bold text-slate-900 truncate text-sm">{item.title}</h4>
                         <p className="text-slate-400 text-xs">Option: {item.selectedColor}</p>
-                        <p className="font-extrabold text-[#0284c7] mt-1 text-sm">
+                        <p className="font-extrabold text-slate-900 mt-1 text-sm">
                           {formatINR(item.price * item.quantity)}
                         </p>
 
@@ -3676,9 +3676,9 @@ export default function App() {
                     </div>
                     <div className="flex justify-between text-slate-500">
                       <span>Campus Delivery</span>
-                      <span className="font-bold text-sky-700">FREE</span>
+                      <span className="font-bold text-blue-700">FREE</span>
                     </div>
-                    <div className="flex justify-between text-base font-extrabold text-[#0284c7] pt-2 border-t border-slate-100">
+                    <div className="flex justify-between text-base font-extrabold text-slate-900 pt-2 border-t border-slate-100">
                       <span>Total Amount</span>
                       <span>{formatINR(finalTotal)}</span>
                     </div>
@@ -3720,7 +3720,7 @@ export default function App() {
 
             {!currentUser ? (
               <div className="text-center py-6 space-y-4">
-                <div className="w-14 h-14 mx-auto rounded-full bg-amber-50 text-amber-600 flex items-center justify-center">
+                <div className="w-14 h-14 mx-auto rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center">
                   <Lock className="w-7 h-7" />
                 </div>
                 <h4 className="text-base font-bold text-slate-800">Student Sign In Required</h4>
@@ -3751,7 +3751,7 @@ export default function App() {
                     placeholder="e.g. Sony WH-1000XM4 or Data Structures Notes"
                     value={newListing.title}
                     onChange={(e) => setNewListing({ ...newListing, title: e.target.value })}
-                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600"
                   />
                 </div>
 
@@ -3782,7 +3782,7 @@ export default function App() {
                       placeholder="e.g. 499"
                       value={newListing.price}
                       onChange={(e) => setNewListing({ ...newListing, price: e.target.value })}
-                      className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                      className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600"
                     />
                   </div>
                 </div>
@@ -3832,9 +3832,9 @@ export default function App() {
                           lng: currentLocation.lng
                         }));
                       }}
-                      className="text-[11px] font-bold text-[#0284c7] hover:underline flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
                     >
-                      <Crosshair className="w-3 h-3 text-sky-700" />
+                      <Crosshair className="w-3 h-3 text-blue-600" />
                       <span>Pin Exact GPS Coordinates</span>
                     </button>
                   </div>
@@ -3843,7 +3843,7 @@ export default function App() {
                     placeholder="e.g. Central Library 1st Floor Lobby"
                     value={newListing.pickupLocation}
                     onChange={(e) => setNewListing({ ...newListing, pickupLocation: e.target.value })}
-                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600"
                   />
                   <span className="text-[11px] text-slate-400 font-mono mt-1 block">
                     Fixed Coordinates: {newListing.lat.toFixed(4)}° N, {newListing.lng.toFixed(4)}° W
@@ -3857,7 +3857,7 @@ export default function App() {
                     placeholder="https://images.unsplash.com/..."
                     value={newListing.image}
                     onChange={(e) => setNewListing({ ...newListing, image: e.target.value })}
-                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600"
                   />
                 </div>
 
@@ -3868,7 +3868,7 @@ export default function App() {
                     placeholder="Mention why you are selling, any highlights or inclusions..."
                     value={newListing.description}
                     onChange={(e) => setNewListing({ ...newListing, description: e.target.value })}
-                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                   />
                 </div>
 
@@ -3890,7 +3890,7 @@ export default function App() {
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-[#0284c7]" />
+                <MessageSquare className="w-5 h-5 text-blue-600" />
                 <h3 className="font-extrabold text-base text-slate-900">
                   Message Seller: {selectedProduct.seller?.name}
                 </h3>
@@ -3908,9 +3908,9 @@ export default function App() {
             </div>
 
             {chatSent ? (
-              <div className="text-center py-8 space-y-3 bg-[#e0f2fe] rounded-2xl p-4 border border-sky-200">
-                <CheckCircle2 className="w-10 h-10 text-sky-600 mx-auto" />
-                <h4 className="font-bold text-sm text-[#0369a1]">Message Sent to Student!</h4>
+              <div className="text-center py-8 space-y-3 bg-blue-50/70 rounded-2xl p-4 border border-blue-200">
+                <CheckCircle2 className="w-10 h-10 text-blue-600 mx-auto" />
+                <h4 className="font-bold text-sm text-slate-900">Message Sent to Student!</h4>
                 <p className="text-xs text-slate-600">
                   {selectedProduct.seller?.name} has received your inquiry. They will reply to <span className="font-bold">{currentUser?.email || 'your registered email'}</span> shortly.
                 </p>
@@ -3935,7 +3935,7 @@ export default function App() {
                     placeholder={`Hi ${selectedProduct.seller?.name}, is this still available? Can we meet at ${selectedProduct.pickupLocation || 'the campus library'} tomorrow?`}
                     value={chatMessage}
                     onChange={(e) => setChatMessage(e.target.value)}
-                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-blue-600"
                   />
                 </div>
 
@@ -3961,7 +3961,7 @@ export default function App() {
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-xl bg-[#0284c7] text-white flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
                   <Crosshair className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -3981,13 +3981,13 @@ export default function App() {
             </div>
 
             {/* GPS Detection Action Card */}
-            <div className="bg-[#e0f2fe] border border-sky-300/80 rounded-2xl p-4 space-y-3">
+            <div className="bg-blue-50/70 border border-blue-200 rounded-2xl p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-xs text-[#0369a1] flex items-center gap-1.5">
-                  <Navigation className="w-4 h-4 text-sky-700" />
+                <span className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                  <Navigation className="w-4 h-4 text-blue-600" />
                   <span>Real-Time Browser GPS Geocoding</span>
                 </span>
-                <span className="text-[10px] bg-sky-200 text-[#0369a1] font-bold px-2 py-0.5 rounded-full">
+                <span className="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-200">
                   High Accuracy
                 </span>
               </div>
@@ -4008,16 +4008,16 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <Crosshair className="w-4 h-4 text-amber-300" />
+                    <Crosshair className="w-4 h-4 text-blue-400" />
                     <span>Detect My Exact Campus Coordinates</span>
                   </>
                 )}
               </button>
 
-              <div className="bg-white/80 rounded-xl p-3 text-xs space-y-1 font-mono text-slate-800 border border-sky-200">
+              <div className="bg-white/80 rounded-xl p-3 text-xs space-y-1 font-mono text-slate-800 border border-blue-100">
                 <div className="flex justify-between">
                   <span className="text-slate-500 font-sans">Active Hub:</span>
-                  <span className="font-bold text-[#0284c7] font-sans">{currentLocation.building}</span>
+                  <span className="font-bold text-blue-600 font-sans">{currentLocation.building}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500 font-sans">Latitude:</span>
@@ -4044,7 +4044,7 @@ export default function App() {
                   placeholder="e.g. Central Library, Engineering Complex..."
                   value={geocodeQuery}
                   onChange={(e) => handleSearchGeocode(e.target.value)}
-                  className="w-full bg-[#f8f9fa] border border-slate-200 text-xs px-3.5 py-2.5 rounded-xl pr-9 focus:outline-none focus:border-[#0284c7]"
+                  className="w-full bg-[#f8f9fa] border border-slate-200 text-xs px-3.5 py-2.5 rounded-xl pr-9 focus:outline-none focus:border-blue-600"
                 />
                 {isSearchingGeocode ? (
                   <Loader2 className="w-4 h-4 absolute right-3 top-3 text-slate-400 animate-spin" />
@@ -4059,11 +4059,11 @@ export default function App() {
                     <button
                       key={idx}
                       onClick={() => selectGeocodedLocation(item)}
-                      className="w-full text-left p-2.5 rounded-xl hover:bg-[#e0f2fe] hover:text-[#0369a1] flex flex-col gap-0.5 transition-colors cursor-pointer"
+                      className="w-full text-left p-2.5 rounded-xl hover:bg-blue-50 hover:text-blue-700 flex flex-col gap-0.5 transition-colors cursor-pointer"
                     >
                       <span className="font-bold text-slate-800">{item.name}</span>
                       <span className="text-[11px] text-slate-400 truncate">{item.displayName}</span>
-                      <span className="text-[10px] font-mono text-sky-700">
+                      <span className="text-[10px] font-mono text-blue-700">
                         Coord: {item.lat.toFixed(4)}°, {item.lng.toFixed(4)}°
                       </span>
                     </button>
@@ -4095,7 +4095,7 @@ export default function App() {
                       });
                     }}
                     className={`w-full text-left p-3 rounded-xl border flex items-center justify-between cursor-pointer transition-colors ${
-                      currentLocation.building === spot.name ? 'border-[#0284c7] bg-[#e0f2fe] text-[#0369a1] font-bold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                      currentLocation.building === spot.name ? 'border-blue-600 bg-blue-50 text-blue-700 font-bold' : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                     }`}
                   >
                     <div>
@@ -4120,12 +4120,12 @@ export default function App() {
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-[#0284c7] flex items-center justify-center text-white shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0">
                   <ShoppingCart className="w-5 h-5 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-black text-base text-[#0369a1] truncate">
-                    Campus<span className="text-[#0284c7]">Cart</span>
+                  <h3 className="font-black text-base text-slate-900 truncate">
+                    Campus<span className="text-blue-600">Cart</span>
                   </h3>
                   <p className="text-[11px] text-slate-400 font-medium truncate">
                     {currentUser ? 'Student Account Profile' : 'Student Marketplace Authentication'}
@@ -4149,7 +4149,7 @@ export default function App() {
               <div className="space-y-4 pt-1">
                 {/* Profile Banner */}
                 <div className="flex items-center gap-3 p-3 bg-[#f5f6f8] rounded-2xl">
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center text-base sm:text-lg font-black shadow-xs shrink-0">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-base sm:text-lg font-black shadow-xs shrink-0">
                     {(currentUser.fullName || currentUser.name || 'S')[0].toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -4157,7 +4157,7 @@ export default function App() {
                       <h4 className="font-extrabold text-sm text-slate-900 truncate">
                         {currentUser.fullName || currentUser.name}
                       </h4>
-                      <span className="bg-sky-100 text-[#0369a1] text-[10px] font-extrabold px-2 py-0.2 rounded-full uppercase tracking-wider shrink-0">
+                      <span className="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-extrabold px-2 py-0.2 rounded-full uppercase tracking-wider shrink-0">
                         {currentUser.role || 'Student'}
                       </span>
                     </div>
@@ -4169,7 +4169,7 @@ export default function App() {
                 <div className="space-y-2 text-xs">
                   <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
                     <span className="text-slate-500 shrink-0">Student Roll / ID:</span>
-                    <span className="font-mono font-bold text-[#0284c7] truncate">{currentUser.studentId || 'Not provided'}</span>
+                    <span className="font-mono font-bold text-blue-600 truncate">{currentUser.studentId || 'Not provided'}</span>
                   </div>
                   <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
                     <span className="text-slate-500 shrink-0">College / Campus:</span>
@@ -4181,8 +4181,8 @@ export default function App() {
                   </div>
                   <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
                     <span className="text-slate-500 shrink-0">Verification Status:</span>
-                    <span className="font-bold text-sky-700 flex items-center gap-1 shrink-0 text-right">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0" /> {currentUser.role === 'admin' ? 'Authorized Campus Admin' : 'Verified Student'}
+                    <span className="font-bold text-blue-700 flex items-center gap-1 shrink-0 text-right">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" /> {currentUser.role === 'admin' ? 'Authorized Campus Admin' : 'Verified Student'}
                     </span>
                   </div>
                 </div>
@@ -4209,7 +4209,7 @@ export default function App() {
                       setAuthError('');
                     }}
                     className={`py-2 rounded-full transition-all cursor-pointer text-center ${
-                      authTab === 'login' ? 'bg-[#0284c7] text-white shadow-xs' : 'hover:text-slate-900'
+                      authTab === 'login' ? 'bg-slate-900 text-white shadow-xs' : 'hover:text-slate-900'
                     }`}
                   >
                     Sign In
@@ -4221,7 +4221,7 @@ export default function App() {
                       setAuthError('');
                     }}
                     className={`py-2 rounded-full transition-all cursor-pointer text-center ${
-                      authTab === 'register' ? 'bg-[#0284c7] text-white shadow-xs' : 'hover:text-slate-900'
+                      authTab === 'register' ? 'bg-slate-900 text-white shadow-xs' : 'hover:text-slate-900'
                     }`}
                   >
                     Create Account
@@ -4229,8 +4229,8 @@ export default function App() {
                 </div>
 
                 {/* Fast Quick-Fill Demo Pills */}
-                <div className="p-3 bg-[#e0f2fe] rounded-2xl space-y-1.5 border border-sky-100">
-                  <div className="flex items-center justify-between text-[11px] text-[#0369a1] font-bold">
+                <div className="p-3 bg-blue-50/70 rounded-2xl space-y-1.5 border border-blue-200">
+                  <div className="flex items-center justify-between text-[11px] text-slate-900 font-bold">
                     <span>Quick Fill Demo Credentials:</span>
                   </div>
                   <div className="flex gap-2 text-xs">
@@ -4243,7 +4243,7 @@ export default function App() {
                         setAuthError('');
                         showToast('Filled Student credentials');
                       }}
-                      className="flex-1 py-1 px-2.5 bg-white text-[#0369a1] rounded-lg font-bold text-[11px] border border-sky-200 hover:bg-sky-50 transition-colors cursor-pointer"
+                      className="flex-1 py-1 px-2.5 bg-white text-blue-700 rounded-lg font-bold text-[11px] border border-blue-200 hover:bg-blue-50 transition-colors cursor-pointer"
                     >
                       Demo Student
                     </button>
@@ -4256,7 +4256,7 @@ export default function App() {
                         setAuthError('');
                         showToast('Filled Admin credentials');
                       }}
-                      className="flex-1 py-1 px-2.5 bg-white text-amber-800 rounded-lg font-bold text-[11px] border border-amber-200 hover:bg-amber-50 transition-colors cursor-pointer"
+                      className="flex-1 py-1 px-2.5 bg-white text-slate-800 rounded-lg font-bold text-[11px] border border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer"
                     >
                       Demo Admin
                     </button>
@@ -4282,7 +4282,7 @@ export default function App() {
                         placeholder="student@campuscart.edu"
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
-                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
@@ -4295,13 +4295,13 @@ export default function App() {
                           placeholder="••••••••"
                           value={authPassword}
                           onChange={(e) => setAuthPassword(e.target.value)}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 pr-10 text-slate-800 focus:outline-none focus:border-blue-600"
                         />
                         <button
                           type="button"
                           aria-label={showLoginPassword ? "Hide password" : "Show password"}
                           onClick={() => setShowLoginPassword(prev => !prev)}
-                          className="absolute right-3 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
+                          className="absolute right-3 text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
                         >
                           {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -4334,7 +4334,7 @@ export default function App() {
                           setAuthTab('register');
                           setAuthError('');
                         }}
-                        className="font-bold text-[#0284c7] hover:underline cursor-pointer"
+                        className="font-bold text-blue-600 hover:underline cursor-pointer"
                       >
                         Create Student Account
                       </button>
@@ -4351,7 +4351,7 @@ export default function App() {
                         placeholder="e.g. Parv"
                         value={authFullName}
                         onChange={(e) => setAuthFullName(e.target.value)}
-                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
@@ -4364,7 +4364,7 @@ export default function App() {
                           placeholder="e.g. 24BCE327"
                           value={authStudentId}
                           onChange={(e) => setAuthStudentId(e.target.value)}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                         />
                       </div>
                       <div>
@@ -4375,7 +4375,7 @@ export default function App() {
                           placeholder="Computer Science"
                           value={authDepartment}
                           onChange={(e) => setAuthDepartment(e.target.value)}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                         />
                       </div>
                     </div>
@@ -4388,7 +4388,7 @@ export default function App() {
                         placeholder="National Institute of Technology"
                         value={authCollege}
                         onChange={(e) => setAuthCollege(e.target.value)}
-                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
@@ -4400,7 +4400,7 @@ export default function App() {
                         placeholder="student@campuscart.edu"
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
-                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                        className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
@@ -4414,13 +4414,13 @@ export default function App() {
                             placeholder="Min 6 chars"
                             value={authPassword}
                             onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 pr-9 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                            className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 pr-9 text-slate-800 focus:outline-none focus:border-blue-600"
                           />
                           <button
                             type="button"
                             aria-label={showRegisterPassword ? "Hide password" : "Show password"}
                             onClick={() => setShowRegisterPassword(prev => !prev)}
-                            className="absolute right-2.5 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
+                            className="absolute right-2.5 text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
                           >
                             {showRegisterPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                           </button>
@@ -4435,13 +4435,13 @@ export default function App() {
                             placeholder="Repeat"
                             value={authConfirmPassword}
                             onChange={(e) => setAuthConfirmPassword(e.target.value)}
-                            className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 pr-9 text-slate-800 focus:outline-none focus:border-[#0284c7]"
+                            className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3 py-2 pr-9 text-slate-800 focus:outline-none focus:border-blue-600"
                           />
                           <button
                             type="button"
                             aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                             onClick={() => setShowConfirmPassword(prev => !prev)}
-                            className="absolute right-2.5 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
+                            className="absolute right-2.5 text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
                           >
                             {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                           </button>
@@ -4475,7 +4475,7 @@ export default function App() {
                           setAuthTab('login');
                           setAuthError('');
                         }}
-                        className="font-bold text-[#0284c7] hover:underline cursor-pointer"
+                        className="font-bold text-blue-600 hover:underline cursor-pointer"
                       >
                         Sign In
                       </button>
@@ -4494,7 +4494,7 @@ export default function App() {
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
                   <Tag className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -4521,7 +4521,7 @@ export default function App() {
               />
               <div className="flex-1 min-w-0">
                 <h4 className="font-bold text-xs text-slate-900 truncate">{adminPriceModalProduct.title}</h4>
-                <p className="text-[11px] text-slate-500">Current Price: <span className="font-bold text-[#0284c7]">{formatINR(adminPriceModalProduct.price)}</span></p>
+                <p className="text-[11px] text-slate-500">Current Price: <span className="font-bold text-blue-600">{formatINR(adminPriceModalProduct.price)}</span></p>
               </div>
             </div>
 
@@ -4545,7 +4545,7 @@ export default function App() {
                     required
                     value={adminPriceModalInput}
                     onChange={(e) => setAdminPriceModalInput(e.target.value)}
-                    className="w-full bg-[#f8f9fa] border border-slate-300 rounded-xl pl-8 pr-3.5 py-2.5 font-extrabold text-slate-800 text-base focus:outline-none focus:border-[#0284c7]"
+                    className="w-full bg-[#f8f9fa] border border-slate-300 rounded-xl pl-8 pr-3.5 py-2.5 font-extrabold text-slate-800 text-base focus:outline-none focus:border-blue-600"
                     placeholder="e.g. 450"
                   />
                 </div>
@@ -4587,9 +4587,9 @@ export default function App() {
         {toasts.map(toast => (
           <div
             key={toast.id}
-            className="pointer-events-auto bg-[#0369a1] text-white px-4 py-2.5 rounded-md border border-sky-600 flex items-center gap-2.5 text-xs font-semibold animate-scale-up shadow-md"
+            className="pointer-events-auto bg-slate-900 text-white px-4 py-2.5 rounded-lg border border-slate-800 flex items-center gap-2.5 text-xs font-semibold animate-scale-up shadow-lg"
           >
-            <CheckCircle2 className="w-4 h-4 text-sky-200 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
             <span>{toast.message}</span>
           </div>
         ))}
@@ -4601,10 +4601,12 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="md:col-span-2 space-y-3">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-md bg-[#0284c7] flex items-center justify-center text-white">
+                <div className="w-7 h-7 rounded-md bg-slate-900 flex items-center justify-center text-white">
                   <ShoppingCart className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xl font-black text-[#0369a1]">CampusCart</span>
+                <span className="text-xl font-black text-slate-900">
+                  Campus<span className="text-blue-600">Cart</span>
+                </span>
               </div>
               <p className="text-slate-500 text-xs max-w-sm leading-relaxed">
                 CampusCart is a student-to-student online marketplace designed for buying, selling, and exchanging used items safely within your campus.
@@ -4613,7 +4615,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => handleSelectCategory('All')}
-                  className="hover:text-[#0284c7] cursor-pointer font-bold"
+                  className="hover:text-blue-600 cursor-pointer font-bold"
                 >
                   Campus Life
                 </button>
@@ -4621,7 +4623,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setIsTermsModalOpen(true)}
-                  className="hover:text-[#0284c7] cursor-pointer font-bold"
+                  className="hover:text-blue-600 cursor-pointer font-bold"
                 >
                   Student Council
                 </button>
@@ -4633,7 +4635,7 @@ export default function App() {
                     setCurrentView('home');
                     document.getElementById('campus-catalog')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="hover:text-[#0284c7] cursor-pointer font-bold"
+                  className="hover:text-blue-600 cursor-pointer font-bold"
                 >
                   Sustainability
                 </button>
@@ -4643,21 +4645,21 @@ export default function App() {
             <div className="space-y-2.5">
               <h5 className="font-bold text-slate-900 text-sm">Categories</h5>
               <ul className="space-y-1.5">
-                <li><button type="button" onClick={() => handleSelectCategory('Books & Notes')} className="hover:text-[#0284c7] cursor-pointer text-left">Textbooks & Notes</button></li>
-                <li><button type="button" onClick={() => handleSelectCategory('Calculators')} className="hover:text-[#0284c7] cursor-pointer text-left">Calculators</button></li>
-                <li><button type="button" onClick={() => handleSelectCategory('Electronics')} className="hover:text-[#0284c7] cursor-pointer text-left">Headphones & Electronics</button></li>
-                <li><button type="button" onClick={() => handleSelectCategory('Bicycles')} className="hover:text-[#0284c7] cursor-pointer text-left">Bicycles & Mobility</button></li>
-                <li><button type="button" onClick={() => handleSelectCategory('Lab Equipment')} className="hover:text-[#0284c7] cursor-pointer text-left">Lab Coats & Equipment</button></li>
+                <li><button type="button" onClick={() => handleSelectCategory('Books & Notes')} className="hover:text-blue-600 cursor-pointer text-left">Textbooks & Notes</button></li>
+                <li><button type="button" onClick={() => handleSelectCategory('Calculators')} className="hover:text-blue-600 cursor-pointer text-left">Calculators</button></li>
+                <li><button type="button" onClick={() => handleSelectCategory('Electronics')} className="hover:text-blue-600 cursor-pointer text-left">Headphones & Electronics</button></li>
+                <li><button type="button" onClick={() => handleSelectCategory('Bicycles')} className="hover:text-blue-600 cursor-pointer text-left">Bicycles & Mobility</button></li>
+                <li><button type="button" onClick={() => handleSelectCategory('Lab Equipment')} className="hover:text-blue-600 cursor-pointer text-left">Lab Coats & Equipment</button></li>
               </ul>
             </div>
 
             <div className="space-y-2.5">
               <h5 className="font-bold text-slate-900 text-sm">Quick Actions</h5>
               <ul className="space-y-1.5">
-                <li><button type="button" onClick={handleOpenSellModal} className="hover:text-[#0284c7] cursor-pointer text-left">Sell An Item</button></li>
-                <li><button type="button" onClick={() => { setAccountTab('listings'); setCurrentView('my-listings'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hover:text-[#0284c7] cursor-pointer text-left">Manage Listings</button></li>
-                <li><button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Campus Delivery Hubs</button></li>
-                <li><button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Fair-Price Calculator</button></li>
+                <li><button type="button" onClick={handleOpenSellModal} className="hover:text-blue-600 cursor-pointer text-left">Sell An Item</button></li>
+                <li><button type="button" onClick={() => { setAccountTab('listings'); setCurrentView('my-listings'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hover:text-blue-600 cursor-pointer text-left">Manage Listings</button></li>
+                <li><button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Campus Delivery Hubs</button></li>
+                <li><button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Fair-Price Calculator</button></li>
                 {currentUser?.role === 'admin' && (
                   <li>
                     <button
@@ -4666,7 +4668,7 @@ export default function App() {
                         setCurrentView('admin');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="text-amber-700 hover:text-amber-800 font-bold cursor-pointer text-left flex items-center gap-1"
+                      className="text-blue-600 hover:text-blue-700 font-bold cursor-pointer text-left flex items-center gap-1"
                     >
                       <ShieldAlert className="w-3.5 h-3.5" />
                       <span>Admin Dashboard</span>
@@ -4679,10 +4681,10 @@ export default function App() {
             <div className="space-y-2.5">
               <h5 className="font-bold text-slate-900 text-sm">Trust & Safety</h5>
               <ul className="space-y-1.5">
-                <li><button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Campus Meetup Hubs</button></li>
-                <li><button type="button" onClick={() => setIsTermsModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Terms of Service (Honor Code)</button></li>
-                <li><button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Privacy Policy (FERPA)</button></li>
-                <li><button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer text-left">Resale Depreciation Calculator</button></li>
+                <li><button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Campus Meetup Hubs</button></li>
+                <li><button type="button" onClick={() => setIsTermsModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Terms of Service (Honor Code)</button></li>
+                <li><button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Privacy Policy (FERPA)</button></li>
+                <li><button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-blue-600 cursor-pointer text-left">Resale Depreciation Calculator</button></li>
               </ul>
             </div>
           </div>
@@ -4690,10 +4692,10 @@ export default function App() {
           <div className="border-t border-slate-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
             <p>© 2026 CampusCart. Verified Student Peer-to-Peer Campus Marketplace.</p>
             <div className="flex items-center gap-4">
-              <button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-[#0284c7] cursor-pointer">Campus Hubs</button>
-              <button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-[#0284c7] underline cursor-pointer">Privacy Policy</button>
-              <button type="button" onClick={() => setIsTermsModalOpen(true)} className="hover:text-[#0284c7] underline cursor-pointer">Terms of Service</button>
-              <button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-[#0284c7] underline cursor-pointer">Resale Tool</button>
+              <button type="button" onClick={() => setIsDeliveryModalOpen(true)} className="hover:text-blue-600 cursor-pointer">Campus Hubs</button>
+              <button type="button" onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-blue-600 underline cursor-pointer">Privacy Policy</button>
+              <button type="button" onClick={() => setIsTermsModalOpen(true)} className="hover:text-blue-600 underline cursor-pointer">Terms of Service</button>
+              <button type="button" onClick={() => setIsCalculatorModalOpen(true)} className="hover:text-blue-600 underline cursor-pointer">Resale Tool</button>
             </div>
           </div>
         </div>
