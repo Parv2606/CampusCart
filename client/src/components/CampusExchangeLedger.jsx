@@ -47,7 +47,7 @@ export default function CampusExchangeLedger() {
   ];
 
   return (
-    <section className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+    <section className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-md bg-[#e0f2fe] text-[#0369a1] flex items-center justify-center">

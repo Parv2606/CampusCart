@@ -1573,15 +1573,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800">
+    <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
       {/* 1. TOP ANNOUNCEMENT BAR (Light Sky Blue #0369a1) */}
-      <header className="bg-[#0369a1] text-white text-xs sm:text-sm py-2 px-4 sm:px-8 border-b border-[#0284c7]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <header className="bg-[#0369a1] text-white text-xs sm:text-sm py-2 px-3 sm:px-8 border-b border-[#0284c7] w-full">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-center sm:text-left">
           {/* Left: Promo & Calculator */}
-          <div className="flex items-center gap-2 text-sky-50 whitespace-nowrap">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-sky-50 flex-wrap text-center">
             <span className="font-semibold text-amber-300">Campus Deal:</span>
-            <span>Verified Student Peer Exchange</span>
-            <span className="text-sky-200">|</span>
+            <span className="hidden xs:inline">Verified Student Peer Exchange</span>
+            <span className="hidden sm:inline text-sky-200">|</span>
             <button
               onClick={() => setIsCalculatorModalOpen(true)}
               className="font-semibold underline hover:text-sky-200 transition-colors cursor-pointer"
@@ -1591,37 +1591,37 @@ export default function App() {
           </div>
 
           {/* Right: Campus Hand-Off Hub Location */}
-          <div className="flex items-center gap-3 text-sky-100 shrink-0">
+          <div className="flex items-center justify-center gap-2 text-sky-100 shrink-0">
             <div
               onClick={() => setIsDeliveryModalOpen(true)}
-              className="cursor-pointer flex items-center gap-1.5 hover:text-white py-1 bg-[#0284c7] px-2.5 rounded-md text-xs transition-colors whitespace-nowrap shrink-0 border border-sky-400"
+              className="cursor-pointer flex items-center gap-1.5 hover:text-white py-1 bg-[#0284c7] px-2.5 rounded-md text-xs transition-colors shrink-0 border border-sky-400"
               title="Campus Hand-Off Location"
             >
-              <MapPin className="w-3.5 h-3.5 text-amber-300" />
-              <span className="truncate max-w-[150px] font-medium">
+              <MapPin className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+              <span className="truncate max-w-[140px] sm:max-w-[160px] font-medium">
                 {currentLocation.building || 'Central Library Desk'}
               </span>
-              <ChevronDown className="w-3 h-3 text-sky-200" />
+              <ChevronDown className="w-3 h-3 text-sky-200 shrink-0" />
             </div>
           </div>
         </div>
       </header>
 
       {/* 2. MAIN NAVBAR - SOLID OPAQUE (Light Blue Brand Identity) */}
-      <nav className="sticky top-0 z-40 bg-[#f7f8fa] border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6 flex-nowrap">
+      <nav className="sticky top-0 z-40 bg-[#f7f8fa] border-b border-slate-200 w-full">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
           <button
             onClick={() => {
               setCurrentView('home');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-2 group cursor-pointer focus:outline-none shrink-0 whitespace-nowrap"
+            className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-none shrink-0"
           >
-            <div className="w-9 h-9 rounded-lg bg-[#0284c7] flex items-center justify-center text-white shrink-0 shadow-sm">
-              <ShoppingCart className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[#0284c7] flex items-center justify-center text-white shrink-0 shadow-sm">
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div className="text-left whitespace-nowrap">
-              <span className="text-2xl font-black tracking-tight text-[#0369a1] whitespace-nowrap">
+            <div className="text-left">
+              <span className="text-lg sm:text-2xl font-black tracking-tight text-[#0369a1] whitespace-nowrap">
                 Campus<span className="text-[#0284c7]">Cart</span>
               </span>
               <span className="hidden sm:block text-[9px] font-bold text-sky-600 tracking-wider uppercase -mt-1 whitespace-nowrap">
@@ -1729,17 +1729,17 @@ export default function App() {
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 min-w-[100px] max-w-[190px] xl:max-w-xs relative shrink">
+          <div className="flex-1 min-w-0 max-w-[130px] sm:max-w-[190px] xl:max-w-xs relative shrink">
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Search campus items..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   if (currentView !== 'home') setCurrentView('home');
                 }}
-                className="w-full bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-md pl-3 pr-8 py-2 focus:outline-none focus:border-[#0284c7] border border-slate-300 transition-colors truncate"
+                className="w-full bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-md pl-2.5 sm:pl-3 pr-7 sm:pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-[#0284c7] border border-slate-300 transition-colors truncate"
               />
               <button
                 aria-label="Search"
@@ -1747,7 +1747,7 @@ export default function App() {
                   const el = document.getElementById('campus-catalog');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="absolute right-2.5 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
+                className="absolute right-2 sm:right-2.5 text-slate-400 hover:text-[#0284c7] transition-colors cursor-pointer"
               >
                 <Search className="w-3.5 h-3.5" />
               </button>
@@ -1798,42 +1798,42 @@ export default function App() {
       </nav>
 
       {/* 3. MAIN ROUTER VIEWS */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {/* VIEW 1: HOME MARKETPLACE */}
         {currentView === 'home' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-12">
+          <div className="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 w-full">
             {/* HERO PROMO BANNER (Light Sky Blue Architectural Theme) */}
-            <section className="bg-gradient-to-br from-[#0284c7] via-[#0369a1] to-[#075985] text-white rounded-xl p-6 sm:p-10 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-sky-400/30">
-              <div className="max-w-xl z-10 space-y-4 text-center md:text-left">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold tracking-wide uppercase bg-sky-800/60 text-sky-200 border border-sky-400/40">
-                  <ShieldCheck className="w-3.5 h-3.5 text-sky-200" /> Verified Student Network • Campus Marketplace
+            <section className="bg-gradient-to-br from-[#0284c7] via-[#0369a1] to-[#075985] text-white rounded-xl p-4 sm:p-10 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 border border-sky-400/30 w-full">
+              <div className="w-full md:max-w-xl z-10 space-y-3 sm:space-y-4 text-center md:text-left">
+                <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-md text-[11px] sm:text-xs font-bold tracking-wide uppercase bg-sky-800/60 text-sky-200 border border-sky-400/40 max-w-full truncate">
+                  <ShieldCheck className="w-3.5 h-3.5 text-sky-200 shrink-0" /> <span className="truncate">Verified Student Network • Campus Marketplace</span>
                 </span>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.12]">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15]">
                   Direct Campus Exchange For College Essentials
                 </h1>
-                <p className="text-sky-100/90 text-xs sm:text-sm leading-relaxed max-w-lg">
+                <p className="text-sky-100/90 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
                   Buy, sell, and hand off used textbooks, calculators, bicycles, lab coats, and electronics directly with fellow students across dorms and academic departments.
                 </p>
-                <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-3">
                   <button
                     onClick={() => {
                       const el = document.getElementById('campus-catalog');
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="px-6 py-2.5 rounded-md bg-white text-[#0369a1] font-bold text-xs hover:bg-slate-100 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-white"
+                    className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-md bg-white text-[#0369a1] font-bold text-xs hover:bg-slate-100 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-white"
                   >
                     <span>Browse Campus Items</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={handleOpenSellModal}
-                    className="px-5 py-2.5 rounded-md text-xs font-bold border border-white/50 text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-md text-xs font-bold border border-white/50 text-white hover:bg-white/10 transition-colors cursor-pointer"
                   >
                     Sell On Campus
                   </button>
                   <button
                     onClick={() => setIsCalculatorModalOpen(true)}
-                    className="px-4 py-2.5 rounded-md text-xs font-bold bg-sky-800/70 text-sky-100 hover:bg-sky-800 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-sky-400/40"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-md text-xs font-bold bg-sky-800/70 text-sky-100 hover:bg-sky-800 transition-colors cursor-pointer inline-flex items-center gap-1.5 border border-sky-400/40"
                   >
                     <Calculator className="w-3.5 h-3.5 text-amber-300" />
                     <span>Fair-Price Tool</span>
@@ -1842,39 +1842,39 @@ export default function App() {
               </div>
 
               <div className="relative w-full md:w-5/12 flex items-center justify-center">
-                <div className="w-full bg-[#0369a1]/80 border border-sky-400/40 rounded-lg p-5 space-y-4">
-                  <div className="flex items-center justify-between text-xs border-b border-sky-400/30 pb-3">
+                <div className="w-full bg-[#0369a1]/80 border border-sky-400/40 rounded-lg p-3.5 sm:p-5 space-y-3 sm:space-y-4">
+                  <div className="flex items-center justify-between text-xs border-b border-sky-400/30 pb-2.5 sm:pb-3">
                     <span className="font-bold text-sky-200">Featured Campus Listing</span>
                     <span className="bg-amber-400/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-400/30">
                       50% Student Discount
                     </span>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-24 h-24 rounded-md bg-slate-100 p-2 shrink-0 flex items-center justify-center">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-md bg-slate-100 p-2 shrink-0 flex items-center justify-center">
                       <img
                         src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=300&q=80"
                         alt="Campus Headphones"
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="font-bold text-white text-sm">Apple AirPods Max</h3>
-                      <p className="text-[11px] text-sky-100/80">Like New • Science Quad Study Desk</p>
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <h3 className="font-bold text-white text-sm truncate">Apple AirPods Max</h3>
+                      <p className="text-[11px] text-sky-100/80 truncate">Like New • Science Quad Study Desk</p>
                       <div className="text-white font-black text-base pt-0.5">
                         ₹2,490 <span className="text-xs font-normal text-sky-200/70 line-through">₹4,990</span>
                       </div>
                     </div>
                   </div>
                   <div className="pt-2 border-t border-sky-400/30 flex items-center justify-between text-[11px] text-sky-100/80">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-amber-300" /> Central Library 2nd Fl
+                    <span className="flex items-center gap-1 truncate max-w-[170px] sm:max-w-none">
+                      <MapPin className="w-3 h-3 text-amber-300 shrink-0" /> <span className="truncate">Central Library 2nd Fl</span>
                     </span>
                     <button
                       onClick={() => {
                         const airpods = products.find(h => h.id === 'cc-2') || products[0];
                         handleOpenProduct(airpods);
                       }}
-                      className="font-bold text-white underline hover:text-sky-200 cursor-pointer"
+                      className="font-bold text-white underline hover:text-sky-200 cursor-pointer shrink-0"
                     >
                       View Details
                     </button>
@@ -3581,8 +3581,8 @@ export default function App() {
             className="absolute inset-0 bg-black/40  transition-opacity"
           />
 
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div className="w-screen max-w-md bg-white shadow-lg border border-slate-200 flex flex-col justify-between animate-slide-in-right">
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-3 sm:pl-10">
+            <div className="w-full max-w-md bg-white shadow-lg border border-slate-200 flex flex-col justify-between animate-slide-in-right">
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-[#0284c7]" />
@@ -3702,8 +3702,8 @@ export default function App() {
 
       {/* 5. POST / SELL AN ITEM MODAL */}
       {isSellModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 ">
-          <div className="bg-white rounded-xl p-6 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-extrabold text-lg text-slate-900">List an Item on CampusCart</h3>
@@ -3886,8 +3886,8 @@ export default function App() {
 
       {/* 6. CONTACT SELLER MODAL */}
       {isContactModalOpen && selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 ">
-          <div className="bg-white rounded-xl p-6 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-[#0284c7]" />
@@ -3957,8 +3957,8 @@ export default function App() {
 
       {/* 7. GEOCODING API EXACT LOCATION & HAND-OFF HUBS MODAL */}
       {isDeliveryModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 ">
-          <div className="bg-white rounded-xl p-6 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-xl bg-[#0284c7] text-white flex items-center justify-center">
@@ -4115,19 +4115,19 @@ export default function App() {
 
       {/* 8. STUDENT AUTHENTICATION & PROFILE MODAL */}
       {isAuthModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 ">
-          <div className="bg-white rounded-xl p-6 sm:p-7 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[92vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-7 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up max-h-[92vh] overflow-y-auto my-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#0284c7] flex items-center justify-center text-white">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#0284c7] flex items-center justify-center text-white shrink-0">
                   <ShoppingCart className="w-5 h-5 text-white" />
                 </div>
-                <div>
-                  <h3 className="font-black text-base text-[#0369a1]">
+                <div className="min-w-0">
+                  <h3 className="font-black text-base text-[#0369a1] truncate">
                     Campus<span className="text-[#0284c7]">Cart</span>
                   </h3>
-                  <p className="text-[11px] text-slate-400 font-medium">
+                  <p className="text-[11px] text-slate-400 font-medium truncate">
                     {currentUser ? 'Student Account Profile' : 'Student Marketplace Authentication'}
                   </p>
                 </div>
@@ -4138,7 +4138,7 @@ export default function App() {
                   setIsAuthModalOpen(false);
                   setAuthError('');
                 }}
-                className="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 cursor-pointer"
+                className="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 cursor-pointer shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -4148,16 +4148,16 @@ export default function App() {
             {currentUser ? (
               <div className="space-y-4 pt-1">
                 {/* Profile Banner */}
-                <div className="flex items-center gap-3.5 p-3.5 bg-[#f5f6f8] rounded-2xl">
-                  <div className="w-12 h-12 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center text-lg font-black shadow-xs">
+                <div className="flex items-center gap-3 p-3 bg-[#f5f6f8] rounded-2xl">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center text-base sm:text-lg font-black shadow-xs shrink-0">
                     {(currentUser.fullName || currentUser.name || 'S')[0].toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <h4 className="font-extrabold text-sm text-slate-900 truncate">
                         {currentUser.fullName || currentUser.name}
                       </h4>
-                      <span className="bg-sky-100 text-[#0369a1] text-[10px] font-extrabold px-2 py-0.2 rounded-full uppercase tracking-wider">
+                      <span className="bg-sky-100 text-[#0369a1] text-[10px] font-extrabold px-2 py-0.2 rounded-full uppercase tracking-wider shrink-0">
                         {currentUser.role || 'Student'}
                       </span>
                     </div>
@@ -4167,22 +4167,22 @@ export default function App() {
 
                 {/* Details Breakdown */}
                 <div className="space-y-2 text-xs">
-                  <div className="p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center">
-                    <span className="text-slate-500">Student Roll / ID:</span>
-                    <span className="font-mono font-bold text-[#0284c7]">{currentUser.studentId || 'Not provided'}</span>
+                  <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
+                    <span className="text-slate-500 shrink-0">Student Roll / ID:</span>
+                    <span className="font-mono font-bold text-[#0284c7] truncate">{currentUser.studentId || 'Not provided'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center">
-                    <span className="text-slate-500">College / Campus:</span>
-                    <span className="font-semibold text-slate-800 text-right truncate max-w-[200px]">{currentUser.college || 'Engineering Campus'}</span>
+                  <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
+                    <span className="text-slate-500 shrink-0">College / Campus:</span>
+                    <span className="font-semibold text-slate-800 text-right truncate min-w-0">{currentUser.college || 'Engineering Campus'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center">
-                    <span className="text-slate-500">Department:</span>
-                    <span className="font-semibold text-slate-800 text-right truncate max-w-[200px]">{currentUser.department || 'Academics'}</span>
+                  <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
+                    <span className="text-slate-500 shrink-0">Department:</span>
+                    <span className="font-semibold text-slate-800 text-right truncate min-w-0">{currentUser.department || 'Academics'}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center">
-                    <span className="text-slate-500">Verification Status:</span>
-                    <span className="font-bold text-sky-700 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-sky-600" /> {currentUser.role === 'admin' ? 'Authorized Campus Admin' : 'Verified Student'}
+                  <div className="p-2.5 sm:p-3 rounded-xl bg-[#f8f9fa] flex justify-between items-center gap-2">
+                    <span className="text-slate-500 shrink-0">Verification Status:</span>
+                    <span className="font-bold text-sky-700 flex items-center gap-1 shrink-0 text-right">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0" /> {currentUser.role === 'admin' ? 'Authorized Campus Admin' : 'Verified Student'}
                     </span>
                   </div>
                 </div>
@@ -4490,8 +4490,8 @@ export default function App() {
 
       {/* 8. ADMIN QUICK PRICE ADJUSTMENT MODAL */}
       {isAdminPriceModalOpen && adminPriceModalProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 ">
-          <div className="bg-white rounded-xl p-6 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 overflow-y-auto">
+          <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center">

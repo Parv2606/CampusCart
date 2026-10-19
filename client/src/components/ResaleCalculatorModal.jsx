@@ -38,12 +38,12 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 animate-fade-in">
-      <div className="bg-white rounded-xl border border-slate-200 max-w-lg w-full flex flex-col shadow-lg overflow-hidden animate-scale-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
+      <div className="bg-white rounded-xl border border-slate-200 max-w-lg w-full flex flex-col shadow-lg overflow-hidden animate-scale-up max-h-[92vh] my-auto">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-[#f8fafc]">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-[#f8fafc]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md bg-[#0284c7] text-white flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-md bg-[#0284c7] text-white flex items-center justify-center shadow-xs shrink-0">
               <Calculator className="w-4 h-4" />
             </div>
             <div>
@@ -54,14 +54,14 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           <button
             onClick={onClose}
             aria-label="Close Calculator"
-            className="w-8 h-8 rounded-md hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-md hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Interactive Controls */}
-        <div className="p-6 space-y-4 text-xs text-slate-700">
+        <div className="p-4 sm:p-6 space-y-4 text-xs text-slate-700 overflow-y-auto">
           <div>
             <label className="font-bold text-slate-900 block mb-1">Item Category</label>
             <select

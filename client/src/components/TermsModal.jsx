@@ -5,8 +5,8 @@ export default function TermsModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 animate-fade-in">
-      <div className="bg-white rounded-xl border border-slate-200 max-w-2xl w-full max-h-[85vh] flex flex-col shadow-lg overflow-hidden animate-scale-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
+      <div className="bg-white rounded-xl border border-slate-200 max-w-2xl w-full max-h-[88vh] flex flex-col shadow-lg overflow-hidden animate-scale-up my-auto">
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-[#f8f9fa]">
           <div className="flex items-center gap-2.5">
