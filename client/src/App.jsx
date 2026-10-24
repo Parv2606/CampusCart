@@ -3075,6 +3075,23 @@ export default function App() {
                   Back to Marketplace
                 </button>
               </div>
+            ) : cart.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 p-8 space-y-4 max-w-md mx-auto shadow-xs animate-fade-in">
+                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto">
+                  <ShoppingCart className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">Your Checkout Cart is Empty</h3>
+                <p className="text-xs text-slate-500">
+                  You have removed all items from your checkout list. Browse the campus catalog to find student essentials.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setCurrentView('home')}
+                  className="btn-primary-blue px-6 py-2.5 rounded-full text-xs font-bold cursor-pointer"
+                >
+                  Return to Marketplace
+                </button>
+              </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-7 space-y-6">
@@ -3341,22 +3358,58 @@ export default function App() {
 
                 {/* Right Column: Order Summary */}
                 <div className="lg:col-span-5 bg-white rounded-xl p-6 sm:p-7 border border-slate-200 space-y-5">
-                  <h3 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3">
-                    Order Summary
-                  </h3>
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <h3 className="text-base font-bold text-slate-900">
+                      Order Summary
+                    </h3>
+                    <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+                      {cartTotalItems} {cartTotalItems === 1 ? 'item' : 'items'}
+                    </span>
+                  </div>
 
                   <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
                     {cart.map((item) => (
-                      <div key={`${item.id}-${item.selectedColor}`} className="flex items-center gap-3 bg-[#f8f9fa] p-3 rounded-lg border border-slate-100">
-                        <img src={item.image} alt={item.title} className="w-12 h-12 rounded-md object-contain bg-white p-1" />
+                      <div
+                        key={`${item.id}-${item.selectedColor}`}
+                        className="flex items-center gap-3 bg-[#f8f9fa] hover:bg-slate-50 p-3 rounded-xl border border-slate-100 transition-colors group relative"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-12 h-12 rounded-lg object-contain bg-white p-1 shrink-0 border border-slate-100 shadow-2xs"
+                        />
                         <div className="flex-1 min-w-0 text-xs">
                           <h4 className="font-bold text-slate-900 truncate">{item.title}</h4>
-                          <p className="text-slate-500">Condition: {item.condition || 'Good'}</p>
-                          <p className="text-slate-600 font-semibold mt-0.5">Qty: {item.quantity}</p>
+                          <p className="text-slate-500 text-[11px]">Condition: {item.condition || 'Good'}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-slate-600 font-semibold">Qty: {item.quantity}</span>
+                            <span className="text-slate-300">•</span>
+                            <button
+                              type="button"
+                              onClick={() => removeFromCart(item.id, item.selectedColor)}
+                              className="text-[11px] text-rose-500 hover:text-rose-700 font-bold hover:underline inline-flex items-center gap-1 cursor-pointer transition-colors"
+                              title={`Remove ${item.title} from order`}
+                            >
+                              <Trash2 className="w-3 h-3 shrink-0" />
+                              <span>Remove</span>
+                            </button>
+                          </div>
                         </div>
-                        <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
-                          {formatINR(item.price * item.quantity)}
-                        </span>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
+                            {formatINR(item.price * item.quantity)}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => removeFromCart(item.id, item.selectedColor)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                            title={`Remove ${item.title}`}
+                            aria-label={`Remove ${item.title}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
