@@ -7,7 +7,7 @@ import {
   Package, Trash2, ArrowLeft, CheckCircle2,
   BookOpen, Bike, Layers, Tag, MessageSquare, ShieldAlert, Edit3, AlertTriangle, Send,
   Navigation, Crosshair, Globe, ExternalLink, Loader2, Compass, Receipt,
-  Lock, LogIn, LogOut, UserPlus, Shield, Calculator, FileText
+  Lock, LogIn, LogOut, UserPlus, Shield, Calculator, FileText, GraduationCap
 } from './icons.jsx';
 import TermsModal from './components/TermsModal.jsx';
 import PrivacyModal from './components/PrivacyModal.jsx';
@@ -705,6 +705,19 @@ export default function App() {
   const [geocodeSuggestions, setGeocodeSuggestions] = useState([]);
   const [isSearchingGeocode, setIsSearchingGeocode] = useState(false);
 
+  // Active University State (Persistent & Scoped per Campus)
+  const [activeUniversity, setActiveUniversity] = useState(() => {
+    try {
+      const savedUser = JSON.parse(localStorage.getItem('campuscart_user') || 'null');
+      if (savedUser?.college) return savedUser.college;
+      return localStorage.getItem('campuscart_university') || 'National Institute of Technology';
+    } catch {
+      return 'National Institute of Technology';
+    }
+  });
+  const [isUniversityModalOpen, setIsUniversityModalOpen] = useState(false);
+  const [universityInput, setUniversityInput] = useState('');
+
   // All Products State - Automatically update to realistic Indian market prices while preserving custom listings
   const [products, setProducts] = useState(() => {
     try {
@@ -890,6 +903,9 @@ export default function App() {
         if (res.data?.success && res.data.user) {
           setCurrentUser(res.data.user);
           localStorage.setItem('campuscart_user', JSON.stringify(res.data.user));
+          if (res.data.user.college) {
+            setActiveUniversity(res.data.user.college);
+          }
         }
       } catch (err) {
         console.warn('Session check note:', err.message);
@@ -897,6 +913,239 @@ export default function App() {
     };
     verifyAuthSession();
   }, []);
+
+  // Dynamic MongoDB Database Sync Functions
+  const fetchProducts = async (univ = activeUniversity) => {
+    setIsCatalogLoading(true);
+    try {
+      const res = await axios.get('/api/products', {
+        params: { college: univ }
+      });
+      if (res.data?.success && Array.isArray(res.data.products) && res.data.products.length > 0) {
+        const dbProducts = res.data.products.map(p => ({
+          ...p,
+          id: p._id || p.id,
+          rating: p.rating || 5,
+          reviewsCount: p.reviewsCount || 42,
+          pickupLocation: p.location?.address || `${univ} Campus Hub`,
+          coordinates: p.location?.coordinates || { lat: 30.2849, lng: -97.7341 }
+        }));
+        setProducts(dbProducts);
+        localStorage.setItem('campuscart_products', JSON.stringify(dbProducts));
+      } else {
+        // Fallback: if no specific products for this university yet, query all products to seed or browse
+        const resAll = await axios.get('/api/products');
+        if (resAll.data?.success && Array.isArray(resAll.data.products) && resAll.data.products.length > 0) {
+          const matching = resAll.data.products.filter(p => 
+            (p.college && p.college.toLowerCase().includes(univ.toLowerCase())) ||
+            (univ.toLowerCase().includes(p.college?.toLowerCase() || ''))
+          );
+          const toUse = matching.length > 0 ? matching : resAll.data.products;
+          const mapped = toUse.map(p => ({
+            ...p,
+            id: p._id || p.id,
+            rating: p.rating || 5,
+            reviewsCount: p.reviewsCount || 42,
+            pickupLocation: p.location?.address || `${univ} Campus Hub`,
+            coordinates: p.location?.coordinates || { lat: 30.2849, lng: -97.7341 }
+          }));
+          setProducts(mapped);
+        }
+      }
+    } catch (err) {
+      console.warn('Backend product fetch notice:', err.message);
+    } finally {
+      setIsCatalogLoading(false);
+    }
+  };
+
+  const fetchWishlist = async (customToken) => {
+    const token = customToken || localStorage.getItem('campuscart_token') || authToken;
+    if (!token) return;
+    try {
+      const res = await axios.get('/api/wishlist', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data?.success && Array.isArray(res.data.wishlist)) {
+        const ids = res.data.wishlist.map(p => p._id || p.id);
+        setWishlist(ids);
+      }
+    } catch (err) {
+      console.warn('Backend wishlist fetch notice:', err.message);
+    }
+  };
+
+  const fetchTransactions = async (customToken) => {
+    const token = customToken || localStorage.getItem('campuscart_token') || authToken;
+    if (!token) return;
+    try {
+      const res = await axios.get('/api/transactions', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data?.success) {
+        const allTxns = [...(res.data.asBuyer || []), ...(res.data.asSeller || [])];
+        const formatted = allTxns.map(t => ({
+          id: t._id,
+          _id: t._id,
+          itemTitle: t.product?.title || 'Campus Item',
+          productTitle: t.product?.title || 'Campus Item',
+          sellerName: t.seller?.fullName || 'Campus Seller',
+          buyerName: t.buyer?.fullName || 'Fellow Student',
+          price: t.product?.price || 0,
+          status: t.status || 'Pending',
+          date: new Date(t.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }),
+          pickupSpot: t.deliveryLocation?.address || 'Campus Hand-Off Hub',
+          coordinates: t.deliveryLocation?.coordinates || { lat: 30.2849, lng: -97.7341 },
+          buyerEmail: t.buyer?.email,
+          sellerEmail: t.seller?.email
+        }));
+        setTransactions(formatted);
+      }
+    } catch (err) {
+      console.warn('Backend transactions fetch notice:', err.message);
+    }
+  };
+
+  // Synchronize on mount and active university change
+  useEffect(() => {
+    fetchProducts(activeUniversity);
+  }, [activeUniversity]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('campuscart_token') || authToken;
+    if (token) {
+      fetchWishlist(token);
+      fetchTransactions(token);
+    }
+  }, [authToken, currentUser]);
+
+  const handleSelectUniversity = async (univName) => {
+    const finalUniv = (univName || universityInput).trim();
+    if (!finalUniv) {
+      showToast('Please enter or select a university', 'error');
+      return;
+    }
+
+    setActiveUniversity(finalUniv);
+    localStorage.setItem('campuscart_university', finalUniv);
+
+    // If student is authenticated, update college in MongoDB profile
+    const token = localStorage.getItem('campuscart_token') || authToken;
+    if (token && currentUser) {
+      try {
+        const res = await axios.put('/api/auth/profile', {
+          college: finalUniv
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.data?.success && res.data.user) {
+          setCurrentUser(res.data.user);
+          localStorage.setItem('campuscart_user', JSON.stringify(res.data.user));
+        }
+      } catch (err) {
+        console.warn('Failed to update college in backend profile:', err.message);
+      }
+    }
+
+    setIsUniversityModalOpen(false);
+    fetchProducts(finalUniv);
+    showToast(`Switched to ${finalUniv} Marketplace!`);
+  };
+
+  const handleBuyNow = (product) => {
+    if (!currentUser) {
+      showToast('Please sign in to buy items', 'error');
+      setAuthTab('login');
+      setIsAuthModalOpen(true);
+      return;
+    }
+    // Add product to cart if not present
+    setCart(prev => {
+      const exists = prev.find(item => item.id === product.id);
+      if (exists) {
+        return prev;
+      }
+      return [{
+        ...product,
+        quantity: 1,
+        selectedColor: product.color || 'Default'
+      }, ...prev];
+    });
+    // Direct checkout navigation
+    setCurrentView('checkout');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast(`Proceeding to checkout for "${product.title}"`);
+  };
+
+  const handleConfirmOrder = async () => {
+    if (cart.length === 0) {
+      showToast('Your cart is empty!', 'error');
+      return;
+    }
+    if (!currentUser) {
+      showToast('Please sign in to place an order', 'error');
+      setAuthTab('login');
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    try {
+      const storedToken = localStorage.getItem('campuscart_token') || authToken;
+      const res = await axios.post('/api/transactions', {
+        items: cart,
+        deliveryLocation: {
+          address: checkoutData.pickupLocation || 'Central Campus Library Desk',
+          city: activeUniversity,
+          coordinates: { lat: checkoutData.lat || 30.2849, lng: checkoutData.lng || -97.7341 }
+        },
+        paymentMethod: checkoutData.paymentMethod || 'cash_on_meetup',
+        message: `Order for: ${cart.map(i => i.title).join(', ')}`
+      }, {
+        headers: storedToken ? { Authorization: `Bearer ${storedToken}` } : {}
+      });
+
+      if (res.data?.success) {
+        const createdList = res.data.transactions || (res.data.transaction ? [res.data.transaction] : []);
+        const formatted = createdList.map(t => ({
+          id: t._id,
+          _id: t._id,
+          itemTitle: t.product?.title || cart[0]?.title || 'Campus Item',
+          productTitle: t.product?.title || cart[0]?.title || 'Campus Item',
+          sellerName: t.seller?.fullName || 'Fellow Student',
+          buyerName: currentUser.fullName,
+          price: t.product?.price || finalTotal,
+          status: t.status || 'Pending',
+          date: 'Just now',
+          pickupSpot: checkoutData.pickupLocation || 'Campus Hand-Off Spot',
+          coordinates: { lat: checkoutData.lat, lng: checkoutData.lng },
+          buyerEmail: currentUser.email
+        }));
+
+        setTransactions(prev => [...formatted, ...prev]);
+        setOrderPlaced(true);
+        showToast('Campus order placed & saved to database!');
+      } else {
+        setOrderPlaced(true);
+        showToast('Campus order placed!');
+      }
+    } catch (err) {
+      console.warn('Backend transaction notice:', err.message);
+      const fallbackTxn = {
+        id: `TXN-${Math.floor(1000 + Math.random() * 9000)}`,
+        itemTitle: cart[0]?.title || 'Campus Item',
+        sellerName: cart[0]?.seller?.name || 'Fellow Student',
+        price: finalTotal,
+        status: 'Pending',
+        date: 'Just now',
+        pickupSpot: checkoutData.pickupLocation || 'Campus Hand-Off Spot',
+        coordinates: { lat: checkoutData.lat, lng: checkoutData.lng },
+        buyerEmail: currentUser.email
+      };
+      setTransactions(prev => [fallbackTxn, ...prev]);
+      setOrderPlaced(true);
+      showToast('Campus order placed successfully!');
+    }
+  };
 
   // Sync state to LocalStorage (Scoped per user)
   useEffect(() => {
@@ -1111,9 +1360,16 @@ export default function App() {
     showToast('Item removed from cart');
   };
 
-  const toggleWishlist = (productId, title) => {
+  const toggleWishlist = async (productId, title) => {
+    if (!currentUser) {
+      showToast('Please sign in to save items to your wishlist', 'error');
+      setAuthTab('login');
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    const exists = wishlist.includes(productId);
     setWishlist(prev => {
-      const exists = prev.includes(productId);
       if (exists) {
         showToast(`Removed "${title}" from wishlist`, 'info');
         return prev.filter(id => id !== productId);
@@ -1122,6 +1378,23 @@ export default function App() {
         return [...prev, productId];
       }
     });
+
+    const token = localStorage.getItem('campuscart_token') || authToken;
+    if (token) {
+      try {
+        if (exists) {
+          await axios.delete(`/api/wishlist/${productId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } else {
+          await axios.post(`/api/wishlist/${productId}`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        }
+      } catch (err) {
+        console.warn('Backend wishlist update notice:', err.message);
+      }
+    }
   };
 
   const handleOpenProduct = (product) => {
@@ -1155,20 +1428,20 @@ export default function App() {
         localStorage.setItem('campuscart_user', JSON.stringify(user));
         localStorage.setItem('campuscart_token', token);
 
-        // Load user-scoped data
-        try {
-          const userCart = localStorage.getItem(`campuscart_cart_${user.email}`);
-          setCart(userCart ? JSON.parse(userCart) : []);
-          const userWish = localStorage.getItem(`campuscart_wishlist_${user.email}`);
-          setWishlist(userWish ? JSON.parse(userWish) : []);
-          const userTxn = localStorage.getItem(`campuscart_transactions_${user.email}`);
-          setTransactions(userTxn ? JSON.parse(userTxn) : []);
-        } catch (_) {}
-
         setIsAuthModalOpen(false);
         setAuthEmail('');
         setAuthPassword('');
         showToast(`Welcome back, ${user.fullName || user.name || 'Student'}!`);
+
+        // Mandatory post-login prompt: enter or confirm university!
+        const userUniv = user.college || activeUniversity || 'Nirma University';
+        setUniversityInput(userUniv);
+        setIsUniversityModalOpen(true);
+
+        // Fetch user data from DB
+        fetchWishlist(token);
+        fetchTransactions(token);
+        fetchProducts(userUniv);
       } else {
         setAuthError(res.data?.error || 'Invalid credentials.');
       }
@@ -1297,7 +1570,7 @@ export default function App() {
       category: newListing.category,
       type: newListing.category,
       condition: newListing.condition,
-      college: newListing.college || currentUser.college || 'National Institute of Technology',
+      college: newListing.college || activeUniversity || currentUser.college || 'National Institute of Technology',
       pickupLocation: newListing.pickupLocation || currentLocation.building,
       coordinates: {
         lat: newListing.lat || currentLocation.lat,
@@ -1322,9 +1595,10 @@ export default function App() {
     };
 
     // Store in MongoDB via Express API if authToken is available
-    if (authToken) {
+    const token = localStorage.getItem('campuscart_token') || authToken;
+    if (token) {
       try {
-        await axios.post(
+        const res = await axios.post(
           '/api/products',
           {
             title: created.title,
@@ -1333,13 +1607,18 @@ export default function App() {
             price: created.price,
             condition: created.condition,
             image: created.image,
+            college: created.college,
             location: {
               address: created.pickupLocation,
               coordinates: created.coordinates
             }
           },
-          { headers: { Authorization: `Bearer ${authToken}` } }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
+        if (res.data?.success && res.data.product) {
+          created.id = res.data.product._id || res.data.product.id || created.id;
+          created._id = res.data.product._id;
+        }
       } catch (backendErr) {
         console.warn('Backend product listing notification:', backendErr.message);
       }
@@ -1347,12 +1626,13 @@ export default function App() {
 
     setProducts(prev => [created, ...prev]);
     setIsSellModalOpen(false);
+    fetchProducts(created.college);
     setNewListing({
       title: '',
       category: 'Books & Notes',
       price: '',
       condition: 'Like New',
-      college: currentUser.college || 'Engineering Campus',
+      college: activeUniversity || currentUser.college || 'Engineering Campus',
       pickupLocation: currentLocation.building,
       lat: currentLocation.lat,
       lng: currentLocation.lng,
@@ -1550,6 +1830,15 @@ export default function App() {
       if (filterOffer === '50% Off' && item.offer !== '50% Off') return false;
       if (filterOffer === 'Special Deal' && item.offer !== 'Special Deal') return false;
 
+      // Active University Scoping
+      if (activeUniversity) {
+        const normActive = activeUniversity.toLowerCase().trim();
+        const pCollege = (item.college || '').toLowerCase().trim();
+        if (pCollege && !pCollege.includes(normActive) && !normActive.includes(pCollege)) {
+          return false;
+        }
+      }
+
       return true;
     }).sort((a, b) => {
       if (sortBy === 'Price: Low to High') return a.price - b.price;
@@ -1558,7 +1847,7 @@ export default function App() {
       if (sortBy === 'Newest') return b.id.localeCompare(a.id);
       return 0;
     });
-  }, [products, searchQuery, selectedCategory, filterCondition, filterPrice, filterCollege, filterStatus, filterOffer, sortBy]);
+  }, [products, searchQuery, selectedCategory, filterCondition, filterPrice, filterCollege, filterStatus, filterOffer, sortBy, activeUniversity]);
 
   const resetAllFilters = () => {
     setSearchQuery('');
@@ -1574,61 +1863,49 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
-      {/* 1. TOP ANNOUNCEMENT BAR (Minimalist Deep Navy #090d16) */}
-      <header className="bg-[#090d16] text-slate-300 text-xs sm:text-sm py-2 px-3 sm:px-8 border-b border-slate-800 w-full">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-center sm:text-left">
-          {/* Left: Promo & Calculator */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap text-center text-slate-300">
-            <span className="bg-blue-950/80 text-blue-300 border border-blue-800/60 px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase">Campus Deal</span>
-            <span className="hidden xs:inline text-slate-300">Verified Student Peer Exchange</span>
-            <span className="hidden sm:inline text-slate-600">|</span>
-            <button
-              onClick={() => setIsCalculatorModalOpen(true)}
-              className="font-medium text-blue-400 hover:text-white underline transition-colors cursor-pointer"
-            >
-              Estimate Resale Value
-            </button>
-          </div>
-
-          {/* Right: Campus Hand-Off Hub Location */}
-          <div className="flex items-center justify-center gap-2 text-slate-300 shrink-0">
-            <div
-              onClick={() => setIsDeliveryModalOpen(true)}
-              className="cursor-pointer flex items-center gap-1.5 hover:text-white py-1 bg-slate-900 hover:bg-slate-800 px-2.5 rounded-md text-xs transition-colors shrink-0 border border-slate-700/80 text-slate-200"
-              title="Campus Hand-Off Location"
-            >
-              <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-              <span className="truncate max-w-[140px] sm:max-w-[160px] font-medium">
-                {currentLocation.building || 'Central Library Desk'}
-              </span>
-              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* 2. MAIN NAVBAR - SOLID OPAQUE (Minimalist Clean White & Blue) */}
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 w-full">
         <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
-          <button
-            onClick={() => {
-              setCurrentView('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-none shrink-0"
-          >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-sm group-hover:bg-blue-600 transition-colors">
-              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-            </div>
-            <div className="text-left">
-              <span className="text-lg sm:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
-                Campus<span className="text-blue-600">Cart</span>
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <button
+              onClick={() => {
+                setCurrentView('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-none shrink-0"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-sm group-hover:bg-blue-600 transition-colors">
+                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </div>
+              <div className="text-left">
+                <span className="text-lg sm:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
+                  Campus<span className="text-blue-600">Cart</span>
+                </span>
+                <span className="hidden sm:block text-[9px] font-bold text-slate-400 tracking-wider uppercase -mt-1 whitespace-nowrap">
+                  Student Exchange
+                </span>
+              </div>
+            </button>
+
+            {/* University Campus Selector Badge */}
+            <button
+              type="button"
+              onClick={() => {
+                setUniversityInput(activeUniversity);
+                setIsUniversityModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 text-xs font-bold transition-all cursor-pointer shadow-2xs shrink-0"
+              title="Active University Marketplace (Click to change campus)"
+            >
+              <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0" />
+              <span className="truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[180px] md:max-w-[220px] text-[11px] sm:text-xs">
+                {activeUniversity}
               </span>
-              <span className="hidden sm:block text-[9px] font-bold text-slate-400 tracking-wider uppercase -mt-1 whitespace-nowrap">
-                Student Exchange
+              <span className="text-[9px] sm:text-[10px] bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider shrink-0">
+                Change
               </span>
-            </div>
-          </button>
+            </button>
+          </div>
 
           {/* Navigation Links */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-5 font-medium text-xs xl:text-sm text-slate-700 shrink-0 flex-nowrap">
@@ -2157,13 +2434,19 @@ export default function App() {
                             </div>
                           </div>
 
-                          {/* Action Button */}
-                          <div>
+                          {/* Action Buttons: Add to Cart & Buy Now */}
+                          <div className="grid grid-cols-2 gap-2 pt-1">
                             <button
                               onClick={() => addToCart(product, 1)}
-                              className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white cursor-pointer transition-colors shadow-2xs"
+                              className="w-full py-2 px-1 rounded-lg font-semibold text-xs border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 transition-colors cursor-pointer shadow-2xs"
                             >
                               Add to Cart
+                            </button>
+                            <button
+                              onClick={() => handleBuyNow(product)}
+                              className="w-full py-2 px-1 rounded-lg font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shadow-2xs"
+                            >
+                              Buy Now
                             </button>
                           </div>
                         </div>
@@ -2276,12 +2559,18 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div>
+                      <div className="grid grid-cols-2 gap-2 pt-1">
                         <button
                           onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white transition-colors cursor-pointer shadow-2xs"
+                          className="w-full py-2 px-1 rounded-lg font-semibold text-xs border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 transition-colors cursor-pointer shadow-2xs"
                         >
                           Add to Cart
+                        </button>
+                        <button
+                          onClick={() => handleBuyNow(item)}
+                          className="w-full py-2 px-1 rounded-lg font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shadow-2xs"
+                        >
+                          Buy Now
                         </button>
                       </div>
                     </div>
@@ -2347,12 +2636,18 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div>
+                      <div className="grid grid-cols-2 gap-2 pt-1">
                         <button
                           onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 rounded-lg font-semibold text-xs bg-slate-900 hover:bg-blue-600 text-white transition-colors cursor-pointer shadow-2xs"
+                          className="w-full py-2 px-1 rounded-lg font-semibold text-xs border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 transition-colors cursor-pointer shadow-2xs"
                         >
                           Add to Cart
+                        </button>
+                        <button
+                          onClick={() => handleBuyNow(item)}
+                          className="w-full py-2 px-1 rounded-lg font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shadow-2xs"
+                        >
+                          Buy Now
                         </button>
                       </div>
                     </div>
@@ -2735,19 +3030,6 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => {
-                    setTransactions(prev => [
-                      {
-                        id: `TXN-${(Math.random() * 9000 + 1000).toFixed(0)}`,
-                        itemTitle: cart[0]?.title || 'Campus Item',
-                        sellerName: cart[0]?.seller?.name || 'Fellow Student',
-                        price: finalTotal,
-                        status: 'Pending',
-                        date: 'Just now',
-                        pickupSpot: checkoutData.pickupLocation,
-                        coordinates: { lat: checkoutData.lat, lng: checkoutData.lng }
-                      },
-                      ...prev
-                    ]);
                     setCart([]);
                     setOrderPlaced(false);
                     setCurrentView('home');
@@ -2946,14 +3228,7 @@ export default function App() {
                   </div>
 
                   <button
-                    onClick={() => {
-                      if (cart.length === 0) {
-                        showToast('Your cart is empty!', 'error');
-                        return;
-                      }
-                      setOrderPlaced(true);
-                      showToast('Campus order placed successfully!');
-                    }}
+                    onClick={handleConfirmOrder}
                     className="w-full btn-primary-blue py-3 rounded-md font-bold text-xs text-center cursor-pointer"
                   >
                     Confirm & Request Item
@@ -4723,6 +4998,100 @@ export default function App() {
           setIsSellModalOpen(true);
         }}
       />
+
+      {/* 12. UNIVERSITY / CAMPUS SELECTION MODAL */}
+      {isUniversityModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-5 animate-scale-up">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-200 shrink-0">
+                  <GraduationCap className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900">Select Your University / Campus</h3>
+                  <p className="text-xs text-slate-500">Listings, hand-offs & prices are tailored to your college.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsUniversityModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-2">
+                  Popular Campus Hubs
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'Nirma University',
+                    'National Institute of Technology',
+                    'IIT Bombay',
+                    'BITS Pilani',
+                    'Delhi University'
+                  ].map((univ) => {
+                    const isSelected = activeUniversity.toLowerCase() === univ.toLowerCase();
+                    return (
+                      <button
+                        key={univ}
+                        type="button"
+                        onClick={() => {
+                          setUniversityInput(univ);
+                          handleSelectUniversity(univ);
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                            : 'bg-[#f8fafc] text-slate-700 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50'
+                        }`}
+                      >
+                        {univ}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Or Type Your College / University Name
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={universityInput}
+                    onChange={(e) => setUniversityInput(e.target.value)}
+                    placeholder="e.g. Nirma University, NIT Trichy, IIT Delhi..."
+                    className="w-full bg-[#f8fafc] border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSelectUniversity(universityInput);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => handleSelectUniversity(universityInput)}
+                className="flex-1 btn-primary-blue py-2.5 rounded-xl text-xs font-bold shadow-xs cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Enter Campus Marketplace</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
