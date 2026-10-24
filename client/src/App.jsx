@@ -1901,8 +1901,9 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
       {/* 2. MAIN NAVBAR - SOLID OPAQUE (Minimalist Clean White & Blue) */}
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 w-full">
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
+          {/* Brand Logo & Campus Badge */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               onClick={() => {
                 setCurrentView('home');
@@ -1914,7 +1915,7 @@ export default function App() {
                 <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div className="text-left">
-                <span className="text-lg sm:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
+                <span className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
                   Campus<span className="text-blue-600">Cart</span>
                 </span>
                 <span className="hidden sm:block text-[9px] font-bold text-slate-400 tracking-wider uppercase -mt-1 whitespace-nowrap">
@@ -1930,119 +1931,21 @@ export default function App() {
                 setUniversityInput(activeUniversity);
                 setIsUniversityModalOpen(true);
               }}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 text-xs font-bold transition-all cursor-pointer shadow-2xs shrink-0"
-              title="Active University Marketplace (Click to change campus)"
+              className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 text-xs font-bold transition-all cursor-pointer shadow-2xs shrink-0"
+              title={`Active Campus: ${activeUniversity} (Click to change)`}
             >
-              <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0" />
-              <span className="truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[180px] md:max-w-[220px] text-[11px] sm:text-xs">
+              <GraduationCap className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span className="truncate max-w-[90px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-[180px] text-[11px] sm:text-xs">
                 {activeUniversity}
               </span>
-              <span className="text-[9px] sm:text-[10px] bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider shrink-0">
+              <span className="text-[9px] bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider shrink-0">
                 Change
               </span>
             </button>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden xl:flex items-center gap-3.5 2xl:gap-5 font-medium text-xs 2xl:text-sm text-slate-700 shrink-0 flex-nowrap">
-            <div className="relative group py-2 shrink-0">
-              <button className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer font-semibold whitespace-nowrap shrink-0">
-                <span className="whitespace-nowrap">Categories</span>
-                <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-transform shrink-0" />
-              </button>
-              <div className="absolute left-0 top-full w-64 bg-white rounded-lg border border-slate-200 py-3 px-2 hidden group-hover:block z-50 animate-fade-in shadow-md">
-                <div className="text-[11px] font-bold text-slate-400 px-3 py-1 uppercase tracking-wider">
-                  Campus Departments
-                </div>
-                {POPULAR_CATEGORIES.map(cat => (
-                  <button
-                    key={cat.name}
-                    onClick={() => handleSelectCategory(cat.name)}
-                    className="w-full text-left px-3 py-2 rounded-md text-xs hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between group/item transition-colors cursor-pointer"
-                  >
-                    <span className="font-medium text-slate-800 group-hover/item:text-blue-700">{cat.name}</span>
-                    <span className="text-[10px] text-slate-400 font-semibold">{getCategoryCount(cat.name)} Items</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button
-              onClick={() => {
-                setFilterOffer('50% Off');
-                setCurrentView('home');
-                const el = document.getElementById('campus-items-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0"
-            >
-              Deals
-            </button>
-
-            <button
-              onClick={() => setIsCalculatorModalOpen(true)}
-              className="hover:text-blue-600 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
-            >
-              <Calculator className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span className="whitespace-nowrap">Resale Calculator</span>
-            </button>
-
-            <button
-              onClick={() => setIsDeliveryModalOpen(true)}
-              className="hover:text-blue-600 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
-            >
-              <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span className="whitespace-nowrap">Campus Hubs</span>
-            </button>
-
-            {currentUser?.role === 'admin' ? (
-              <button
-                onClick={() => setCurrentView('admin')}
-                className="text-slate-800 hover:text-blue-600 font-bold transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap shrink-0"
-              >
-                <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span className="whitespace-nowrap">Admin Panel</span>
-              </button>
-            ) : (
-              <div className="flex items-center gap-3.5 2xl:gap-5 shrink-0 flex-nowrap">
-                <button
-                  onClick={() => {
-                    setAccountTab('listings');
-                    setCurrentView('my-listings');
-                  }}
-                  className={`transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
-                    currentView === 'my-listings' && accountTab === 'listings'
-                      ? 'text-blue-600 font-bold border-b-2 border-blue-600'
-                      : 'hover:text-blue-600'
-                  }`}
-                >
-                  <span className="whitespace-nowrap">My Listings</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setAccountTab('transactions');
-                    setCurrentView('my-listings');
-                  }}
-                  className={`transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                    currentView === 'my-listings' && accountTab === 'transactions'
-                      ? 'text-blue-600 font-bold border-b-2 border-blue-600'
-                      : 'hover:text-blue-600'
-                  }`}
-                >
-                  <Receipt className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span className="whitespace-nowrap">Orders</span>
-                  {transactions.length > 0 && (
-                    <span className="bg-blue-50 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded-md shrink-0">
-                      {transactions.length}
-                    </span>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Search Bar with dedicated responsive non-collapsing width */}
-          <div className="w-36 xs:w-44 sm:w-52 md:w-60 lg:w-64 xl:w-72 shrink-0 relative">
+          {/* Fluid Center Search Bar */}
+          <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg min-w-[120px] mx-1 sm:mx-3 relative">
             <div className="relative flex items-center">
               <input
                 type="text"
@@ -2052,7 +1955,7 @@ export default function App() {
                   setSearchQuery(e.target.value);
                   if (currentView !== 'home') setCurrentView('home');
                 }}
-                className="w-full bg-[#f8fafc] hover:bg-white focus:bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-lg pl-2.5 sm:pl-3 pr-7 sm:pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-blue-600 border border-slate-200 transition-colors truncate"
+                className="w-full bg-[#f8fafc] hover:bg-white focus:bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-lg pl-3 pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-blue-600 border border-slate-200 transition-colors truncate"
               />
               <button
                 aria-label="Search"
@@ -2068,33 +1971,68 @@ export default function App() {
           </div>
 
           {/* Action CTAs */}
-          <div className="flex items-center gap-2 sm:gap-3 xl:gap-3.5 shrink-0 flex-nowrap">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0 flex-nowrap">
+            {currentUser?.role === 'admin' && (
+              <button
+                onClick={() => setCurrentView('admin')}
+                className="hidden md:inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 text-xs font-bold transition-colors cursor-pointer whitespace-nowrap shrink-0 px-2 py-1.5 rounded-lg hover:bg-slate-50"
+              >
+                <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>Admin</span>
+              </button>
+            )}
+
             <button
               onClick={handleOpenSellModal}
-              className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-blue-600 text-white px-3.5 py-2 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-blue-600 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors shadow-xs"
             >
               <Plus className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap">Sell An Item</span>
+              <span className="hidden xs:inline whitespace-nowrap">Sell An Item</span>
+              <span className="xs:hidden whitespace-nowrap">Sell</span>
             </button>
 
+            {/* Orders Button */}
+            <button
+              onClick={() => {
+                setAccountTab('transactions');
+                setCurrentView('my-listings');
+              }}
+              className={`inline-flex items-center gap-1 text-xs font-semibold px-2 sm:px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                currentView === 'my-listings' && accountTab === 'transactions'
+                  ? 'text-blue-600 bg-blue-50 font-bold'
+                  : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+              }`}
+              title="Track Orders & Campus Meetups"
+            >
+              <Receipt className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span className="hidden sm:inline">Orders</span>
+              {transactions.length > 0 && (
+                <span className="bg-blue-100 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full shrink-0">
+                  {transactions.length}
+                </span>
+              )}
+            </button>
+
+            {/* Account Button */}
             <button
               onClick={() => {
                 if (!currentUser) setAuthTab('login');
                 setIsAuthModalOpen(true);
               }}
-              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 p-1 sm:px-2 sm:py-1 rounded-lg hover:bg-slate-50"
             >
               <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-200">
                 {currentUser ? (currentUser.fullName || currentUser.name || 'P')[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
               </div>
-              <span className="hidden sm:inline whitespace-nowrap">
+              <span className="hidden md:inline whitespace-nowrap">
                 {currentUser ? (currentUser.fullName || currentUser.name || 'Account').split(' ')[0] : 'Sign In'}
               </span>
             </button>
 
+            {/* Cart Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-1.5 text-xs xl:text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors relative cursor-pointer whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors relative cursor-pointer whitespace-nowrap shrink-0 p-1 sm:px-2 sm:py-1 rounded-lg hover:bg-slate-50"
             >
               <div className="relative shrink-0">
                 <ShoppingCart className="w-5 h-5 text-slate-800" />
@@ -2104,7 +2042,7 @@ export default function App() {
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline whitespace-nowrap">Cart</span>
+              <span className="hidden md:inline whitespace-nowrap">Cart</span>
             </button>
           </div>
         </div>
@@ -4663,6 +4601,71 @@ export default function App() {
                       <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" /> {currentUser.role === 'admin' ? 'Authorized Campus Admin' : 'Verified Student'}
                     </span>
                   </div>
+                </div>
+
+                {/* Fast Campus Navigation Shortcuts */}
+                <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAccountTab('listings');
+                      setCurrentView('my-listings');
+                      setIsAuthModalOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 transition-all text-left cursor-pointer"
+                  >
+                    <Tag className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-800 truncate">My Listings</div>
+                      <div className="text-[10px] text-slate-400">Manage products</div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAccountTab('transactions');
+                      setCurrentView('my-listings');
+                      setIsAuthModalOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 transition-all text-left cursor-pointer"
+                  >
+                    <Receipt className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-800 truncate">My Orders</div>
+                      <div className="text-[10px] text-slate-400">Track {transactions.length} meetups</div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCalculatorModalOpen(true);
+                      setIsAuthModalOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 transition-all text-left cursor-pointer"
+                  >
+                    <Calculator className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-800 truncate">Resale Calculator</div>
+                      <div className="text-[10px] text-slate-400">Fair price tool</div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsDeliveryModalOpen(true);
+                      setIsAuthModalOpen(false);
+                    }}
+                    className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 transition-all text-left cursor-pointer"
+                  >
+                    <MapPin className="w-4 h-4 text-blue-600 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-800 truncate">Campus Hubs</div>
+                      <div className="text-[10px] text-slate-400">GPS locations</div>
+                    </div>
+                  </button>
                 </div>
 
                 {/* Sign Out Button */}
