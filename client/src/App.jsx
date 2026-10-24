@@ -876,6 +876,7 @@ export default function App() {
     paymentMethod: 'cash_on_meetup'
   });
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [checkoutErrors, setCheckoutErrors] = useState({});
 
   // Sync checkout data whenever logged-in user changes
   useEffect(() => {
@@ -1072,6 +1073,7 @@ export default function App() {
       }, ...prev];
     });
     // Direct checkout navigation
+    setCheckoutErrors({});
     setCurrentView('checkout');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast(`Proceeding to checkout for "${product.title}"`);
@@ -1088,6 +1090,40 @@ export default function App() {
       setIsAuthModalOpen(true);
       return;
     }
+
+    // Strict validation for all mandatory delivery information fields
+    const errors = {};
+    if (!checkoutData.name || !checkoutData.name.trim()) {
+      errors.name = 'Student Full Name is required';
+    }
+    if (!checkoutData.studentId || !checkoutData.studentId.trim()) {
+      errors.studentId = 'Student Roll Number / ID is required';
+    }
+    if (!checkoutData.pickupLocation || !checkoutData.pickupLocation.trim()) {
+      errors.pickupLocation = 'Campus meetup point is required';
+    }
+    if (!checkoutData.college || !checkoutData.college.trim()) {
+      errors.college = 'College / Campus Wing is required';
+    }
+    if (!checkoutData.mobile || !checkoutData.mobile.trim()) {
+      errors.mobile = 'Mobile Phone number is required';
+    } else if (!/^[0-9+\-\s()]{8,15}$/.test(checkoutData.mobile.trim())) {
+      errors.mobile = 'Please enter a valid phone number (at least 8-10 digits)';
+    }
+    if (!checkoutData.email || !checkoutData.email.trim()) {
+      errors.email = 'University Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(checkoutData.email.trim())) {
+      errors.email = 'Please enter a valid university email address';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setCheckoutErrors(errors);
+      showToast('Please fill in all mandatory required fields (*)', 'error');
+      const formEl = document.getElementById('checkout-delivery-form');
+      if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    setCheckoutErrors({});
 
     try {
       const storedToken = localStorage.getItem('campuscart_token') || authToken;
@@ -1908,7 +1944,7 @@ export default function App() {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-5 font-medium text-xs xl:text-sm text-slate-700 shrink-0 flex-nowrap">
+          <div className="hidden xl:flex items-center gap-3.5 2xl:gap-5 font-medium text-xs 2xl:text-sm text-slate-700 shrink-0 flex-nowrap">
             <div className="relative group py-2 shrink-0">
               <button className="flex items-center gap-1 hover:text-blue-600 transition-colors cursor-pointer font-semibold whitespace-nowrap shrink-0">
                 <span className="whitespace-nowrap">Categories</span>
@@ -1968,7 +2004,7 @@ export default function App() {
                 <span className="whitespace-nowrap">Admin Panel</span>
               </button>
             ) : (
-              <div className="flex items-center gap-3 xl:gap-5 shrink-0 flex-nowrap">
+              <div className="flex items-center gap-3.5 2xl:gap-5 shrink-0 flex-nowrap">
                 <button
                   onClick={() => {
                     setAccountTab('listings');
@@ -2005,12 +2041,12 @@ export default function App() {
             )}
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 min-w-0 max-w-[130px] sm:max-w-[190px] xl:max-w-xs relative shrink">
+          {/* Search Bar with dedicated responsive non-collapsing width */}
+          <div className="w-36 xs:w-44 sm:w-52 md:w-60 lg:w-64 xl:w-72 shrink-0 relative">
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search campus items..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -2032,7 +2068,7 @@ export default function App() {
           </div>
 
           {/* Action CTAs */}
-          <div className="flex items-center gap-2 sm:gap-3.5 xl:gap-4 shrink-0 flex-nowrap">
+          <div className="flex items-center gap-2 sm:gap-3 xl:gap-3.5 shrink-0 flex-nowrap">
             <button
               onClick={handleOpenSellModal}
               className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-blue-600 text-white px-3.5 py-2 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors shadow-xs"
@@ -3043,13 +3079,18 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-7 space-y-6">
                   {/* Delivery Information Box */}
-                  <div className="bg-white rounded-xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
+                  <div id="checkout-delivery-form" className="bg-white rounded-xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
                     <div className="flex items-center justify-between flex-wrap gap-2">
                       <div>
-                        <h3 className="text-lg font-extrabold text-slate-900">
-                          Delivery Information
-                        </h3>
-                        <p className="text-[11px] text-slate-400">Uses GPS Geocoding for accurate campus meeting point</p>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-extrabold text-slate-900">
+                            Delivery Information
+                          </h3>
+                          <span className="text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full">
+                            * Mandatory Fields
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 mt-0.5">Uses GPS Geocoding for accurate campus meeting point</p>
                       </div>
 
                       <button
@@ -3066,37 +3107,93 @@ export default function App() {
                       </button>
                     </div>
 
+                    {Object.keys(checkoutErrors).length > 0 && (
+                      <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-semibold flex items-center gap-2 animate-fade-in">
+                        <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                        <span>Please complete all required fields marked with an asterisk (*) to place your campus order.</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                       <div>
-                        <label className="block text-slate-600 font-semibold mb-1">Student Full Name</label>
-                        <input
-                          type="text"
-                          value={checkoutData.name}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, name: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-slate-600 font-semibold mb-1">Student Roll Number / ID</label>
-                        <input
-                          type="text"
-                          value={checkoutData.studentId}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, studentId: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
-                        />
-                      </div>
-
-                      <div className="sm:col-span-2">
-                        <label className="block text-slate-600 font-semibold mb-1">
-                          Campus Meetup Point / Geocoded Address
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          Student Full Name <span className="text-rose-500 font-bold">*</span>
                         </label>
                         <input
                           type="text"
-                          value={checkoutData.pickupLocation}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, pickupLocation: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
+                          required
+                          placeholder="e.g. Parv Patel"
+                          value={checkoutData.name}
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, name: e.target.value });
+                            if (checkoutErrors.name) setCheckoutErrors(prev => ({ ...prev, name: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.name
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
                         />
+                        {checkoutErrors.name && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.name}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          Student Roll Number / ID <span className="text-rose-500 font-bold">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. 24BCE327"
+                          value={checkoutData.studentId}
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, studentId: e.target.value });
+                            if (checkoutErrors.studentId) setCheckoutErrors(prev => ({ ...prev, studentId: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.studentId
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
+                        />
+                        {checkoutErrors.studentId && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.studentId}</span>
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          Campus Meetup Point / Geocoded Address <span className="text-rose-500 font-bold">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. Central Library 1st Floor / Campus Cafeteria Hub"
+                          value={checkoutData.pickupLocation}
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, pickupLocation: e.target.value });
+                            if (checkoutErrors.pickupLocation) setCheckoutErrors(prev => ({ ...prev, pickupLocation: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.pickupLocation
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
+                        />
+                        {checkoutErrors.pickupLocation && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.pickupLocation}</span>
+                          </p>
+                        )}
                         <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
                           <span>
                             Coordinates:{' '}
@@ -3105,8 +3202,9 @@ export default function App() {
                             </strong>
                           </span>
                           <button
+                            type="button"
                             onClick={() => setIsDeliveryModalOpen(true)}
-                            className="text-blue-600 font-bold underline cursor-pointer"
+                            className="text-blue-600 font-bold underline cursor-pointer hover:text-blue-700"
                           >
                             Browse Geocoded Hubs
                           </button>
@@ -3114,33 +3212,84 @@ export default function App() {
                       </div>
 
                       <div>
-                        <label className="block text-slate-600 font-semibold mb-1">College / Campus Wing</label>
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          College / Campus Wing <span className="text-rose-500 font-bold">*</span>
+                        </label>
                         <input
                           type="text"
+                          required
+                          placeholder="e.g. Engineering Block A / Hostel Wing 3"
                           value={checkoutData.college}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, college: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, college: e.target.value });
+                            if (checkoutErrors.college) setCheckoutErrors(prev => ({ ...prev, college: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.college
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
                         />
+                        {checkoutErrors.college && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.college}</span>
+                          </p>
+                        )}
                       </div>
 
                       <div>
-                        <label className="block text-slate-600 font-semibold mb-1">Mobile Phone</label>
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          Mobile Phone <span className="text-rose-500 font-bold">*</span>
+                        </label>
                         <input
-                          type="text"
+                          type="tel"
+                          required
+                          placeholder="e.g. +91 98765 43210"
                           value={checkoutData.mobile}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, mobile: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, mobile: e.target.value });
+                            if (checkoutErrors.mobile) setCheckoutErrors(prev => ({ ...prev, mobile: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.mobile
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
                         />
+                        {checkoutErrors.mobile && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.mobile}</span>
+                          </p>
+                        )}
                       </div>
 
                       <div className="sm:col-span-2">
-                        <label className="block text-slate-600 font-semibold mb-1">University Email</label>
+                        <label className="block text-slate-700 font-semibold mb-1">
+                          University Email <span className="text-rose-500 font-bold">*</span>
+                        </label>
                         <input
                           type="email"
+                          required
+                          placeholder="e.g. student@college.edu"
                           value={checkoutData.email}
-                          onChange={(e) => setCheckoutData({ ...checkoutData, email: e.target.value })}
-                          className="w-full bg-[#f8f9fa] border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-600"
+                          onChange={(e) => {
+                            setCheckoutData({ ...checkoutData, email: e.target.value });
+                            if (checkoutErrors.email) setCheckoutErrors(prev => ({ ...prev, email: '' }));
+                          }}
+                          className={`w-full bg-[#f8f9fa] border rounded-xl px-3.5 py-2.5 text-slate-800 font-medium transition-all focus:outline-none ${
+                            checkoutErrors.email
+                              ? 'border-rose-500 bg-rose-50/20 focus:border-rose-600 focus:ring-1 focus:ring-rose-500'
+                              : 'border-slate-200 focus:border-blue-600 focus:bg-white'
+                          }`}
                         />
+                        {checkoutErrors.email && (
+                          <p className="text-[11px] text-rose-500 font-semibold mt-1 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            <span>{checkoutErrors.email}</span>
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -3962,6 +4111,7 @@ export default function App() {
                   <button
                     onClick={() => {
                       setIsCartOpen(false);
+                      setCheckoutErrors({});
                       setCurrentView('checkout');
                     }}
                     className="w-full btn-primary-blue py-3.5 rounded-full font-bold text-sm text-center shadow-md cursor-pointer transition-transform active:scale-98"
