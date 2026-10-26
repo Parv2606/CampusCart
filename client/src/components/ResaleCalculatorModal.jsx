@@ -1,15 +1,19 @@
+// Core React and icon components
 import React, { useState } from 'react';
 import { X, Calculator, Tag, ArrowRight, Check } from '../icons.jsx';
 
+// Interactive campus fair-price calculator modal dialog
 export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListing }) {
+  // Calculator input state variables
   const [category, setCategory] = useState('Calculators');
   const [originalPrice, setOriginalPrice] = useState(2500);
   const [semestersUsed, setSemestersUsed] = useState(2);
   const [condition, setCondition] = useState('Like New');
 
+  // If modal is closed, do not render
   if (!isOpen) return null;
 
-  // Depreciation formula based on campus market data
+  // Depreciation formula based on campus market wear and category
   const conditionMultipliers = {
     'Brand New': 0.85,
     'Like New': 0.68,
@@ -26,6 +30,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
 
   const studentSavingsPercent = Math.round(((originalPrice - estimatedPrice) / originalPrice) * 100);
 
+  // Apply suggested price back to parent listing form
   const handleApply = () => {
     if (onApplyToListing) {
       onApplyToListing({
@@ -38,9 +43,11 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
   };
 
   return (
+    // Modal backdrop overlay
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
+      {/* Dialog container */}
       <div className="bg-white rounded-xl border border-slate-200 max-w-lg w-full flex flex-col shadow-lg overflow-hidden animate-scale-up max-h-[92vh] my-auto">
-        {/* Header */}
+        {/* Modal header */}
         <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md bg-slate-900 text-white flex items-center justify-center shadow-xs shrink-0">
@@ -60,8 +67,9 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           </button>
         </div>
 
-        {/* Interactive Controls */}
+        {/* Interactive form controls */}
         <div className="p-4 sm:p-6 space-y-4 text-xs text-slate-700 overflow-y-auto">
+          {/* Category selection */}
           <div>
             <label className="font-bold text-slate-900 block mb-1">Item Category</label>
             <select
@@ -78,6 +86,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
             </select>
           </div>
 
+          {/* Original price range slider */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="font-bold text-slate-900">Original Purchase Price</label>
@@ -99,6 +108,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
             </div>
           </div>
 
+          {/* Semesters used and physical condition inputs */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="font-bold text-slate-900 block mb-1">Semesters Used</label>
@@ -130,7 +140,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
             </div>
           </div>
 
-          {/* Result Card */}
+          {/* Estimation calculation results card */}
           <div className="bg-blue-50/70 border border-blue-200 rounded-lg p-4 space-y-2 mt-2">
             <div className="flex items-baseline justify-between">
               <div>
@@ -153,7 +163,7 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Modal footer with action buttons */}
         <div className="px-6 py-3.5 border-t border-slate-200 bg-white flex items-center justify-between">
           <button
             onClick={onClose}
@@ -173,3 +183,4 @@ export default function ResaleCalculatorModal({ isOpen, onClose, onApplyToListin
     </div>
   );
 }
+

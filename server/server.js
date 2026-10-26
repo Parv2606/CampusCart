@@ -1,3 +1,4 @@
+// Core dependencies and environment configuration
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -15,18 +16,18 @@ try {
   // Ignore if custom dns servers cannot be set
 }
 
+// Server configuration & environment variables
 const app = express();
 const PORT = process.env.PORT || 5000;
-// Default to local MongoDB on port 27017 or Atlas from .env
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/campuscart';
 const JWT_SECRET = process.env.JWT_SECRET || 'campuscart_default_fallback_jwt_secret_2025';
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'campuscart_admin_key_2025';
 
-// Track MongoDB connection state
+// Database connection status tracking flag
 let isDbConnected = false;
 
-// Middleware
+// Global middleware for parsing requests and enabling CORS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -37,10 +38,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// ==========================================
-// MONGOOSE SCHEMAS & MODELS
-// ==========================================
-
+// User schema for student and campus administrator accounts
 const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
@@ -54,6 +52,7 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Product schema for campus marketplace items
 const productSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   description: { type: String, required: true, trim: true },
@@ -100,6 +99,7 @@ const productSchema = new mongoose.Schema({
 });
 
 
+// Wishlist schema mapping students to saved items
 const wishlistSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -107,6 +107,7 @@ const wishlistSchema = new mongoose.Schema({
 });
 wishlistSchema.index({ user: 1, product: 1 }, { unique: true });
 
+// Transaction schema for purchase orders and campus hand-off requests
 const transactionSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -130,6 +131,7 @@ const transactionSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// Report schema for flagging inappropriate product listings
 const reportSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   reportedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -139,16 +141,14 @@ const reportSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Compile Mongoose models from schemas
 const User = mongoose.model('User', userSchema);
 const Product = mongoose.model('Product', productSchema);
 const Wishlist = mongoose.model('Wishlist', wishlistSchema);
 const Transaction = mongoose.model('Transaction', transactionSchema);
 const Report = mongoose.model('Report', reportSchema);
 
-// ==========================================
-// DATABASE CONNECTION & SEEDING
-// ==========================================
-
+// Seed initial default administrator and demo student accounts
 async function seedInitialData() {
   try {
     // 1. Seed Administrator
@@ -374,6 +374,7 @@ async function seedInitialData() {
   }
 }
 
+// Connect to MongoDB with automated retry logic
 function connectDatabase() {
   mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 10000
@@ -391,8 +392,10 @@ function connectDatabase() {
   });
 }
 
+// Initialize database connection
 connectDatabase();
 
+// MongoDB connection lifecycle event listeners
 mongoose.connection.on('connected', () => { isDbConnected = true; });
 mongoose.connection.on('disconnected', () => {
   isDbConnected = false;
@@ -412,9 +415,7 @@ const checkDb = (req, res, next) => {
   next();
 };
 
-// ==========================================
-// AUTHENTICATION UTILITIES & MIDDLEWARE
-// In-memory user registry for seamless offline resilience
+// In-memory user registry for offline resilience and development
 const inMemoryUsers = [
   {
     _id: 'usr-admin-1',
@@ -444,6 +445,7 @@ const inMemoryUsers = [
   }
 ];
 
+// Sign JWT authentication token and attach secure HTTP cookie
 const sendTokenResponse = (user, res, statusCode = 200) => {
   const token = jwt.sign(
     { id: user._id, role: user.role },
@@ -478,6 +480,7 @@ const sendTokenResponse = (user, res, statusCode = 200) => {
   });
 };
 
+// Middleware to authenticate user session from cookie or Bearer header
 const requireAuth = async (req, res, next) => {
   try {
     let token = req.cookies.token;
@@ -521,6 +524,7 @@ const requireAuth = async (req, res, next) => {
   }
 };
 
+// Middleware to restrict access to administrator accounts only
 const requireAdmin = (req, res, next) => {
   if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Access denied. Administrator privileges required.' });
@@ -528,11 +532,7 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
-// ==========================================
-// API ROUTES
-// ==========================================
-
-// 1. HEALTH CHECK
+// Health check endpoint verifying database connectivity
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -543,7 +543,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 2. GEOCODING API ENDPOINTS (OpenStreetMap Nominatim Integration)
 // Reverse Geocoding: Get exact location from GPS coordinates (lat, lng)
 app.get('/api/geocode/reverse', (req, res) => {
   try {
@@ -645,9 +644,7 @@ app.get('/api/geocode/search', (req, res) => {
   }
 });
 
-// 3. AUTHENTICATION ROUTES (MongoDB Mongoose with Resilient Fallback)
-
-// Register
+// Student user registration endpoint
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { fullName, email, password, studentId, college, department, academicYear } = req.body;
@@ -717,7 +714,7 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// Login
+// User login authentication endpoint
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -768,7 +765,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// Logout
+// User logout endpoint clearing auth cookie
 app.post('/api/auth/logout', (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
@@ -778,12 +775,12 @@ app.post('/api/auth/logout', (req, res) => {
   res.json({ success: true, message: 'Logged out successfully.' });
 });
 
-// Get Current User Profile
+// Fetch current authenticated user session data
 app.get('/api/auth/me', requireAuth, (req, res) => {
   res.json({ success: true, user: req.user });
 });
 
-// Update Profile
+// Update user profile information or password
 app.put('/api/auth/profile', checkDb, requireAuth, async (req, res) => {
   try {
     const { fullName, college, department, academicYear, currentPassword, newPassword } = req.body;
@@ -816,7 +813,7 @@ app.put('/api/auth/profile', checkDb, requireAuth, async (req, res) => {
   }
 });
 
-// Controlled Administrator Promotion using ADMIN_SECRET
+// Controlled administrator promotion using secret key
 app.post('/api/admin/setup', checkDb, requireAuth, async (req, res) => {
   try {
     const { secretKey } = req.body;
@@ -834,9 +831,7 @@ app.post('/api/admin/setup', checkDb, requireAuth, async (req, res) => {
   }
 });
 
-// 3. PRODUCT ROUTES
-
-// Browse & Search Products
+// Browse and filter product listings
 app.get('/api/products', checkDb, async (req, res) => {
   try {
     const { search, category, minPrice, maxPrice, condition, status, sort, college } = req.query;
@@ -1170,9 +1165,7 @@ app.patch('/api/products/:id/status', checkDb, requireAuth, async (req, res) => 
   }
 });
 
-// 4. WISHLIST ROUTES
-
-// Get Wishlist for Current User
+// Fetch current user wishlist items
 app.get('/api/wishlist', checkDb, requireAuth, async (req, res) => {
   try {
     const wishlistItems = await Wishlist.find({ user: req.user._id })
@@ -1229,9 +1222,7 @@ app.delete('/api/wishlist/:productId', checkDb, requireAuth, async (req, res) =>
   }
 });
 
-// 5. TRANSACTION ROUTES (Purchase & Exchange Requests)
-
-// Create Request / Place Order
+// Create purchase request or order transaction
 app.post('/api/transactions', checkDb, requireAuth, async (req, res) => {
   try {
     const { productId, items, message, deliveryLocation, paymentMethod } = req.body;
@@ -1405,7 +1396,7 @@ app.patch('/api/transactions/:id', checkDb, requireAuth, async (req, res) => {
   }
 });
 
-// 6. REPORT LISTINGS
+// Submit product moderation report
 app.post('/api/reports', checkDb, requireAuth, async (req, res) => {
   try {
     const { productId, reason, details } = req.body;
@@ -1432,9 +1423,7 @@ app.post('/api/reports', checkDb, requireAuth, async (req, res) => {
   }
 });
 
-// 7. ADMINISTRATOR ROUTES
-
-// Admin Statistics
+// Platform overview statistics for administrators
 app.get('/api/admin/stats', checkDb, requireAuth, requireAdmin, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();

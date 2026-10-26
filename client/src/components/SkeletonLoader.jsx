@@ -1,6 +1,7 @@
+// Core React library
 import React from 'react';
 
-// Gray placeholder skeleton blocks while content loads (No jitter, no blank flashes)
+// Single product card skeleton placeholder
 export function ProductCardSkeleton() {
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-4 flex flex-col justify-between space-y-4 animate-pulse">
@@ -26,6 +27,7 @@ export function ProductCardSkeleton() {
   );
 }
 
+// Grid layout of skeleton cards for catalog loading state
 export function CatalogGridSkeleton({ count = 8 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -35,3 +37,4 @@ export function CatalogGridSkeleton({ count = 8 }) {
     </div>
   );
 }
+

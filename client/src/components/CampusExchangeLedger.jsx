@@ -1,8 +1,10 @@
+// Core React and icon components
 import React from 'react';
 import { ShieldCheck, MapPin, Receipt, CheckCircle2 } from '../icons.jsx';
 
-// Verified Campus Exchange Ledger (Authentic campus activity)
+// Verified campus peer-to-peer exchange ledger display
 export default function CampusExchangeLedger() {
+  // Mock dataset of verified student transactions across campus departments
   const verifiedTrades = [
     {
       id: 'tx-v1',
@@ -46,8 +48,10 @@ export default function CampusExchangeLedger() {
     }
   ];
 
+  // Render ledger card with live trade feeds
   return (
     <section className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 space-y-4">
+      {/* Ledger header and trust badge */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center">
@@ -63,6 +67,7 @@ export default function CampusExchangeLedger() {
         </span>
       </div>
 
+      {/* Grid of recent settled transactions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
         {verifiedTrades.map((t) => (
           <div
@@ -97,3 +102,4 @@ export default function CampusExchangeLedger() {
     </section>
   );
 }
+

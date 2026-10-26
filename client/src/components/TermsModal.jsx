@@ -1,13 +1,18 @@
+// Core React and icon components
 import React from 'react';
 import { X, ShieldCheck, FileText } from '../icons.jsx';
 
+// Terms of service modal dialog for campus peer exchange rules
 export default function TermsModal({ isOpen, onClose }) {
+  // If modal is closed, do not render
   if (!isOpen) return null;
 
   return (
+    // Backdrop overlay
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
+      {/* Dialog container */}
       <div className="bg-white rounded-xl border border-slate-200 max-w-2xl w-full max-h-[88vh] flex flex-col shadow-lg overflow-hidden animate-scale-up my-auto">
-        {/* Header */}
+        {/* Modal header with title and close button */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md bg-slate-900 text-white flex items-center justify-center shadow-xs">
@@ -27,8 +32,9 @@ export default function TermsModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Scrollable legal terms content */}
         <div className="p-6 overflow-y-auto space-y-5 text-xs text-slate-600 leading-relaxed">
+          {/* Section 1: Campus affiliation and student eligibility */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">1. Campus Affiliation & Student Eligibility</h4>
             <p>
@@ -36,6 +42,7 @@ export default function TermsModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 2: In-person safety and meetup hubs */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">2. In-Person Hand-Off Safety & Designated Hubs</h4>
             <p>
@@ -51,6 +58,7 @@ export default function TermsModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 3: Prohibited items list */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">3. Prohibited University Items</h4>
             <p>
@@ -64,6 +72,7 @@ export default function TermsModal({ isOpen, onClose }) {
             </ul>
           </section>
 
+          {/* Section 4: Transparent pricing rules */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">4. Transparent Pricing & Peer Settlement</h4>
             <p>
@@ -71,6 +80,7 @@ export default function TermsModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 5: Inspection and protection period */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">5. 7-Day Campus Inspection & Honor Protection</h4>
             <p>
@@ -78,6 +88,7 @@ export default function TermsModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 6: Limitation of liability */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">6. Limitation of University Liability</h4>
             <p>
@@ -86,7 +97,7 @@ export default function TermsModal({ isOpen, onClose }) {
           </section>
         </div>
 
-        {/* Footer */}
+        {/* Modal footer with confirmation button */}
         <div className="px-6 py-3.5 border-t border-slate-200 bg-white flex items-center justify-between">
           <span className="text-[11px] text-slate-400">Effective Academic Year 2025-2026</span>
           <button
@@ -100,3 +111,4 @@ export default function TermsModal({ isOpen, onClose }) {
     </div>
   );
 }
+

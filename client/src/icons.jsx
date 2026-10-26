@@ -1,8 +1,7 @@
+// Core React library
 import React from 'react';
 
-// Bespoke, handcrafted editorial SVG icons with consistent 1.75px stroke
-// Distinct architectural character, zero reliance on generic icon packs
-
+// Reusable SVG wrapper component with consistent 1.75px stroke
 const IconBase = ({ children, className = "w-4 h-4", ...props }) => (
   <svg
     viewBox="0 0 24 24"
@@ -18,6 +17,7 @@ const IconBase = ({ children, className = "w-4 h-4", ...props }) => (
   </svg>
 );
 
+// Shopping cart icon
 export const ShoppingCart = (props) => (
   <IconBase {...props}>
     <path d="M2 3h3l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h9.6a1.5 1.5 0 0 0 1.5-1.2L22 6H6" />
@@ -89,6 +89,7 @@ export const CheckCircle2 = (props) => (
   </IconBase>
 );
 
+// Delivery and action icons
 export const Truck = (props) => (
   <IconBase {...props}>
     <rect x="2" y="5" width="13" height="11" rx="1" />
@@ -135,6 +136,7 @@ export const ArrowLeft = (props) => (
   </IconBase>
 );
 
+// Security and verification badge icons
 export const Shield = (props) => (
   <IconBase {...props}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -163,6 +165,7 @@ export const CreditCard = (props) => (
   </IconBase>
 );
 
+// Location and input visibility icons
 export const MapPin = (props) => (
   <IconBase {...props}>
     <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" />
@@ -220,6 +223,7 @@ export const Trash2 = (props) => (
   </IconBase>
 );
 
+// Academic category and messaging icons
 export const BookOpen = (props) => (
   <IconBase {...props}>
     <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11v18H4.5A2.5 2.5 0 0 0 2 22.5V4.5z" />
@@ -280,6 +284,7 @@ export const Send = (props) => (
   </IconBase>
 );
 
+// Geolocation and map navigation icons
 export const Navigation = (props) => (
   <IconBase {...props}>
     <polygon points="3 11 22 2 13 21 11 13 3 11" />
@@ -334,6 +339,7 @@ export const Receipt = (props) => (
   </IconBase>
 );
 
+// Authentication and student utility icons
 export const Lock = (props) => (
   <IconBase {...props}>
     <rect x="5" y="11" width="14" height="10" rx="2" />

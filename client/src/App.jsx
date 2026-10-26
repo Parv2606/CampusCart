@@ -1,5 +1,8 @@
+// Core React hooks and external HTTP client
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+
+// Handcrafted SVG icons
 import {
   ShoppingCart, Search, Heart, User, Star, ChevronDown, Check,
   Truck, RotateCcw, X, Plus, Minus, ArrowRight, ShieldCheck,
@@ -9,25 +12,22 @@ import {
   Navigation, Crosshair, Globe, ExternalLink, Loader2, Compass, Receipt,
   Lock, LogIn, LogOut, UserPlus, Shield, Calculator, FileText, GraduationCap
 } from './icons.jsx';
+
+// Custom modal dialog and UI components
 import TermsModal from './components/TermsModal.jsx';
 import PrivacyModal from './components/PrivacyModal.jsx';
 import ResaleCalculatorModal from './components/ResaleCalculatorModal.jsx';
 import CampusExchangeLedger from './components/CampusExchangeLedger.jsx';
 import { CatalogGridSkeleton } from './components/SkeletonLoader.jsx';
 
-// ==========================================
-// CURRENCY HELPER
-// ==========================================
+// Currency formatting helper (converts amount to INR string)
 const formatPrice = (amount) => {
   const num = Number(amount || 0);
   return '₹' + num.toLocaleString('en-IN');
 };
 const formatINR = formatPrice;
 
-// ==========================================
-// CAMPUSCART INITIAL DATASET (Catalog & Exact Geocoding)
-// ==========================================
-
+// Seed product catalog with campus coordinates and seller profiles
 const INITIAL_CAMPUS_PRODUCTS = [
   {
     id: 'cc-1',
@@ -496,6 +496,7 @@ const INITIAL_CAMPUS_PRODUCTS = [
   }
 ];
 
+// Recommendation dataset: similar campus products
 const SIMILAR_ITEMS = [
   {
     id: 'sim-1',
@@ -555,6 +556,7 @@ const SIMILAR_ITEMS = [
   }
 ];
 
+// Browsing history dataset: recently viewed items
 const RECENTLY_VIEWED = [
   {
     id: 'rec-1',
@@ -615,6 +617,7 @@ const RECENTLY_VIEWED = [
   }
 ];
 
+// Popular university categories taxonomy
 const POPULAR_CATEGORIES = [
   { name: 'Books & Notes', displayName: 'Textbooks & Notes', img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=300&q=80' },
   { name: 'Calculators', displayName: 'Calculators', img: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=300&q=80' },
@@ -624,7 +627,9 @@ const POPULAR_CATEGORIES = [
   { name: 'Furniture', displayName: 'Hostel Furniture', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=300&q=80' }
 ];
 
+// Main application component managing state, authentication, and routing
 export default function App() {
+  // Navigation and active product selection state
   const [currentView, setCurrentView] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(INITIAL_CAMPUS_PRODUCTS[1]);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
@@ -1020,6 +1025,7 @@ export default function App() {
     }
   }, [authToken, currentUser]);
 
+  // Select active campus university and reload products
   const handleSelectUniversity = async (univName) => {
     const finalUniv = (univName || universityInput).trim();
     if (!finalUniv) {
@@ -1053,6 +1059,7 @@ export default function App() {
     showToast(`Switched to ${finalUniv} Marketplace!`);
   };
 
+  // Immediate buy action navigating directly to checkout
   const handleBuyNow = (product) => {
     if (!currentUser) {
       showToast('Please sign in to buy items', 'error');
@@ -1079,6 +1086,7 @@ export default function App() {
     showToast(`Proceeding to checkout for "${product.title}"`);
   };
 
+  // Place and confirm peer-to-peer campus exchange order
   const handleConfirmOrder = async () => {
     if (cart.length === 0) {
       showToast('Your cart is empty!', 'error');
@@ -1285,6 +1293,7 @@ export default function App() {
     );
   };
 
+  // Forward geocoding search for campus landmarks and buildings
   const handleSearchGeocode = async (queryText) => {
     setGeocodeQuery(queryText);
     if (!queryText || queryText.trim().length < 3) {
@@ -1433,6 +1442,7 @@ export default function App() {
     }
   };
 
+  // Open product detail view and scroll to top
   const handleOpenProduct = (product) => {
     setSelectedProduct(product);
     setSelectedColorIndex(0);
@@ -1442,6 +1452,7 @@ export default function App() {
   };
 
   // Authentication Handlers (Connected to Express MongoDB Backend)
+  // Student account login handler
   const handleLogin = async (e) => {
     if (e) e.preventDefault();
     setAuthError('');
@@ -1488,6 +1499,7 @@ export default function App() {
     }
   };
 
+  // Student account registration handler
   const handleRegister = async (e) => {
     if (e) e.preventDefault();
     setAuthError('');
@@ -1548,6 +1560,7 @@ export default function App() {
     }
   };
 
+  // User sign out handler
   const handleLogout = () => {
     setCurrentUser(null);
     setAuthToken('');
@@ -1560,6 +1573,7 @@ export default function App() {
     showToast('Signed out of CampusCart account');
   };
 
+  // Open create listing modal with prefilled seller data
   const handleOpenSellModal = () => {
     if (!currentUser) {
       showToast('You must log in to add products to the marketplace', 'error');
@@ -1570,6 +1584,7 @@ export default function App() {
     setIsSellModalOpen(true);
   };
 
+  // Submit new product listing to marketplace
   const handleCreateListing = async (e) => {
     e.preventDefault();
 
@@ -1678,12 +1693,14 @@ export default function App() {
     showToast(`"${created.title}" successfully listed!`);
   };
 
+  // Delete product listing handler
   const handleDeleteProduct = (productId) => {
     setProducts(prev => prev.filter(p => p.id !== productId));
     setReports(prev => prev.filter(r => r.id !== productId));
     showToast('Listing removed by Campus Administrator', 'info');
   };
 
+  // Quick toggle product availability status
   const handleUpdateProductStatus = (productId, newStatus) => {
     setProducts(prev =>
       prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
@@ -1691,6 +1708,7 @@ export default function App() {
     showToast(`Status updated to ${newStatus}`);
   };
 
+  // Update order transaction status
   const handleUpdateTransactionStatus = (txnId, newStatus) => {
     setTransactions(prev =>
       prev.map(t => (t.id === txnId ? { ...t, status: newStatus } : t))
@@ -1698,12 +1716,14 @@ export default function App() {
     showToast(`Order #${txnId} marked as ${newStatus}`);
   };
 
+  // Cancel transaction request
   const handleCancelTransaction = (txnId) => {
     setTransactions(prev => prev.filter(t => t.id !== txnId));
     showToast(`Order #${txnId} removed from tracking`, 'info');
   };
 
   // Admin Price Adjustment Handler (Saves directly to MongoDB)
+  // Admin direct price update handler
   const handleAdminUpdatePrice = async (productId, newPrice) => {
     if (currentUser?.role !== 'admin') {
       showToast('Admin privileges required to adjust prices.', 'error');
@@ -1744,6 +1764,7 @@ export default function App() {
     }
   };
 
+  // Open price editor dialog
   const handleOpenPriceModal = (product) => {
     if (currentUser?.role !== 'admin') {
       showToast('Admin privileges required to edit item prices.', 'error');
@@ -1885,6 +1906,7 @@ export default function App() {
     });
   }, [products, searchQuery, selectedCategory, filterCondition, filterPrice, filterCollege, filterStatus, filterOffer, sortBy, activeUniversity]);
 
+  // Reset all active filters to default marketplace catalog view
   const resetAllFilters = () => {
     setSearchQuery('');
     setSelectedCategory('All');
@@ -1899,7 +1921,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
-      {/* 2. MAIN NAVBAR - SOLID OPAQUE (Minimalist Clean White & Blue) */}
+      {/* Top navigation bar with logo, campus selector, search, and action controls */}
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand Logo & Campus Badge */}
@@ -2048,9 +2070,9 @@ export default function App() {
         </div>
       </nav>
 
-      {/* 3. MAIN ROUTER VIEWS */}
+      {/* Main application view router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
-        {/* VIEW 1: HOME MARKETPLACE */}
+        {/* Home view: Hero banner, categories, filters, and catalog */}
         {currentView === 'home' && (
           <div className="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 w-full">
             {/* HERO PROMO BANNER (Minimalist Obsidian / Slate / Royal Blue) */}
@@ -2632,7 +2654,7 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 2: PRODUCT DETAIL */}
+        {/* Product detail view: Gallery, specifications, seller info, and similar products */}
         {currentView === 'product-detail' && selectedProduct && (
           <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-8 animate-fade-in">
             <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium flex-wrap">
@@ -2957,7 +2979,7 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 3: CHECKOUT & DELIVERY / PAYMENT */}
+        {/* Checkout view: Meetup delivery location, payment method, and summary */}
         {currentView === 'checkout' && (
           <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-8 animate-fade-in">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -3386,7 +3408,7 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 4: MY LISTINGS & TRANSACTION TRACKING */}
+        {/* Student account view: Personal listings and order tracking */}
         {currentView === 'my-listings' && (
           <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 space-y-6 animate-fade-in">
             {/* Header and Tab Bar */}
@@ -3712,7 +3734,7 @@ export default function App() {
           </div>
         )}
 
-        {/* VIEW 5: ADMIN DASHBOARD */}
+        {/* Administrator dashboard view: Moderation and inventory management */}
         {currentView === 'admin' && (
           currentUser?.role !== 'admin' ? (
             <div className="max-w-xl mx-auto my-16 p-8 bg-white rounded-3xl border border-slate-200 shadow-sm text-center space-y-4 animate-fade-in">
@@ -3988,7 +4010,7 @@ export default function App() {
         )}
       </main>
 
-      {/* 4. SLIDE-OVER SHOPPING CART DRAWER */}
+      {/* Slide-over cart drawer showing selected items and total */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div
@@ -4116,7 +4138,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 5. POST / SELL AN ITEM MODAL */}
+      {/* Modal dialog for creating and publishing a new campus listing */}
       {isSellModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
@@ -4300,7 +4322,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 6. CONTACT SELLER MODAL */}
+      {/* Modal dialog for sending a direct message to the seller */}
       {isContactModalOpen && selectedProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
@@ -4371,7 +4393,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 7. GEOCODING API EXACT LOCATION & HAND-OFF HUBS MODAL */}
+      {/* Modal dialog for detecting and picking campus hand-off location */}
       {isDeliveryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 overflow-y-auto">
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-lg w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
@@ -4529,7 +4551,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 8. STUDENT AUTHENTICATION & PROFILE MODAL */}
+      {/* Modal dialog for student sign in and account registration */}
       {isAuthModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 overflow-y-auto">
           <div className="bg-white rounded-xl p-4 sm:p-7 max-w-md w-full shadow-lg border border-slate-200 space-y-4 animate-scale-up max-h-[92vh] overflow-y-auto my-auto">
@@ -4969,7 +4991,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 8. ADMIN QUICK PRICE ADJUSTMENT MODAL */}
+      {/* Modal dialog for administrator price adjustment */}
       {isAdminPriceModalOpen && adminPriceModalProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 overflow-y-auto">
           <div className="bg-white rounded-xl p-4 sm:p-8 max-w-md w-full shadow-lg border border-slate-200 space-y-5 animate-scale-up border border-slate-100 max-h-[90vh] overflow-y-auto my-auto">
@@ -5205,7 +5227,7 @@ export default function App() {
         }}
       />
 
-      {/* 12. UNIVERSITY / CAMPUS SELECTION MODAL */}
+      {/* Modal dialog for selecting active university campus */}
       {isUniversityModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-5 animate-scale-up">

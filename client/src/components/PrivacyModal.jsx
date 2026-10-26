@@ -1,13 +1,18 @@
+// Core React and icon components
 import React from 'react';
 import { X, Shield, Lock } from '../icons.jsx';
 
+// Privacy policy modal dialog explaining student data protection
 export default function PrivacyModal({ isOpen, onClose }) {
+  // If modal is closed, do not render
   if (!isOpen) return null;
 
   return (
+    // Backdrop overlay
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 animate-fade-in overflow-y-auto">
+      {/* Dialog container */}
       <div className="bg-white rounded-xl border border-slate-200 max-w-2xl w-full max-h-[88vh] flex flex-col shadow-lg overflow-hidden animate-scale-up my-auto">
-        {/* Header */}
+        {/* Modal header with title and close button */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md bg-slate-900 text-white flex items-center justify-center shadow-xs">
@@ -27,8 +32,9 @@ export default function PrivacyModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Scrollable privacy policy content */}
         <div className="p-6 overflow-y-auto space-y-5 text-xs text-slate-600 leading-relaxed">
+          {/* Section 1: Privacy commitment */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">1. Commitment to Student Privacy</h4>
             <p>
@@ -36,6 +42,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 2: Collected information and student ID safeguards */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">2. Information Collected & Student ID Safeguards</h4>
             <p>
@@ -49,6 +56,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </ul>
           </section>
 
+          {/* Section 3: Geolocation and landmark masking */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">3. Campus Geolocation & Coordinate Masking</h4>
             <p>
@@ -56,6 +64,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 4: Zero commercial monetization policy */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">4. Zero Commercial Monetization or Ad Tracking</h4>
             <p>
@@ -68,6 +77,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </ul>
           </section>
 
+          {/* Section 5: Salted password hashing and session tokens */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">5. Cryptographic Password Security & Session Control</h4>
             <p>
@@ -75,6 +85,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </p>
           </section>
 
+          {/* Section 6: Account deletion and right to be forgotten */}
           <section className="space-y-1.5">
             <h4 className="font-bold text-slate-900 text-sm">6. Account Deletion & Right to Be Forgotten</h4>
             <p>
@@ -83,7 +94,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
           </section>
         </div>
 
-        {/* Footer */}
+        {/* Modal footer with acknowledgment button */}
         <div className="px-6 py-3.5 border-t border-slate-200 bg-white flex items-center justify-between">
           <span className="text-[11px] text-slate-400">Strict Student Protection Standard</span>
           <button
@@ -97,3 +108,4 @@ export default function PrivacyModal({ isOpen, onClose }) {
     </div>
   );
 }
+

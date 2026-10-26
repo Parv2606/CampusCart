@@ -1,3 +1,4 @@
+// Import dependencies and configuration
 const mongoose = require('mongoose');
 const path = require('path');
 const dns = require('dns');
@@ -10,8 +11,10 @@ try {
   // Ignore if custom dns servers cannot be set
 }
 
+// MongoDB database connection URI
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/campuscart';
 
+// Inspect collections and display summary tables
 async function viewDatabase() {
   try {
     console.log('\n======================================================');
@@ -19,15 +22,17 @@ async function viewDatabase() {
     console.log(`Connecting to: ${MONGO_URI}`);
     console.log('======================================================\n');
 
+    // Connect to MongoDB
     await mongoose.connect(MONGO_URI);
     const db = mongoose.connection.db;
 
+    // List all existing collections
     const collections = await db.listCollections().toArray();
     console.log(`Found ${collections.length} Collections in database:`);
     collections.forEach(c => console.log(`  📁 ${c.name}`));
     console.log('------------------------------------------------------\n');
 
-    // 1. Users
+    // Inspect Users collection
     const users = await db.collection('users').find({}).toArray();
     console.log(`👥 USERS COLLECTION (${users.length} records):`);
     console.table(users.map(u => ({
@@ -39,7 +44,7 @@ async function viewDatabase() {
       College: u.college
     })));
 
-    // 2. Products
+    // Inspect Products collection
     const products = await db.collection('products').find({}).toArray();
     console.log(`\n📚 PRODUCTS COLLECTION (${products.length} records):`);
     console.table(products.map(p => ({
@@ -52,7 +57,7 @@ async function viewDatabase() {
       Status: p.status
     })));
 
-    // 3. Wishlists
+    // Inspect Wishlists collection
     const wishlists = await db.collection('wishlists').find({}).toArray();
     console.log(`\n💖 WISHLISTS COLLECTION (${wishlists.length} records):`);
     if (wishlists.length === 0) {
@@ -66,7 +71,7 @@ async function viewDatabase() {
       })));
     }
 
-    // 4. Transactions
+    // Inspect Transactions collection
     const transactions = await db.collection('transactions').find({}).toArray();
     console.log(`\n💳 TRANSACTIONS COLLECTION (${transactions.length} records):`);
     if (transactions.length === 0) {
@@ -88,9 +93,11 @@ async function viewDatabase() {
   } catch (err) {
     console.error('Database connection error:', err.message);
   } finally {
+    // Disconnect and exit process
     await mongoose.disconnect();
     process.exit(0);
   }
 }
 
+// Execute database inspector script
 viewDatabase();
