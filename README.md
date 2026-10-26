@@ -6,9 +6,8 @@
 **Language:** English Only  
 **Tech Stack:** React.js, Tailwind CSS, Normal CSS, Node.js, Express, MongoDB (Mongoose), OpenStreetMap Geocoding API
 
----
 
-## 📌 Project Overview
+##  Project Overview
 
 **CampusCart** is a student-to-student online marketplace designed for buying, selling, and exchanging used items within a college campus. Students can list products such as textbooks, calculators, electronics, bicycles, furniture, lab equipment, and other useful items.
 
