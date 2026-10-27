@@ -18,7 +18,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/campuscart
 async function viewDatabase() {
   try {
     console.log('\n======================================================');
-    console.log('📦 CAMPUSCART DATABASE INSPECTOR');
+    console.log(' CAMPUSCART DATABASE INSPECTOR');
     console.log(`Connecting to: ${MONGO_URI}`);
     console.log('======================================================\n');
 
@@ -29,12 +29,12 @@ async function viewDatabase() {
     // List all existing collections
     const collections = await db.listCollections().toArray();
     console.log(`Found ${collections.length} Collections in database:`);
-    collections.forEach(c => console.log(`  📁 ${c.name}`));
+    collections.forEach(c => console.log(`   ${c.name}`));
     console.log('------------------------------------------------------\n');
 
     // Inspect Users collection
     const users = await db.collection('users').find({}).toArray();
-    console.log(`👥 USERS COLLECTION (${users.length} records):`);
+    console.log(` USERS COLLECTION (${users.length} records):`);
     console.table(users.map(u => ({
       ID: u._id.toString().slice(-6),
       Name: u.fullName,
@@ -46,7 +46,7 @@ async function viewDatabase() {
 
     // Inspect Products collection
     const products = await db.collection('products').find({}).toArray();
-    console.log(`\n📚 PRODUCTS COLLECTION (${products.length} records):`);
+    console.log(`\n PRODUCTS COLLECTION (${products.length} records):`);
     console.table(products.map(p => ({
       ID: p._id.toString().slice(-6),
       Title: p.title.slice(0, 30),
@@ -59,7 +59,7 @@ async function viewDatabase() {
 
     // Inspect Wishlists collection
     const wishlists = await db.collection('wishlists').find({}).toArray();
-    console.log(`\n💖 WISHLISTS COLLECTION (${wishlists.length} records):`);
+    console.log(`\n WISHLISTS COLLECTION (${wishlists.length} records):`);
     if (wishlists.length === 0) {
       console.log('  (No items added to wishlist yet. Click heart on any item!)');
     } else {
@@ -73,7 +73,7 @@ async function viewDatabase() {
 
     // Inspect Transactions collection
     const transactions = await db.collection('transactions').find({}).toArray();
-    console.log(`\n💳 TRANSACTIONS COLLECTION (${transactions.length} records):`);
+    console.log(`\n TRANSACTIONS COLLECTION (${transactions.length} records):`);
     if (transactions.length === 0) {
       console.log('  (No orders placed yet. Add items to cart and checkout to create a transaction!)');
     } else {
@@ -88,7 +88,7 @@ async function viewDatabase() {
     }
 
     console.log('\n======================================================');
-    console.log('✅ Inspection Complete.');
+    console.log(' Inspection Complete.');
     console.log('======================================================\n');
   } catch (err) {
     console.error('Database connection error:', err.message);

@@ -2,22 +2,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 
-// Handcrafted SVG icons
+// Handcrafted Lightweight SVG Icons for CampusCart
 import {
   ShoppingCart, Search, Heart, User, Star, ChevronDown, Check,
-  Truck, RotateCcw, X, Plus, Minus, ArrowRight, ShieldCheck,
-  CreditCard, MapPin, Phone, Eye, EyeOff, SlidersHorizontal,
-  Package, Trash2, ArrowLeft, CheckCircle2,
-  BookOpen, Bike, Layers, Tag, MessageSquare, ShieldAlert, Edit3, AlertTriangle, Send,
-  Navigation, Crosshair, Globe, ExternalLink, Loader2, Compass, Receipt,
-  Lock, LogIn, LogOut, UserPlus, Shield, Calculator, FileText, GraduationCap
+  Truck, RotateCcw, X, Plus, Minus, ArrowRight, ArrowLeft, ShieldCheck,
+  MapPin, Eye, EyeOff, SlidersHorizontal, Package, Trash2, CheckCircle2,
+  Tag, MessageSquare, ShieldAlert, Edit3, AlertTriangle, Send,
+  Crosshair, ExternalLink, Loader2, Receipt,
+  Lock, LogIn, LogOut, UserPlus, Shield, Calculator, GraduationCap,
+  ChevronRight, Menu
 } from './icons.jsx';
 
-// Custom modal dialog and UI components
-import TermsModal from './components/TermsModal.jsx';
-import PrivacyModal from './components/PrivacyModal.jsx';
-import ResaleCalculatorModal from './components/ResaleCalculatorModal.jsx';
-import CampusExchangeLedger from './components/CampusExchangeLedger.jsx';
+// Dedicated Modular Pages & Components
+import Navigation from './components/Navigation.jsx';
+import EditProductModal from './components/EditProductModal.jsx';
+import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import { CatalogGridSkeleton } from './components/SkeletonLoader.jsx';
 
 // Currency formatting helper (converts amount to INR string)
@@ -26,596 +25,6 @@ const formatPrice = (amount) => {
   return '₹' + num.toLocaleString('en-IN');
 };
 const formatINR = formatPrice;
-
-// Seed product catalog with campus coordinates and seller profiles
-const INITIAL_CAMPUS_PRODUCTS = [
-  {
-    id: 'cc-1',
-    title: 'Wireless Earbuds, IPX8 ANC',
-    price: 2290,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Active Noise Cancellation & 32h battery case',
-    longDescription: 'High-performance noise-cancelling in-ear earbuds perfect for library study sessions, campus walks, and gym workouts. Includes wireless charging case with 32h battery life.',
-    category: 'Electronics',
-    type: 'Earbuds',
-    condition: 'Like New',
-    college: 'Engineering Campus',
-    pickupLocation: 'Engineering Education Complex - Tech Quad',
-    coordinates: { lat: 30.2882, lng: -97.7356 },
-    seller: {
-      name: 'Savio Morcos',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Computer Science & Engineering',
-      year: '3rd Year',
-      email: 'savio.cse@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Space Gray',
-    colorHex: '#1e293b',
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Space Gray', hex: '#1e293b', img: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80' },
-      { name: 'Pure White', hex: '#f8fafc', img: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-2',
-    title: 'AirPods Max',
-    price: 24990,
-    monthlyPrice: 2199,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'A perfect balance of high-fidelity audio',
-    longDescription: 'A perfect balance of exhilarating high-fidelity audio and the effortless magic of AirPods. Ultimate personal listening experience with active noise cancellation and spatial audio for distraction-free campus study.',
-    category: 'Electronics',
-    type: 'Over-Ear',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Central Library - 2nd Floor Study Lounge',
-    coordinates: { lat: 30.2849, lng: -97.7341 },
-    seller: {
-      name: 'Sarah Chen',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Information Technology',
-      year: '2nd Year',
-      email: 'sarah.it@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Coral Pink',
-    colorHex: '#e17076',
-    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Coral Pink', hex: '#e17076', img: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80' },
-      { name: 'Space Gray', hex: '#374151', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80' },
-      { name: 'Pastel Mint', hex: '#bbf7d0', img: 'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=600&q=80' },
-      { name: 'Silver White', hex: '#e2e8f0', img: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80' },
-      { name: 'Sky Blue', hex: '#38bdf8', img: 'https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: '50% Off',
-    status: 'Available',
-    featured: true,
-    isHero: true
-  },
-  {
-    id: 'cc-3',
-    title: 'TI-84 Plus CE Graphing Calculator',
-    price: 4490,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'High-res color backlit screen with rechargeable battery',
-    longDescription: 'Essential for Calculus, Engineering Mathematics, and Physics coursework. Preloaded with engineering apps and includes USB charging cable.',
-    category: 'Calculators',
-    type: 'Calculators',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'Mathematics Building Foyer - Hall A',
-    coordinates: { lat: 30.2875, lng: -97.7365 },
-    seller: {
-      name: 'Alex Rivera',
-      role: 'student',
-      studentId: '23BME112',
-      department: 'Mechanical Engineering',
-      year: '3rd Year',
-      email: 'alex.me@campus.edu',
-      verified: true
-    },
-    stock: 2,
-    color: 'Black',
-    colorHex: '#0f172a',
-    image: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Black', hex: '#0f172a', img: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-4',
-    title: 'VIVEFOX Wired Headphone',
-    price: 2190,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Wired Stereo Headsets With Mic for Online Lectures',
-    longDescription: 'Lightweight on-ear stereo headphones with inline mic, tangle-free braided cable, ideal for Zoom calls, coding sessions, and podcast listening.',
-    category: 'Electronics',
-    type: 'On-Ear',
-    condition: 'Like New',
-    college: 'North Campus',
-    pickupLocation: 'Student Union Hub Cafeteria',
-    coordinates: { lat: 30.2861, lng: -97.7392 },
-    seller: {
-      name: 'Priya Sharma',
-      role: 'student',
-      studentId: '24BCE198',
-      department: 'Computer Science',
-      year: '1st Year',
-      email: 'priya.cs@campus.edu',
-      verified: true
-    },
-    stock: 3,
-    color: 'Crimson Red',
-    colorHex: '#ef4444',
-    image: 'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Crimson Red', hex: '#ef4444', img: 'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: '50% Off',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-5',
-    title: 'JBL TUNE 600BTNC',
-    price: 2990,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Active Noise Cancelling Bluetooth On-Ear Headphone',
-    longDescription: 'Compact active noise-cancelling wireless on-ear headphones with signature JBL Pure Bass sound. Perfect condition, used for one semester.',
-    category: 'Electronics',
-    type: 'Over-Ear',
-    condition: 'Good',
-    college: 'Business School',
-    pickupLocation: 'Business School Quad - Hall of Honors',
-    coordinates: { lat: 30.2838, lng: -97.7381 },
-    seller: {
-      name: 'David Kim',
-      role: 'student',
-      studentId: '23BBA045',
-      department: 'Business Administration',
-      year: '2nd Year',
-      email: 'david.bba@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Matte Black',
-    colorHex: '#18181b',
-    image: 'https://images.unsplash.com/photo-1577174881658-0f30ed549adc?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Matte Black', hex: '#18181b', img: 'https://images.unsplash.com/photo-1577174881658-0f30ed549adc?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-6',
-    title: 'Organic Chemistry 4th Ed + Notes',
-    price: 480,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Hardcover textbook with handwritten lecture notes & summary',
-    longDescription: 'Original hardcover copy of Organic Chemistry 4th edition. No missing pages, highlighted key mechanisms, and comes with a 40-page spiral-bound exam review sheet.',
-    category: 'Books & Notes',
-    type: 'Books & Notes',
-    condition: 'Good',
-    college: 'Science Quad',
-    pickupLocation: 'Welch Chemistry Hall - Room 102',
-    coordinates: { lat: 30.2869, lng: -97.7378 },
-    seller: {
-      name: 'Emily Watson',
-      role: 'student',
-      studentId: '22BSC310',
-      department: 'Chemistry',
-      year: '4th Year',
-      email: 'emily.chem@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Blue',
-    colorHex: '#0284c7',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Hardcover', hex: '#0284c7', img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: '50% Off',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-7',
-    title: 'Trek Speed 21-Speed Campus Bicycle',
-    price: 4850,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'All-terrain campus commuter bike with U-lock included',
-    longDescription: 'Reliable 21-gear bicycle tuned up recently. New brake pads, smooth shifting, comfortable saddle, and includes a heavy-duty Kryptonite U-lock.',
-    category: 'Bicycles',
-    type: 'Bicycles',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'San Jacinto Dormitory Bike Rack',
-    coordinates: { lat: 30.2825, lng: -97.7328 },
-    seller: {
-      name: 'Marcus Vance',
-      role: 'student',
-      studentId: '22BCE156',
-      department: 'Civil Engineering',
-      year: '4th Year',
-      email: 'marcus.ce@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Graphite',
-    colorHex: '#334155',
-    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'Graphite', hex: '#334155', img: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-8',
-    title: 'Lab Coat & Digital Multimeter Kit',
-    price: 650,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Cotton 100% lab coat (Size M) + precision digital multimeter',
-    longDescription: 'Standard issue white campus lab coat with safety goggles and an auto-ranging digital multimeter with probes. Used for 1st year electrical/chemistry lab.',
-    category: 'Lab Equipment',
-    type: 'Lab Equipment',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Painter Physics Hall Main Entrance',
-    coordinates: { lat: 30.2888, lng: -97.7371 },
-    seller: {
-      name: 'Rohan Mehra',
-      role: 'student',
-      studentId: '24BEE089',
-      department: 'Electrical Engineering',
-      year: '1st Year',
-      email: 'rohan.ee@campus.edu',
-      verified: true
-    },
-    stock: 2,
-    color: 'White',
-    colorHex: '#f1f5f9',
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80',
-    colorVariants: [
-      { name: 'White', hex: '#f1f5f9', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80' }
-    ],
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-9',
-    title: 'Hostel Study Desk & Ergonomic Chair',
-    price: 1650,
-    rating: 5,
-    reviewsCount: 48,
-    description: 'Compact engineered wood desk with bookshelf + mesh chair',
-    longDescription: 'Spacious study table ideal for laptop and textbook study in campus dorms. Lightweight, easy to dismantle and move between hostel rooms. Includes breathable ergonomic chair.',
-    category: 'Furniture',
-    type: 'Furniture',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'Hostel Block 3 Ground Floor Quad',
-    coordinates: { lat: 30.2855, lng: -97.7365 },
-    seller: {
-      name: 'Parv',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Computer Science and Engineering',
-      year: '3rd Year',
-      email: 'student@campuscart.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Oak Wood',
-    colorHex: '#854d0e',
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80',
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-10',
-    title: 'Foldable Bed Study Table with Tablet Holder',
-    price: 490,
-    rating: 5,
-    reviewsCount: 34,
-    description: 'Anti-slip multipurpose bed desk for late night study',
-    longDescription: 'High quality MDF wood bed table with built-in tablet slot and cup holder. Folds completely flat for storage under hostel beds. Barely used for 2 months.',
-    category: 'Furniture',
-    type: 'Furniture',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Student Union Lounge',
-    coordinates: { lat: 30.2861, lng: -97.7392 },
-    seller: {
-      name: 'Aditya Sen',
-      role: 'student',
-      studentId: '24BME055',
-      department: 'Mechanical Engineering',
-      year: '2nd Year',
-      email: 'aditya.me@campus.edu',
-      verified: true
-    },
-    stock: 2,
-    color: 'Walnut Black',
-    colorHex: '#1f2937',
-    image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=600&q=80',
-    offer: 'Student Listing',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-11',
-    title: 'Casio FX-991EX ClassWiz Scientific Calculator',
-    price: 950,
-    rating: 5,
-    reviewsCount: 88,
-    description: '552 functions, natural textbook display, solar + battery',
-    longDescription: 'Essential scientific calculator for engineering mechanics, calculus, matrices, and university semester exams. Clean protective cover included.',
-    category: 'Calculators',
-    type: 'Calculators',
-    condition: 'Like New',
-    college: 'Engineering Campus',
-    pickupLocation: 'Tech Quad Center',
-    coordinates: { lat: 30.2882, lng: -97.7356 },
-    seller: {
-      name: 'Parv',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Computer Science and Engineering',
-      year: '3rd Year',
-      email: 'student@campuscart.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Carbon Black',
-    colorHex: '#111827',
-    image: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-12',
-    title: 'Higher Engineering Mathematics - B.S. Grewal (44th Ed)',
-    price: 420,
-    rating: 5,
-    reviewsCount: 76,
-    description: 'Standard textbook for 1st/2nd year B.Tech calculus & linear algebra',
-    longDescription: 'All semester exam practice problems and solutions included. Neat pages, clean spine, with formula reference sheets included.',
-    category: 'Books & Notes',
-    type: 'Books & Notes',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'Central Library Ground Floor',
-    coordinates: { lat: 30.2849, lng: -97.7341 },
-    seller: {
-      name: 'Neha Verma',
-      role: 'student',
-      studentId: '24ECE104',
-      department: 'Electronics & Communication',
-      year: '2nd Year',
-      email: 'neha.ece@campus.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Paperback',
-    colorHex: '#3b82f6',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
-    offer: '50% Off',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-13',
-    title: 'Firefox Target 21-Speed Mountain Bicycle',
-    price: 5490,
-    rating: 5,
-    reviewsCount: 42,
-    description: 'Dual disc brakes, front suspension, smooth gear shifts',
-    longDescription: 'Rugged campus bicycle with bottle holder, bell, and number lock. Great for commuting between hostel, sports ground, and departments.',
-    category: 'Bicycles',
-    type: 'Bicycles',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'Main Campus Gate Parking',
-    coordinates: { lat: 30.2840, lng: -97.7330 },
-    seller: {
-      name: 'Parv',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Computer Science and Engineering',
-      year: '3rd Year',
-      email: 'student@campuscart.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Matte Blue',
-    colorHex: '#1e3a8a',
-    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80',
-    offer: 'Special Deal',
-    status: 'Available',
-    featured: true
-  },
-  {
-    id: 'cc-14',
-    title: 'Precision Vernier Caliper & Micrometer Screw Gauge',
-    price: 580,
-    rating: 5,
-    reviewsCount: 29,
-    description: 'Stainless steel 150mm vernier caliper with hard protective case',
-    longDescription: 'High precision 0.02mm graduation vernier caliper + 0-25mm screw gauge for university physics and mechanical engineering workshops.',
-    category: 'Lab Equipment',
-    type: 'Lab Equipment',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Mechanical Workshop Hall',
-    coordinates: { lat: 30.2875, lng: -97.7360 },
-    seller: {
-      name: 'Parv',
-      role: 'student',
-      studentId: '24BCE327',
-      department: 'Computer Science and Engineering',
-      year: '3rd Year',
-      email: 'student@campuscart.edu',
-      verified: true
-    },
-    stock: 1,
-    color: 'Stainless Steel',
-    colorHex: '#94a3b8',
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80',
-    offer: 'Student Listing',
-    status: 'Available',
-    featured: true
-  }
-];
-
-// Recommendation dataset: similar campus products
-const SIMILAR_ITEMS = [
-  {
-    id: 'sim-1',
-    title: 'Gaming Headphone',
-    price: 2690,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Noise-cancelling mic with RGB lighting for esports',
-    category: 'Electronics',
-    condition: 'Like New',
-    college: 'Engineering Campus',
-    pickupLocation: 'Engineering Annex',
-    coordinates: { lat: 30.2885, lng: -97.7360 },
-    image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 'sim-2',
-    title: 'Macbook pro 13"',
-    price: 38500,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Apple Silicon, 256GB SSD, 8GB RAM with MagSafe Charger',
-    category: 'Electronics',
-    condition: 'Good',
-    college: 'Business School',
-    pickupLocation: 'Business Hall',
-    coordinates: { lat: 30.2838, lng: -97.7381 },
-    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 'sim-3',
-    title: 'HomePod mini',
-    price: 4890,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Compact 360-degree smart speaker for dorm room',
-    category: 'Electronics',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Science Building',
-    coordinates: { lat: 30.2869, lng: -97.7378 },
-    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 'sim-4',
-    title: 'Laptop sleeve MacBook',
-    price: 750,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Organic Cotton, shockproof padding, fairtrade certified',
-    category: 'Other Essentials',
-    condition: 'New',
-    college: 'North Campus',
-    pickupLocation: 'Student Union Hub',
-    coordinates: { lat: 30.2861, lng: -97.7392 },
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'
-  }
-];
-
-// Browsing history dataset: recently viewed items
-const RECENTLY_VIEWED = [
-  {
-    id: 'rec-1',
-    title: 'Laptop sleeve MacBook',
-    price: 750,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Organic Cotton, fairtrade certified',
-    category: 'Other Essentials',
-    condition: 'New',
-    college: 'North Campus',
-    pickupLocation: 'Student Union Hub',
-    coordinates: { lat: 30.2861, lng: -97.7392 },
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 'rec-2',
-    title: 'AirPods Max',
-    price: 24990,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'A perfect balance of high-fidelity audio',
-    category: 'Electronics',
-    condition: 'Like New',
-    college: 'Science Quad',
-    pickupLocation: 'Central Library Lounge',
-    coordinates: { lat: 30.2849, lng: -97.7341 },
-    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80',
-    highlightButton: true
-  },
-  {
-    id: 'rec-3',
-    title: 'Ipad Mini',
-    price: 22900,
-    rating: 5,
-    reviewsCount: 121,
-    description: 'Wi-Fi 64GB with Apple Pencil support for digital note taking',
-    category: 'Electronics',
-    condition: 'Good',
-    college: 'Engineering Campus',
-    pickupLocation: 'Tech Quad',
-    coordinates: { lat: 30.2882, lng: -97.7356 },
-    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    id: 'rec-4',
-    title: 'Flower Laptop Sleeve',
-    price: 590,
-    rating: 5,
-    reviewsCount: 121,
-    description: '15 in. x 10 in. flap top closure protective sleeve',
-    category: 'Other Essentials',
-    condition: 'Like New',
-    college: 'North Campus',
-    pickupLocation: 'Student Union Hub',
-    coordinates: { lat: 30.2861, lng: -97.7392 },
-    image: 'https://images.unsplash.com/photo-1546938576-6e6a64f317cc?auto=format&fit=crop&w=600&q=80'
-  }
-];
 
 // Popular university categories taxonomy
 const POPULAR_CATEGORIES = [
@@ -631,7 +40,19 @@ const POPULAR_CATEGORIES = [
 export default function App() {
   // Navigation and active product selection state
   const [currentView, setCurrentView] = useState('home');
-  const [selectedProduct, setSelectedProduct] = useState(INITIAL_CAMPUS_PRODUCTS[1]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: '',
+    category: 'Books & Notes',
+    price: '',
+    condition: 'Like New',
+    description: '',
+    image: '',
+    status: 'Available'
+  });
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [detailQuantity, setDetailQuantity] = useState(1);
 
@@ -723,43 +144,52 @@ export default function App() {
   const [isUniversityModalOpen, setIsUniversityModalOpen] = useState(false);
   const [universityInput, setUniversityInput] = useState('');
 
-  // All Products State - Automatically update to realistic Indian market prices while preserving custom listings
+  // Helper to normalize product entities from MongoDB Atlas
+  const normalizeDbProduct = (p, fallbackUniv) => ({
+    ...p,
+    id: (p._id || p.id).toString(),
+    _id: (p._id || p.id).toString(),
+    title: p.title || 'Campus Item',
+    description: p.description || '',
+    longDescription: p.longDescription || p.description || '',
+    price: Number(p.price) || 0,
+    monthlyPrice: p.monthlyPrice || Math.round((Number(p.price) || 0) / 4),
+    condition: p.condition || 'Good',
+    category: p.category || 'Other Essentials',
+    image: p.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+    rating: p.rating || 5,
+    reviewsCount: p.reviewsCount || 42,
+    college: p.college || fallbackUniv || 'Campus Hub',
+    pickupLocation: p.location?.address || p.pickupLocation || `${p.college || fallbackUniv || 'Campus'} Hub`,
+    coordinates: p.location?.coordinates || p.coordinates || { lat: 30.2849, lng: -97.7341 },
+    seller: p.seller && typeof p.seller === 'object' ? {
+      ...p.seller,
+      name: p.seller.fullName || p.seller.name || 'Campus Student',
+      fullName: p.seller.fullName || p.seller.name || 'Campus Student',
+      department: p.seller.department || 'Student',
+      year: p.seller.academicYear || p.seller.year || p.college || 'Campus Member'
+    } : {
+      name: 'Campus Student',
+      fullName: 'Campus Student',
+      department: 'Student',
+      year: 'Campus Member'
+    }
+  });
+
+  // All Products State - Directly synchronized with MongoDB Atlas database
   const [products, setProducts] = useState(() => {
     try {
       const saved = localStorage.getItem('campuscart_products');
       if (saved) {
         const parsed = JSON.parse(saved);
-        const initialMap = new Map(INITIAL_CAMPUS_PRODUCTS.map(p => [p.id, p]));
-        // If cached items contain outdated unrealistically low prices (e.g. cc-1 < 1000 or cc-2 < 10000)
-        const hasOutdatedPricing = parsed.some(p => (p.id === 'cc-1' && p.price < 1000) || (p.id === 'cc-2' && p.price < 10000));
-
-        let merged = parsed;
-        if (hasOutdatedPricing) {
-          merged = parsed.map(p => {
-            if (initialMap.has(p.id)) {
-              const fresh = initialMap.get(p.id);
-              return { ...p, price: fresh.price, monthlyPrice: fresh.monthlyPrice, title: fresh.title, description: fresh.description };
-            }
-            return p;
-          });
+        if (Array.isArray(parsed)) {
+          // Exclude any legacy mock items with 'cc-' prefix
+          return parsed.filter(p => p.id && !p.id.toString().startsWith('cc-'));
         }
-
-        const existingIds = new Set(merged.map(p => p.id));
-        let hasNew = hasOutdatedPricing;
-        INITIAL_CAMPUS_PRODUCTS.forEach(item => {
-          if (!existingIds.has(item.id)) {
-            merged.push(item);
-            hasNew = true;
-          }
-        });
-        if (hasNew) {
-          localStorage.setItem('campuscart_products', JSON.stringify(merged));
-        }
-        return merged;
       }
-      return INITIAL_CAMPUS_PRODUCTS;
+      return [];
     } catch {
-      return INITIAL_CAMPUS_PRODUCTS;
+      return [];
     }
   });
 
@@ -928,18 +358,10 @@ export default function App() {
         params: { college: univ }
       });
       if (res.data?.success && Array.isArray(res.data.products) && res.data.products.length > 0) {
-        const dbProducts = res.data.products.map(p => ({
-          ...p,
-          id: p._id || p.id,
-          rating: p.rating || 5,
-          reviewsCount: p.reviewsCount || 42,
-          pickupLocation: p.location?.address || `${univ} Campus Hub`,
-          coordinates: p.location?.coordinates || { lat: 30.2849, lng: -97.7341 }
-        }));
+        const dbProducts = res.data.products.map(p => normalizeDbProduct(p, univ));
         setProducts(dbProducts);
         localStorage.setItem('campuscart_products', JSON.stringify(dbProducts));
       } else {
-        // Fallback: if no specific products for this university yet, query all products to seed or browse
         const resAll = await axios.get('/api/products');
         if (resAll.data?.success && Array.isArray(resAll.data.products) && resAll.data.products.length > 0) {
           const matching = resAll.data.products.filter(p => 
@@ -947,15 +369,9 @@ export default function App() {
             (univ.toLowerCase().includes(p.college?.toLowerCase() || ''))
           );
           const toUse = matching.length > 0 ? matching : resAll.data.products;
-          const mapped = toUse.map(p => ({
-            ...p,
-            id: p._id || p.id,
-            rating: p.rating || 5,
-            reviewsCount: p.reviewsCount || 42,
-            pickupLocation: p.location?.address || `${univ} Campus Hub`,
-            coordinates: p.location?.coordinates || { lat: 30.2849, lng: -97.7341 }
-          }));
+          const mapped = toUse.map(p => normalizeDbProduct(p, univ));
           setProducts(mapped);
+          localStorage.setItem('campuscart_products', JSON.stringify(mapped));
         }
       }
     } catch (err) {
@@ -1451,6 +867,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Return to marketplace catalog view
+  const handleBackToMarketplace = () => {
+    setSelectedProduct(null);
+    setCurrentView('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Authentication Handlers (Connected to Express MongoDB Backend)
   // Student account login handler
   const handleLogin = async (e) => {
@@ -1693,33 +1116,124 @@ export default function App() {
     showToast(`"${created.title}" successfully listed!`);
   };
 
-  // Delete product listing handler
-  const handleDeleteProduct = (productId) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
-    setReports(prev => prev.filter(r => r.id !== productId));
-    showToast('Listing removed by Campus Administrator', 'info');
+  // Delete product listing handler (Permanent delete in MongoDB Atlas)
+  const handleDeleteProduct = async (productId) => {
+    try {
+      const token = localStorage.getItem('campuscart_token') || authToken;
+      const isAdmin = currentUser?.role === 'admin';
+      const endpoint = isAdmin ? `/api/admin/products/${productId}` : `/api/products/${productId}`;
+      
+      await axios.delete(endpoint, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+
+      setProducts(prev => prev.filter(p => p.id !== productId && p._id !== productId));
+      setReports(prev => prev.filter(r => r.id !== productId));
+      if (selectedProduct && (selectedProduct.id === productId || selectedProduct._id === productId)) {
+        setSelectedProduct(null);
+        setCurrentView('home');
+      }
+      showToast('Listing permanently deleted from database!', 'info');
+    } catch (err) {
+      console.error('Delete product error:', err);
+      setProducts(prev => prev.filter(p => p.id !== productId && p._id !== productId));
+      showToast(err.response?.data?.error || 'Listing removed', 'info');
+    }
   };
 
-  // Quick toggle product availability status
-  const handleUpdateProductStatus = (productId, newStatus) => {
-    setProducts(prev =>
-      prev.map(p => (p.id === productId ? { ...p, status: newStatus } : p))
-    );
-    showToast(`Status updated to ${newStatus}`);
+  // Quick toggle product availability status in MongoDB
+  const handleUpdateProductStatus = async (productId, newStatus) => {
+    try {
+      const token = localStorage.getItem('campuscart_token') || authToken;
+      await axios.patch(`/api/products/${productId}/status`, { status: newStatus }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      setProducts(prev =>
+        prev.map(p => (p.id === productId || p._id === productId ? { ...p, status: newStatus } : p))
+      );
+      showToast(`Status updated to ${newStatus} in database!`);
+    } catch (err) {
+      console.warn('Status update error:', err);
+      setProducts(prev =>
+        prev.map(p => (p.id === productId || p._id === productId ? { ...p, status: newStatus } : p))
+      );
+      showToast(`Status updated to ${newStatus}`);
+    }
   };
 
-  // Update order transaction status
-  const handleUpdateTransactionStatus = (txnId, newStatus) => {
-    setTransactions(prev =>
-      prev.map(t => (t.id === txnId ? { ...t, status: newStatus } : t))
-    );
-    showToast(`Order #${txnId} marked as ${newStatus}`);
+  // Update order transaction status in MongoDB
+  const handleUpdateTransactionStatus = async (txnId, newStatus) => {
+    try {
+      const token = localStorage.getItem('campuscart_token') || authToken;
+      await axios.patch(`/api/transactions/${txnId}`, { status: newStatus }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      setTransactions(prev =>
+        prev.map(t => (t.id === txnId || t._id === txnId ? { ...t, status: newStatus } : t))
+      );
+      showToast(`Order #${txnId.toString().slice(-6)} marked as ${newStatus} in database!`);
+    } catch (err) {
+      console.warn('Transaction status update error:', err);
+      setTransactions(prev =>
+        prev.map(t => (t.id === txnId || t._id === txnId ? { ...t, status: newStatus } : t))
+      );
+      showToast(`Order marked as ${newStatus}`);
+    }
   };
 
   // Cancel transaction request
   const handleCancelTransaction = (txnId) => {
     setTransactions(prev => prev.filter(t => t.id !== txnId));
     showToast(`Order #${txnId} removed from tracking`, 'info');
+  };
+
+  // Open Edit Listing Modal (Sellers & Admins)
+  const handleOpenEditModal = (product) => {
+    setEditingProduct(product);
+    setEditFormData({
+      title: product.title || '',
+      category: product.category || 'Books & Notes',
+      price: product.price || '',
+      condition: product.condition || 'Like New',
+      description: product.description || '',
+      image: product.image || '',
+      status: product.status || 'Available'
+    });
+    setIsEditModalOpen(true);
+  };
+
+  // Save Edited Listing to MongoDB Atlas via PUT /api/products/:id
+  const handleSaveEditListing = async (e) => {
+    if (e) e.preventDefault();
+    if (!editingProduct) return;
+    const token = localStorage.getItem('campuscart_token') || authToken;
+    const productId = editingProduct.id || editingProduct._id;
+    try {
+      const res = await axios.put(`/api/products/${productId}`, {
+        title: editFormData.title.trim(),
+        description: editFormData.description.trim(),
+        category: editFormData.category,
+        price: Number(editFormData.price),
+        condition: editFormData.condition,
+        image: editFormData.image.trim(),
+        status: editFormData.status
+      }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+
+      if (res.data?.success && res.data.product) {
+        const normalized = normalizeDbProduct(res.data.product, activeUniversity);
+        setProducts(prev => prev.map(p => (p.id === productId || p._id === productId ? normalized : p)));
+        if (selectedProduct && (selectedProduct.id === productId || selectedProduct._id === productId)) {
+          setSelectedProduct(normalized);
+        }
+      }
+      setIsEditModalOpen(false);
+      showToast('Listing updated successfully in MongoDB database!', 'success');
+    } catch (err) {
+      console.error('Save edit error:', err);
+      showToast(err.response?.data?.error || 'Failed to update listing in database', 'error');
+    }
   };
 
   // Admin Price Adjustment Handler (Saves directly to MongoDB)
@@ -1901,7 +1415,7 @@ export default function App() {
       if (sortBy === 'Price: Low to High') return a.price - b.price;
       if (sortBy === 'Price: High to Low') return b.price - a.price;
       if (sortBy === 'Rating') return b.rating - a.rating;
-      if (sortBy === 'Newest') return b.id.localeCompare(a.id);
+      if (sortBy === 'Newest') return String(b.id || b._id || '').localeCompare(String(a.id || a._id || ''));
       return 0;
     });
   }, [products, searchQuery, selectedCategory, filterCondition, filterPrice, filterCollege, filterStatus, filterOffer, sortBy, activeUniversity]);
@@ -1921,167 +1435,63 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f8fa] text-slate-800 w-full max-w-full overflow-x-hidden">
-      {/* Top navigation bar with logo, campus selector, search, and action controls */}
-      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 w-full">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Brand Logo & Campus Badge */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <button
-              onClick={() => {
-                setCurrentView('home');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-none shrink-0"
-            >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-sm group-hover:bg-blue-600 transition-colors">
-                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-              </div>
-              <div className="text-left">
-                <span className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-slate-900 whitespace-nowrap">
-                  Campus<span className="text-blue-600">Cart</span>
-                </span>
-                <span className="hidden sm:block text-[9px] font-bold text-slate-400 tracking-wider uppercase -mt-1 whitespace-nowrap">
-                  Student Exchange
-                </span>
-              </div>
-            </button>
-
-            {/* University Campus Selector Badge */}
-            <button
-              type="button"
-              onClick={() => {
-                setUniversityInput(activeUniversity);
-                setIsUniversityModalOpen(true);
-              }}
-              className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 text-xs font-bold transition-all cursor-pointer shadow-2xs shrink-0"
-              title={`Active Campus: ${activeUniversity} (Click to change)`}
-            >
-              <GraduationCap className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span className="truncate max-w-[90px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-[180px] text-[11px] sm:text-xs">
-                {activeUniversity}
-              </span>
-              <span className="text-[9px] bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 rounded-full font-black uppercase tracking-wider shrink-0">
-                Change
-              </span>
-            </button>
-          </div>
-
-          {/* Fluid Center Search Bar */}
-          <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg min-w-[120px] mx-1 sm:mx-3 relative">
-            <div className="relative flex items-center">
-              <input
-                type="text"
-                placeholder="Search campus items..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  if (currentView !== 'home') setCurrentView('home');
-                }}
-                className="w-full bg-[#f8fafc] hover:bg-white focus:bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-lg pl-3 pr-8 py-1.5 sm:py-2 focus:outline-none focus:border-blue-600 border border-slate-200 transition-colors truncate"
-              />
-              <button
-                aria-label="Search"
-                onClick={() => {
-                  const el = document.getElementById('campus-catalog');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="absolute right-2 sm:right-2.5 text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                <Search className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Action CTAs */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 md:gap-3 shrink-0 flex-nowrap">
-            {currentUser?.role === 'admin' && (
-              <button
-                onClick={() => setCurrentView('admin')}
-                className="hidden md:inline-flex items-center gap-1 text-slate-700 hover:text-blue-600 text-xs font-bold transition-colors cursor-pointer whitespace-nowrap shrink-0 px-2 py-1.5 rounded-lg hover:bg-slate-50"
-              >
-                <ShieldAlert className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                <span>Admin</span>
-              </button>
-            )}
-
-            <button
-              onClick={handleOpenSellModal}
-              className="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-blue-600 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap shrink-0 transition-colors shadow-xs"
-            >
-              <Plus className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden xs:inline whitespace-nowrap">Sell An Item</span>
-              <span className="xs:hidden whitespace-nowrap">Sell</span>
-            </button>
-
-            {/* Orders Button */}
-            <button
-              onClick={() => {
-                setAccountTab('transactions');
-                setCurrentView('my-listings');
-              }}
-              className={`inline-flex items-center gap-1 text-xs font-semibold px-2 sm:px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
-                currentView === 'my-listings' && accountTab === 'transactions'
-                  ? 'text-blue-600 bg-blue-50 font-bold'
-                  : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
-              }`}
-              title="Track Orders & Campus Meetups"
-            >
-              <Receipt className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span className="hidden sm:inline">Orders</span>
-              {transactions.length > 0 && (
-                <span className="bg-blue-100 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full shrink-0">
-                  {transactions.length}
-                </span>
-              )}
-            </button>
-
-            {/* Account Button */}
-            <button
-              onClick={() => {
-                if (!currentUser) setAuthTab('login');
-                setIsAuthModalOpen(true);
-              }}
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer whitespace-nowrap shrink-0 p-1 sm:px-2 sm:py-1 rounded-lg hover:bg-slate-50"
-            >
-              <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-200">
-                {currentUser ? (currentUser.fullName || currentUser.name || 'P')[0].toUpperCase() : <User className="w-3.5 h-3.5" />}
-              </div>
-              <span className="hidden md:inline whitespace-nowrap">
-                {currentUser ? (currentUser.fullName || currentUser.name || 'Account').split(' ')[0] : 'Sign In'}
-              </span>
-            </button>
-
-            {/* Cart Button */}
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-blue-600 transition-colors relative cursor-pointer whitespace-nowrap shrink-0 p-1 sm:px-2 sm:py-1 rounded-lg hover:bg-slate-50"
-            >
-              <div className="relative shrink-0">
-                <ShoppingCart className="w-5 h-5 text-slate-800" />
-                {cartTotalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                    {cartTotalItems}
-                  </span>
-                )}
-              </div>
-              <span className="hidden md:inline whitespace-nowrap">Cart</span>
-            </button>
-          </div>
-        </div>
-      </nav>
+      {/* ── UNIFIED RESPONSIVE NAVIGATION (<320px, Medium, Large & Drawer) ── */}
+      <Navigation
+        currentView={currentView}
+        currentUser={currentUser}
+        activeUniversity={activeUniversity}
+        searchQuery={searchQuery}
+        cartTotalItems={cartTotalItems}
+        transactionsCount={transactions.length}
+        popularCategories={POPULAR_CATEGORIES}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileMenu={setIsMobileMenuOpen}
+        onSearchChange={(q) => {
+          setSearchQuery(q);
+          if (currentView !== 'home') setCurrentView('home');
+        }}
+        onOpenUniversityModal={() => {
+          setUniversityInput(activeUniversity);
+          setIsUniversityModalOpen(true);
+        }}
+        onOpenSellModal={handleOpenSellModal}
+        onOpenAuthModal={() => {
+          if (!currentUser) setAuthTab('login');
+          setIsAuthModalOpen(true);
+        }}
+        onOpenCart={() => setIsCartOpen(true)}
+        onNavigateHome={handleBackToMarketplace}
+        onNavigateOrders={() => {
+          setAccountTab('transactions');
+          setCurrentView('my-listings');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onNavigateAdmin={() => {
+          setCurrentView('admin');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onNavigateMyListings={() => {
+          setAccountTab('listings');
+          setCurrentView('my-listings');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onBackToMarketplace={handleBackToMarketplace}
+        onLogout={handleLogout}
+        onSelectCategory={handleSelectCategory}
+      />
 
       {/* Main application view router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {/* Home view: Hero banner, categories, filters, and catalog */}
         {currentView === 'home' && (
-          <div className="max-w-7xl mx-auto px-3 sm:px-8 py-4 sm:py-6 space-y-8 sm:space-y-12 w-full">
+          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-10 w-full site-container">
             {/* HERO PROMO BANNER (Minimalist Obsidian / Slate / Royal Blue) */}
             <section className="bg-gradient-to-br from-[#090d16] via-[#0f172a] to-[#1e293b] text-white rounded-2xl p-5 sm:p-10 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 border border-slate-800 shadow-sm w-full">
               <div className="w-full md:max-w-xl z-10 space-y-3 sm:space-y-4 text-center md:text-left">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide uppercase bg-blue-500/10 text-blue-300 border border-blue-400/20 max-w-full truncate">
                   <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" /> <span className="truncate">Verified Student Network • Campus Marketplace</span>
                 </span>
-                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15]">
+                <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-[1.15] hero-heading">
                   Direct Campus Exchange For College Essentials
                 </h1>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto md:mx-0">
@@ -2115,44 +1525,58 @@ export default function App() {
               </div>
 
               <div className="relative w-full md:w-5/12 flex items-center justify-center">
-                <div className="w-full bg-[#111827]/90 backdrop-blur-sm border border-slate-700/70 rounded-xl p-4 sm:p-5 space-y-3 sm:space-y-4 shadow-xl">
-                  <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-2.5 sm:pb-3">
-                    <span className="font-semibold text-slate-300">Featured Campus Listing</span>
-                    <span className="bg-blue-500/20 text-blue-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-400/30">
-                      50% Student Discount
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-white p-2 shrink-0 flex items-center justify-center shadow-xs">
-                      <img
-                        src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=300&q=80"
-                        alt="Campus Headphones"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="space-y-1 min-w-0 flex-1">
-                      <h3 className="font-bold text-white text-sm truncate">Apple AirPods Max</h3>
-                      <p className="text-[11px] text-slate-400 truncate">Like New • Science Quad Study Desk</p>
-                      <div className="text-white font-black text-base pt-0.5">
-                        ₹2,490 <span className="text-xs font-normal text-slate-400 line-through">₹4,990</span>
+                {(() => {
+                  const featuredProduct = products.find(p => p.featured) || products[0];
+                  if (!featuredProduct) return null;
+                  return (
+                    <div className="w-full bg-[#111827]/90 backdrop-blur-sm border border-slate-700/70 rounded-xl p-4 sm:p-5 space-y-3 sm:space-y-4 shadow-xl">
+                      <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-2.5 sm:pb-3">
+                        <span className="font-semibold text-slate-300">Featured Campus Listing</span>
+                        <span className="bg-blue-500/20 text-blue-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-400/30">
+                          {featuredProduct.category}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <div
+                          onClick={() => handleOpenProduct(featuredProduct)}
+                          className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-white p-2 shrink-0 flex items-center justify-center shadow-xs cursor-pointer overflow-hidden group"
+                        >
+                          <img
+                            src={featuredProduct.image}
+                            alt={featuredProduct.title}
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                          />
+                        </div>
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <h3
+                            onClick={() => handleOpenProduct(featuredProduct)}
+                            className="font-bold text-white text-sm truncate hover:text-blue-300 cursor-pointer transition-colors"
+                          >
+                            {featuredProduct.title}
+                          </h3>
+                          <p className="text-[11px] text-slate-400 truncate">
+                            {featuredProduct.condition} • {featuredProduct.college || 'Campus Hub'}
+                          </p>
+                          <div className="text-white font-black text-base pt-0.5">
+                            {formatINR(featuredProduct.price)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                        <span className="flex items-center gap-1 truncate max-w-[170px] sm:max-w-none">
+                          <MapPin className="w-3 h-3 text-blue-400 shrink-0" />
+                          <span className="truncate">{featuredProduct.pickupLocation || 'Central Library'}</span>
+                        </span>
+                        <button
+                          onClick={() => handleOpenProduct(featuredProduct)}
+                          className="font-semibold text-blue-300 hover:text-white underline cursor-pointer shrink-0 transition-colors"
+                        >
+                          View Details
+                        </button>
                       </div>
                     </div>
-                  </div>
-                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="flex items-center gap-1 truncate max-w-[170px] sm:max-w-none">
-                      <MapPin className="w-3 h-3 text-blue-400 shrink-0" /> <span className="truncate">Central Library 2nd Fl</span>
-                    </span>
-                    <button
-                      onClick={() => {
-                        const airpods = products.find(h => h.id === 'cc-2') || products[0];
-                        handleOpenProduct(airpods);
-                      }}
-                      className="font-semibold text-blue-300 hover:text-white underline cursor-pointer shrink-0 transition-colors"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
+                  );
+                })()}
               </div>
             </section>
 
@@ -2329,7 +1753,7 @@ export default function App() {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 catalog-grid">
                   {filteredProducts.map((product) => {
                     const isWishlisted = wishlist.includes(product.id);
 
@@ -2496,487 +1920,30 @@ export default function App() {
             </section>
 
             {/* AUTHENTIC VERIFIED CAMPUS ACTIVITY FEED (Zero Fake Testimonials) */}
-            <CampusExchangeLedger />
+            
 
-            {/* 6. SIMILAR ITEMS YOU MIGHT LIKE */}
-            <section className="space-y-4 pt-2">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Recommended Student Items
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-                {SIMILAR_ITEMS.map((item) => (
-                  <div key={item.id} className="product-card group bg-white rounded-xl border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-blue-400 hover:shadow-md transition-all duration-200">
-                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer bg-[#f8fafc]">
-                      <button
-                        aria-label={`Toggle wishlist for ${item.title}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist(item.id, item.title);
-                        }}
-                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-xs border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-white"
-                      >
-                        <Heart className={`w-4 h-4 ${wishlist.includes(item.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} />
-                      </button>
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        onClick={() => handleOpenProduct(item)}
-                        className="w-full h-full object-contain select-none group-hover:scale-102 transition-transform duration-200"
-                        loading="lazy"
-                      />
-                    </div>
-
-                    <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
-                      <div>
-                        <div className="flex items-baseline justify-between gap-2">
-                          <h3
-                            onClick={() => handleOpenProduct(item)}
-                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
-                          >
-                            {item.title}
-                          </h3>
-                          <span className="font-black text-slate-900 text-sm whitespace-nowrap">
-                            {formatINR(item.price)}
-                          </span>
-                        </div>
-                        <p className="text-slate-500 text-xs line-clamp-1 mt-1">
-                          {item.description}
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-2">
-                          <div className="flex items-center text-blue-500">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-3 h-3 fill-current" />
-                            ))}
-                          </div>
-                          <span className="text-[11px] text-slate-400 font-medium">
-                            ({item.reviewsCount})
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 px-1 rounded-lg font-semibold text-xs border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 transition-colors cursor-pointer shadow-2xs"
-                        >
-                          Add to Cart
-                        </button>
-                        <button
-                          onClick={() => handleBuyNow(item)}
-                          className="w-full py-2 px-1 rounded-lg font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shadow-2xs"
-                        >
-                          Buy Now
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 7. RECENTLY VIEWED */}
-            <section className="space-y-4 pt-2 pb-8">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                Recently Viewed on Campus
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-                {RECENTLY_VIEWED.map((item) => (
-                  <div key={item.id} className="product-card group bg-white rounded-xl border border-slate-200 flex flex-col justify-between overflow-hidden hover:border-blue-400 hover:shadow-md transition-all duration-200">
-                    <div className="relative product-image-container p-6 aspect-square flex items-center justify-center overflow-hidden cursor-pointer bg-[#f8fafc]">
-                      <button
-                        aria-label={`Toggle wishlist for ${item.title}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist(item.id, item.title);
-                        }}
-                        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-xs border border-slate-200 flex items-center justify-center shadow-xs cursor-pointer hover:bg-white"
-                      >
-                        <Heart className={`w-4 h-4 ${wishlist.includes(item.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} />
-                      </button>
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        onClick={() => handleOpenProduct(item)}
-                        className="w-full h-full object-contain select-none group-hover:scale-102 transition-transform duration-200"
-                        loading="lazy"
-                      />
-                    </div>
-
-                    <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
-                      <div>
-                        <div className="flex items-baseline justify-between gap-2">
-                          <h3
-                            onClick={() => handleOpenProduct(item)}
-                            className="font-bold text-slate-900 text-sm line-clamp-1 hover:text-blue-600 cursor-pointer transition-colors"
-                          >
-                            {item.title}
-                          </h3>
-                          <span className="font-black text-slate-900 text-sm whitespace-nowrap">
-                            {formatINR(item.price)}
-                          </span>
-                        </div>
-                        <p className="text-slate-500 text-xs line-clamp-1 mt-1">
-                          {item.description}
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-2">
-                          <div className="flex items-center text-blue-500">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-3 h-3 fill-current" />
-                            ))}
-                          </div>
-                          <span className="text-[11px] text-slate-400 font-medium">
-                            ({item.reviewsCount})
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          onClick={() => addToCart(item, 1)}
-                          className="w-full py-2 px-1 rounded-lg font-semibold text-xs border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 transition-colors cursor-pointer shadow-2xs"
-                        >
-                          Add to Cart
-                        </button>
-                        <button
-                          onClick={() => handleBuyNow(item)}
-                          className="w-full py-2 px-1 rounded-lg font-bold text-xs bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer shadow-2xs"
-                        >
-                          Buy Now
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
+            </div>
         )}
 
-        {/* Product detail view: Gallery, specifications, seller info, and similar products */}
-        {currentView === 'product-detail' && selectedProduct && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-8 animate-fade-in">
-            <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium flex-wrap">
-              <button
-                onClick={() => setCurrentView('home')}
-                className="hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                Campus Marketplace
-              </button>
-              <span>/</span>
-              <button
-                onClick={() => {
-                  setSelectedCategory(selectedProduct.category);
-                  setCurrentView('home');
-                }}
-                className="hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                {selectedProduct.category}
-              </button>
-              <span>/</span>
-              <span className="text-slate-400">Shop items by category</span>
-              <span>/</span>
-              <span className="text-slate-900 font-semibold">{selectedProduct.title.toLowerCase().replace(/\s+/g, '-')}</span>
-            </nav>
-
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => setCurrentView('home')}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back to Marketplace</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Gallery */}
-              <div className="lg:col-span-6 space-y-4">
-                <div className="bg-white rounded-xl border border-slate-200 p-8 sm:p-12 aspect-square flex items-center justify-center relative">
-                  <button
-                    aria-label={`Toggle wishlist for ${selectedProduct.title}`}
-                    onClick={() => toggleWishlist(selectedProduct.id, selectedProduct.title)}
-                    className="absolute top-4 right-4 w-9 h-9 rounded-md bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors cursor-pointer"
-                  >
-                    <Heart className={`w-4 h-4 ${wishlist.includes(selectedProduct.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} />
-                  </button>
-
-                  <img
-                    src={
-                      selectedProduct.colorVariants && selectedProduct.colorVariants[selectedColorIndex]
-                        ? selectedProduct.colorVariants[selectedColorIndex].img
-                        : selectedProduct.image
-                    }
-                    alt={selectedProduct.title}
-                    className="w-full h-full object-contain transition-all duration-300"
-                  />
-                </div>
-
-                <div className="grid grid-cols-4 gap-3">
-                  {(selectedProduct.colorVariants || [
-                    { name: 'Default', hex: '#333', img: selectedProduct.image },
-                    { name: 'Angle 2', hex: '#666', img: selectedProduct.image },
-                    { name: 'Angle 3', hex: '#999', img: selectedProduct.image },
-                    { name: 'Angle 4', hex: '#ccc', img: selectedProduct.image }
-                  ]).slice(0, 4).map((variant, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedColorIndex(idx)}
-                      className={`bg-white rounded-lg p-2 aspect-square flex items-center justify-center cursor-pointer border transition-all ${
-                        selectedColorIndex === idx ? 'border-blue-600 ring-1 ring-blue-600' : 'border-slate-200 hover:border-slate-400'
-                      }`}
-                    >
-                      <img src={variant.img} alt={variant.name} className="w-full h-full object-contain" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right Column: Information & Pricing */}
-              <div className="lg:col-span-6 space-y-5 bg-white rounded-xl border border-slate-200 p-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-sm border border-blue-200">
-                      {selectedProduct.condition || 'Like New'} Condition
-                    </span>
-                    <span className="bg-slate-100 text-slate-700 text-xs font-medium px-2 py-0.5 rounded-sm">
-                      {selectedProduct.college || 'Engineering Campus'}
-                    </span>
-                    {selectedProduct.coordinates && (
-                      <span className="coordinate-badge text-[11px] px-2 py-0.5 rounded-sm font-mono flex items-center gap-1">
-                        <Crosshair className="w-3 h-3 text-blue-600" />
-                        <span>Lat {selectedProduct.coordinates.lat.toFixed(4)}°, Lng {selectedProduct.coordinates.lng.toFixed(4)}°</span>
-                      </span>
-                    )}
-                  </div>
-
-                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                    {selectedProduct.title}
-                  </h1>
-                  <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
-                    {selectedProduct.longDescription || selectedProduct.description}
-                  </p>
-
-                  <div className="flex items-center gap-2 mt-3">
-                    <div className="flex items-center text-blue-600">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                      ))}
-                    </div>
-                    <span className="text-xs text-slate-500 font-semibold">
-                      ({selectedProduct.reviewsCount || 121})
-                    </span>
-                  </div>
-                </div>
-
-                {/* Seller Verified Profile Card */}
-                {selectedProduct.seller && (
-                  <div className="bg-[#f8f9fa] border border-slate-200 rounded-lg p-3.5 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-md bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
-                        {selectedProduct.seller.name[0]}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <h4 className="font-bold text-xs text-slate-900">{selectedProduct.seller.name}</h4>
-                          <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 font-bold px-1.5 py-0.2 rounded-sm">
-                            Verified Student
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500">
-                          {selectedProduct.seller.department} • {selectedProduct.seller.year}
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setIsContactModalOpen(true)}
-                      className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition-colors"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5 text-blue-600" />
-                      <span>Contact Seller</span>
-                    </button>
-                  </div>
-                )}
-
-                <hr className="border-slate-100" />
-
-                {/* Pricing Display */}
-                <div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-black text-slate-900">
-                      {formatINR(selectedProduct.price)}
-                    </span>
-                    <span className="text-slate-600 text-sm font-medium">
-                      or {formatINR(selectedProduct.monthlyPrice || Math.round(selectedProduct.price / 4))}/month
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    Direct student handshake settlement via Cash or instant peer-to-peer digital transfer on meetup
-                  </p>
-
-                  {/* Admin Direct Price Edit Trigger on Detail Page */}
-                  {currentUser?.role === 'admin' && (
-                    <div className="pt-2">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenPriceModal(selectedProduct)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 transition-colors cursor-pointer"
-                      >
-                        <Edit3 className="w-3.5 h-3.5 text-blue-700" />
-                        <span>Admin: Adjust Price in Database</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                <hr className="border-slate-100" />
-
-                {/* Choose a Color */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-900">Color Variant</span>
-                    <span className="text-slate-500 font-medium">
-                      {selectedProduct.colorVariants?.[selectedColorIndex]?.name || selectedProduct.color || 'Standard'}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2.5">
-                    {(selectedProduct.colorVariants || [
-                      { name: 'Red', hex: '#e17076' },
-                      { name: 'Dark Gray', hex: '#374151' },
-                      { name: 'Mint Green', hex: '#bbf7d0' },
-                      { name: 'Silver White', hex: '#e2e8f0' },
-                      { name: 'Sky Blue', hex: '#38bdf8' }
-                    ]).map((c, i) => (
-                      <button
-                        key={i}
-                        aria-label={`Select color ${c.name}`}
-                        onClick={() => setSelectedColorIndex(i)}
-                        className={`w-7 h-7 rounded-md border transition-all p-0.5 relative flex items-center justify-center cursor-pointer ${
-                          selectedColorIndex === i ? 'ring-2 ring-blue-600 border-white' : 'border-slate-300'
-                        }`}
-                        style={{ backgroundColor: c.hex }}
-                      >
-                        {selectedColorIndex === i && (
-                          <Check className={`w-3 h-3 ${['#f8fafc', '#e2e8f0', '#bbf7d0'].includes(c.hex) ? 'text-slate-900' : 'text-white'}`} />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quantity & Stock Left */}
-                <div className="flex items-center gap-4 pt-1">
-                  <div className="flex items-center bg-[#f8f9fa] rounded-md border border-slate-300">
-                    <button
-                      aria-label="Decrease quantity"
-                      onClick={() => setDetailQuantity(prev => Math.max(1, prev - 1))}
-                      className="w-8 h-8 flex items-center justify-center hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-                    >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="w-9 text-center font-bold text-xs text-slate-800">
-                      {detailQuantity}
-                    </span>
-                    <button
-                      aria-label="Increase quantity"
-                      onClick={() => setDetailQuantity(prev => prev + 1)}
-                      className="w-8 h-8 flex items-center justify-center hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-
-                  <div className="text-[11px]">
-                    <p className="font-semibold text-slate-700">
-                      Only {selectedProduct.stock || 1} available
-                    </p>
-                    <p className="text-slate-400">Available for direct campus pickup</p>
-                  </div>
-                </div>
-
-                {/* Action Buttons: Buy Now & Add to Cart */}
-                <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                  <button
-                    onClick={() => {
-                      const chosenColor = selectedProduct.colorVariants?.[selectedColorIndex]?.name || selectedProduct.color;
-                      addToCart(selectedProduct, detailQuantity, chosenColor);
-                      setCurrentView('checkout');
-                    }}
-                    className="w-full sm:flex-1 btn-primary-blue py-2.5 rounded-md font-bold text-xs text-center cursor-pointer"
-                  >
-                    Proceed to Checkout
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      const chosenColor = selectedProduct.colorVariants?.[selectedColorIndex]?.name || selectedProduct.color;
-                      addToCart(selectedProduct, detailQuantity, chosenColor);
-                    }}
-                    className="w-full sm:flex-1 py-2.5 rounded-md font-bold text-xs text-center border border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-
-                {/* Free Delivery & Exact Geocoded Hand-Off Card */}
-                <div className="space-y-2.5 pt-3 border-t border-slate-100">
-                  <div className="p-3.5 rounded-lg border border-slate-200 bg-[#f8f9fa] flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
-                      <Truck className="w-4 h-4" />
-                    </div>
-                    <div className="space-y-0.5 flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-bold text-xs text-slate-900">Campus In-Person Hand-Off</h4>
-                        {selectedProduct.coordinates && (
-                          <a
-                            href={`https://www.openstreetmap.org/?mlat=${selectedProduct.coordinates.lat}&mlon=${selectedProduct.coordinates.lng}#map=17/${selectedProduct.coordinates.lat}/${selectedProduct.coordinates.lng}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline"
-                          >
-                            <span>Open Map</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-slate-500">
-                        Designated hub:{' '}
-                        <span className="font-semibold text-slate-800">
-                          {selectedProduct.pickupLocation || 'Central Library Desk'}
-                        </span>
-                      </p>
-                      {selectedProduct.coordinates && (
-                        <p className="text-[10px] font-mono text-slate-600">
-                          Coordinates: {selectedProduct.coordinates.lat.toFixed(4)}° N, {selectedProduct.coordinates.lng.toFixed(4)}° W
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-lg border border-slate-200 bg-[#f8f9fa] flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-md bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
-                      <RotateCcw className="w-4 h-4" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <h4 className="font-bold text-xs text-slate-900">7-Day Campus Inspection Guarantee</h4>
-                      <p className="text-[11px] text-slate-500">
-                        Inspect during meetup! Honor code protection on all campus trades.{' '}
-                        <button
-                          onClick={() => setIsTermsModalOpen(true)}
-                          className="font-bold text-slate-800 underline hover:text-blue-600 cursor-pointer"
-                        >
-                          View Policy
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* ── DEDICATED PRODUCT DETAIL PAGE (Safe, 3 Breakpoints, No Crashes) ── */}
+        {currentView === 'product-detail' && (
+          <ProductDetailPage
+            product={selectedProduct}
+            currentUser={currentUser}
+            wishlist={wishlist}
+            onBack={handleBackToMarketplace}
+            onNavigateHome={handleBackToMarketplace}
+            onSelectCategory={handleSelectCategory}
+            onAddToCart={(prod, qty, checkout) => {
+              const chosenColor = prod.colorVariants?.[0]?.name || prod.color || 'Standard';
+              addToCart(prod, qty, chosenColor);
+              if (checkout) setCurrentView('checkout');
+            }}
+            onToggleWishlist={toggleWishlist}
+            onOpenContactModal={() => setIsContactModalOpen(true)}
+            onOpenPriceModal={handleOpenPriceModal}
+            onOpenTermsModal={() => setIsTermsModalOpen(true)}
+          />
         )}
 
         {/* Checkout view: Meetup delivery location, payment method, and summary */}
@@ -5204,28 +4171,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* 11. FORMAL COMPLIANCE & PRODUCT DEMO MODALS */}
-      <TermsModal
-        isOpen={isTermsModalOpen}
-        onClose={() => setIsTermsModalOpen(false)}
-      />
-      <PrivacyModal
-        isOpen={isPrivacyModalOpen}
-        onClose={() => setIsPrivacyModalOpen(false)}
-      />
-      <ResaleCalculatorModal
-        isOpen={isCalculatorModalOpen}
-        onClose={() => setIsCalculatorModalOpen(false)}
-        onApplyToListing={(calcData) => {
-          setNewListing(prev => ({
-            ...prev,
-            category: calcData.category,
-            price: calcData.suggestedPrice.toString(),
-            condition: calcData.condition
-          }));
-          setIsSellModalOpen(true);
-        }}
-      />
+      
 
       {/* Modal dialog for selecting active university campus */}
       {isUniversityModalOpen && (
@@ -5320,6 +4266,16 @@ export default function App() {
           </div>
         </div>
       )}
+      
+
+      {/* ── EDIT LISTING MODAL (Connected to MongoDB Atlas) ── */}
+      <EditProductModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        formData={editFormData}
+        setFormData={setEditFormData}
+        onSubmit={handleSaveEditListing}
+      />
     </div>
   );
 }

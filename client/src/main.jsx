@@ -5,13 +5,17 @@ import { BrowserRouter } from 'react-router-dom';
 
 // Root application component and global styles
 import App from './App.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import './index.css';
 
 // Mount React application into the DOM root element
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
+

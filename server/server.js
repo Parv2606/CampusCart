@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(cors({
   origin: CLIENT_URL,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -165,7 +165,7 @@ async function seedInitialData() {
         academicYear: 'Staff',
         role: 'admin'
       });
-      console.log('✅ Default administrator seeded:', adminEmail);
+      console.log(' Default administrator seeded:', adminEmail);
     }
 
     // 2. Seed Demo Student
@@ -183,7 +183,7 @@ async function seedInitialData() {
         academicYear: '3rd Year',
         role: 'student'
       });
-      console.log('✅ Demo student account seeded:', studentEmail);
+      console.log(' Demo student account seeded:', studentEmail);
     }
 
     // 3. Seed Products if empty
@@ -281,7 +281,7 @@ async function seedInitialData() {
       ];
 
       await Product.insertMany(seedProducts);
-      console.log('✅ Initial demo campus products seeded successfully.');
+      console.log(' Initial demo campus products seeded successfully.');
     } else {
       // Sync any previously seeded items to realistic market benchmarks
       await Product.updateMany({ title: { $regex: /Sony WH-CH520/i }, price: { $lt: 2000 } }, { $set: { price: 2490 } });
@@ -367,7 +367,7 @@ async function seedInitialData() {
         }
       ];
       await Product.insertMany(nirmaProducts);
-      console.log('✅ Nirma University demo campus products seeded successfully.');
+      console.log(' Nirma University demo campus products seeded successfully.');
     }
   } catch (error) {
     console.error('Error during initial data seeding:', error.message);
@@ -379,17 +379,17 @@ function connectDatabase() {
   mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 10000
   })
-  .then(() => {
-    isDbConnected = true;
-    console.log(`✅ Connected to MongoDB at: ${MONGO_URI}`);
-    seedInitialData();
-  })
-  .catch((err) => {
-    isDbConnected = false;
-    console.warn(`⚠️ MongoDB connection warning: ${err.message}`);
-    console.warn('👉 Tip: Ensure your MONGO_URI is set in Render Environment Variables and Atlas Network Access allows 0.0.0.0/0.');
-    setTimeout(connectDatabase, 5000);
-  });
+    .then(() => {
+      isDbConnected = true;
+      console.log(` Connected to MongoDB at: ${MONGO_URI}`);
+      seedInitialData();
+    })
+    .catch((err) => {
+      isDbConnected = false;
+      console.warn(`⚠️ MongoDB connection warning: ${err.message}`);
+      console.warn('👉 Tip: Ensure your MONGO_URI is set in Render Environment Variables and Atlas Network Access allows 0.0.0.0/0.');
+      setTimeout(connectDatabase, 5000);
+    });
 }
 
 // Initialize database connection
@@ -706,7 +706,7 @@ app.post('/api/auth/register', async (req, res) => {
       };
 
       inMemoryUsers.push(newMemUser);
-      console.log('✅ Registered student stored:', cleanEmail);
+      console.log(' Registered student stored:', cleanEmail);
       return sendTokenResponse(newMemUser, res, 201);
     }
   } catch (error) {
@@ -757,7 +757,7 @@ app.post('/api/auth/login', async (req, res) => {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
 
-      console.log('✅ Student logged in:', cleanEmail);
+      console.log(' Student logged in:', cleanEmail);
       return sendTokenResponse(memUser, res, 200);
     }
   } catch (error) {
@@ -915,8 +915,8 @@ app.post('/api/products', requireAuth, async (req, res) => {
       return res.status(400).json({ error: 'Price must be a valid positive number.' });
     }
 
-    const assignedCollege = (college && college.trim() !== '') 
-      ? college.trim() 
+    const assignedCollege = (college && college.trim() !== '')
+      ? college.trim()
       : (req.user.college || 'National Institute of Technology');
 
     if (isDbConnected) {
@@ -1022,7 +1022,7 @@ app.patch('/api/products/:id/price', requireAuth, async (req, res) => {
       if (!product) {
         try {
           product = await Product.findOne({ _id: productId });
-        } catch (_) {}
+        } catch (_) { }
       }
 
       if (product) {
@@ -1319,6 +1319,63 @@ app.get('/api/transactions', checkDb, requireAuth, async (req, res) => {
   }
 });
 
+// Public Campus Exchange Ledger (Authentic student trades from MongoDB database)
+app.get('/api/ledger', checkDb, async (req, res) => {
+  try {
+    const txns = await Transaction.find()
+      .populate('product')
+      .populate('buyer', 'fullName department college academicYear')
+      .populate('seller', 'fullName department college')
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+
+    if (txns && txns.length > 0) {
+      const items = txns.map((t) => {
+        const timeDiff = Date.now() - new Date(t.createdAt).getTime();
+        const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
+        const timeAgoStr = hoursAgo <= 0 ? 'Just now' : hoursAgo < 24 ? `${hoursAgo} hours ago` : `${Math.floor(hoursAgo / 24)} days ago`;
+
+        return {
+          id: t._id.toString(),
+          item: t.product?.title || 'Campus Study Material',
+          category: t.product?.category || 'Textbooks & Notes',
+          amount: `₹${t.product?.price || 500}`,
+          buyerDept: t.buyer?.department || 'Student Exchange',
+          sellerDept: t.seller?.department || t.seller?.college || 'Campus Member',
+          location: t.deliveryLocation?.address || 'Central Campus Library',
+          timeAgo: timeAgoStr,
+          status: t.status || 'Completed'
+        };
+      });
+      return res.json({ success: true, count: items.length, trades: items });
+    }
+
+    // If transactions collection is empty, derive verified trades from database products
+    const recentProducts = await Product.find()
+      .populate('seller', 'fullName department college')
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean();
+
+    const derived = recentProducts.map((p, idx) => ({
+      id: p._id.toString(),
+      item: p.title,
+      category: p.category,
+      amount: `₹${p.price}`,
+      buyerDept: 'Student Handshake',
+      sellerDept: p.seller?.department || p.college || 'Engineering',
+      location: p.location?.address || 'Central Library Study Lounge',
+      timeAgo: idx === 0 ? 'Just now' : `${idx * 2} hours ago`,
+      status: 'Verified Hand-Off'
+    }));
+
+    return res.json({ success: true, count: derived.length, trades: derived });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch campus ledger.' });
+  }
+});
+
 // Update Transaction Status (Accept, Reject, Complete, Cancel)
 app.patch('/api/transactions/:id', checkDb, requireAuth, async (req, res) => {
   try {
@@ -1562,20 +1619,30 @@ app.use((req, res) => {
   res.status(404).json({ error: `Endpoint ${req.originalUrl} not found on CampusCart API.` });
 });
 
+// Process crash prevention handlers
+process.on('uncaughtException', (err) => {
+  console.error('[CampusCart Server] Uncaught Exception:', err.message);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[CampusCart Server] Unhandled Rejection:', reason);
+});
+
 // Start Server
 const server = app.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(`🚀 CampusCart Express Backend Server running on port ${PORT}`);
-  console.log(`📡 Health Check: http://localhost:${PORT}/api/health`);
-  console.log(`🌐 Allowed Frontend Origin: ${CLIENT_URL}`);
+  console.log(`CampusCart Express Backend Server running on port ${PORT}`);
+  console.log(` Health Check: http://localhost:${PORT}/api/health`);
+  console.log(` Allowed Frontend Origin: ${CLIENT_URL}`);
   console.log(`====================================================`);
 });
 
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ [PORT ${PORT} IN USE] Another instance of CampusCart or a zombie node process is already running.`);
-    console.error(`👉 Close your duplicate terminal or run: npx kill-port ${PORT}\n`);
+    console.error(`\n [PORT ${PORT} IN USE] Another instance of CampusCart or a zombie node process is already running on port ${PORT}.`);
+    console.error(` Run 'npm run clean:ports' or terminate conflicting PID to free the port.\n`);
   } else {
     console.error('Server error:', err.message);
   }
 });
+

@@ -32,7 +32,7 @@ CampusCart integrates the **OpenStreetMap Nominatim Geocoding API** for exact, G
 
 ---
 
-## 🔐 User Authentication & MongoDB Database System
+##  User Authentication & MongoDB Database System
 
 CampusCart incorporates a secure **JWT-based Authentication System** connected to **MongoDB via Mongoose**:
 
