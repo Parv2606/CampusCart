@@ -2,7 +2,7 @@
 import React from 'react';
 import {
   ShoppingCart, Search, User, Plus, Receipt, ShieldAlert,
-  GraduationCap, ArrowLeft, Menu, X, ChevronRight, LogIn, LogOut, Package
+  GraduationCap, ArrowLeft, Menu, X, ChevronRight, LogIn, LogOut, Package, Calculator
 } from '../icons.jsx';
 
 export default function Navigation({
@@ -20,6 +20,7 @@ export default function Navigation({
   onOpenSellModal,
   onOpenAuthModal,
   onOpenCart,
+  onOpenCalculator,
   onNavigateHome,
   onNavigateOrders,
   onNavigateAdmin,
@@ -127,6 +128,17 @@ export default function Navigation({
               <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
               <span className="hidden xs:inline">Sell Item</span>
               <span className="xs:hidden">Sell</span>
+            </button>
+
+            {/* Fair-Price Estimator CTA (Desktop) */}
+            <button
+              type="button"
+              onClick={onOpenCalculator}
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+              title="Campus Fair-Price Estimator"
+            >
+              <Calculator className="w-3.5 h-3.5 text-blue-600" />
+              <span>Fair-Price Tool</span>
             </button>
 
             {/* My Orders / Transactions CTA (Desktop) */}
@@ -319,6 +331,21 @@ export default function Navigation({
                     {cartTotalItems} items
                   </span>
                 )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (onOpenCalculator) onOpenCalculator();
+                  onToggleMobileMenu(false);
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer text-slate-700 font-bold text-xs"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Calculator className="w-4 h-4 text-blue-600" />
+                  <span>Fair-Price Tool</span>
+                </div>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
               </button>
 
               <button

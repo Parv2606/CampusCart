@@ -18,6 +18,7 @@ import Navigation from './components/Navigation.jsx';
 import EditProductModal from './components/EditProductModal.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import { CatalogGridSkeleton } from './components/SkeletonLoader.jsx';
+import FairPriceModal from './components/FairPriceModal.jsx';
 
 // Currency formatting helper (converts amount to INR string)
 const formatPrice = (amount) => {
@@ -1460,6 +1461,7 @@ export default function App() {
           setIsAuthModalOpen(true);
         }}
         onOpenCart={() => setIsCartOpen(true)}
+        onOpenCalculator={() => setIsCalculatorModalOpen(true)}
         onNavigateHome={handleBackToMarketplace}
         onNavigateOrders={() => {
           setAccountTab('transactions');
@@ -4267,6 +4269,21 @@ export default function App() {
         </div>
       )}
       
+
+            {/* ── FAIR PRICE ESTIMATOR TOOL MODAL ── */}
+      <FairPriceModal
+        isOpen={isCalculatorModalOpen}
+        onClose={() => setIsCalculatorModalOpen(false)}
+        onApplyToListing={(calcData) => {
+          setNewListing(prev => ({
+            ...prev,
+            category: calcData.category,
+            price: calcData.suggestedPrice.toString(),
+            condition: calcData.condition
+          }));
+          setIsSellModalOpen(true);
+        }}
+      />
 
       {/* ── EDIT LISTING MODAL (Connected to MongoDB Atlas) ── */}
       <EditProductModal
